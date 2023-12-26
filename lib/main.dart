@@ -5,7 +5,7 @@ import 'firebase_options.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    name: 'DAFA',
+    name: 'dafa',
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(const MyApp());
