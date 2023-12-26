@@ -42,7 +42,7 @@ class AuthnScreen extends StatelessWidget {
               Container(
                 margin: EdgeInsets.only(top: 100),
                 child: const Text(
-                  'Chào mừng bạn đến với DAFA - nơi bạn có thể tìm kiếm bạn bè cũng như nửa kia của mình!',
+                  'Chào mừng bạn đến với DAFA - nơi bạn có thể tâm sự, kết bạn và tìm nửa kia của mình!',
                   style: TextStyle(
                     color: Colors.white,
                   ),
@@ -64,8 +64,11 @@ class AuthnScreen extends StatelessWidget {
                     ),
                   ),
                   child: const Text(
-                    'Đăng nhập',
-                    style: TextStyle(color: Colors.white),
+                    'ĐĂNG NHẬP',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                    ),
                   ),
                 ),
               ),
@@ -84,8 +87,11 @@ class AuthnScreen extends StatelessWidget {
                     ),
                   ),
                   child: const Text(
-                    'Đăng ký',
-                    style: TextStyle(color: Colors.white),
+                    'ĐĂNG KÝ',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                    ),
                   ),
                 ),
               ),
