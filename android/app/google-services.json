@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "425747143474",
+    "project_id": "dafa-98847",
+    "storage_bucket": "dafa-98847.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:425747143474:android:19468153dfd38f2fcb152b",
+        "android_client_info": {
+          "package_name": "com.example.dafa"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVdCb6E_diHVhzBl5fDeNFG73o5g5t5Mw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
