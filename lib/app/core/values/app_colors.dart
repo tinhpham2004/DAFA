@@ -7,4 +7,7 @@ class AppColors {
     begin: Alignment.topRight,
     end: Alignment.bottomLeft,
   );
+
+  static const Color secondaryColor = Color(0XFF444142);
+  static const Color thirdColor = Color(0xFF828693);
 }

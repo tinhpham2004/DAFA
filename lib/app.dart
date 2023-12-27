@@ -14,7 +14,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      initialRoute: AppRoutes.sign_in,
+      initialRoute: AppRoutes.auth,
       getPages: AppPages.pages,
       debugShowCheckedModeBanner: false,
     );
