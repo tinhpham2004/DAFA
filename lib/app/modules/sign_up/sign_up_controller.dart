@@ -8,6 +8,7 @@ class SignUpController extends GetxController {
   RxString smsCode = ''.obs;
   RxString userId = ''.obs;
   RxBool checkOTP = true.obs;
+  RxString validPassword = ''.obs;
 
   void UpdateVerificationId(String data) => verificationId.value = data;
   void UpdateSmsCode(String data) {
@@ -18,6 +19,8 @@ class SignUpController extends GetxController {
   }
 
   void UpdateUserId(String data) => userId.value = data;
-  
+
   void UpdateCheckOTP() => checkOTP.value = false;
+
+  void UpdateValidPassword(String data) => validPassword.value = data;
 }
