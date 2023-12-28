@@ -1,5 +1,7 @@
 import 'package:dafa/app/modules/auth/screens/auth_screen.dart';
 import 'package:dafa/app/modules/auth/auth_binding.dart';
+import 'package:dafa/app/modules/sign_in/screens/sign_in_screen.dart';
+import 'package:dafa/app/modules/sign_in/sign_in_binding.dart';
 import 'package:dafa/app/modules/sign_up/screens/otp_screen.dart';
 import 'package:dafa/app/modules/sign_up/screens/password.dart';
 import 'package:dafa/app/modules/sign_up/screens/sign_up_screen.dart';
@@ -28,6 +30,11 @@ abstract class AppPages {
       name: AppRoutes.password,
       page: () => const PasswordScreen(),
       binding: SignUpBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.sign_in,
+      page: () => SignInScreen(),
+      binding: SignInBinding(),
     ),
   ];
 }
