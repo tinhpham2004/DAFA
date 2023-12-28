@@ -24,13 +24,23 @@ class SignUpButton extends StatelessWidget {
       ),
       child: ElevatedButton(
         onPressed: () {
-          AppUser appUser = AppUser(
-            userId: signUpController.userId.value,
-            phoneNumber: signUpController.phoneNumberController.text,
-            password: signUpController.passwordController.text,
-          );
-          databaseService.UpdateUserData(appUser);
-          Get.toNamed(AppRoutes.sign_in);
+          if (signUpController.passwordController.text.length >= 6 &&
+              signUpController.passwordController.text
+                  .contains(RegExp(r'[A-Z]')) &&
+              signUpController.passwordController.text
+                  .contains(RegExp(r'[a-z]')) &&
+              signUpController.passwordController.text
+                  .contains(RegExp(r'[0-9]'))) {
+            AppUser appUser = AppUser(
+              userId: signUpController.userId.value,
+              phoneNumber: signUpController.phoneNumberController.text,
+              password: signUpController.passwordController.text,
+            );
+            databaseService.UpdateUserData(appUser);
+            Get.toNamed(AppRoutes.sign_in);
+          } else {
+            signUpController.UpdateValidPassword('Invalid password.');
+          }
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.transparent,

@@ -5,7 +5,7 @@ import 'package:dafa/app/modules/sign_in/sign_in_controller.dart';
 import 'package:dafa/app/modules/sign_in/widgets/sign_in_button.dart';
 import 'package:dafa/app/modules/sign_in/widgets/password_field.dart';
 import 'package:dafa/app/modules/sign_in/widgets/phone_number_field.dart';
-import 'package:dafa/app/modules/sign_up/widgets/back_icon.dart';
+import 'package:dafa/app/modules/sign_in/widgets/back_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
