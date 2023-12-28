@@ -1,8 +1,8 @@
 import 'package:dafa/app/core/values/app_colors.dart';
 import 'package:dafa/app/core/values/app_icons.dart';
-import 'package:dafa/app/routes/app_routes.dart';
+import 'package:dafa/app/modules/auth/widgets/sign_in_button.dart';
+import 'package:dafa/app/modules/auth/widgets/sign_up_button.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class AuthnScreen extends StatelessWidget {
   const AuthnScreen({super.key});
@@ -57,49 +57,13 @@ class AuthnScreen extends StatelessWidget {
                 // sign_in button
                 Container(
                   margin: const EdgeInsets.only(top: 30),
-                  child: ElevatedButton(
-                    onPressed: () => {},
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(330, 50),
-                      backgroundColor: Colors.transparent,
-                      shadowColor: Colors.transparent,
-                      side: const BorderSide(
-                        color: Colors.white,
-                        width: 2,
-                      ),
-                    ),
-                    child: const Text(
-                      'SIGN IN',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                      ),
-                    ),
-                  ),
+                  child: SignInButton(),
                 ),
 
                 // sign_up button
                 Container(
                   margin: const EdgeInsets.only(top: 30),
-                  child: ElevatedButton(
-                    onPressed: () => Get.toNamed(AppRoutes.sign_up),
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(330, 50),
-                      backgroundColor: Colors.transparent,
-                      shadowColor: Colors.transparent,
-                      side: const BorderSide(
-                        color: Colors.white,
-                        width: 2,
-                      ),
-                    ),
-                    child: const Text(
-                      'SIGN UP',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                      ),
-                    ),
-                  ),
+                  child: SignUpButton(),
                 ),
               ],
             ),
@@ -109,3 +73,7 @@ class AuthnScreen extends StatelessWidget {
     );
   }
 }
+
+
+
+

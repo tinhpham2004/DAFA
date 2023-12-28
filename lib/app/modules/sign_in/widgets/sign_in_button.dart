@@ -1,18 +1,18 @@
 import 'package:dafa/app/core/values/app_colors.dart';
-import 'package:dafa/app/models/app_user.dart';
-import 'package:dafa/app/modules/sign_up/sign_up_controller.dart';
+import 'package:dafa/app/modules/sign_in/sign_in_controller.dart';
 import 'package:dafa/app/routes/app_routes.dart';
 import 'package:dafa/app/services/database_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-// ignore: must_be_immutable
-class SignUpButton extends StatelessWidget {
-  SignUpButton({
+class SignInButton extends StatelessWidget {
+  SignInButton({
     super.key,
   });
-  final SignUpController signUpController = Get.find<SignUpController>();
+
+  final SignInController signInController = Get.find<SignInController>();
   DatabaseService databaseService = DatabaseService();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -24,13 +24,10 @@ class SignUpButton extends StatelessWidget {
       ),
       child: ElevatedButton(
         onPressed: () {
-          AppUser appUser = AppUser(
-            userId: signUpController.userId.value,
-            phoneNumber: signUpController.phoneNumberController.text,
-            password: signUpController.passwordController.text,
+          databaseService.Authenticate(
+            signInController.phoneNumberController.text,
+            signInController.passwordController.text,
           );
-          databaseService.UpdateUserData(appUser);
-          Get.toNamed(AppRoutes.sign_in);
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.transparent,
@@ -39,7 +36,7 @@ class SignUpButton extends StatelessWidget {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
         ),
         child: const Text(
-          'SIGN UP',
+          'SIGN IN',
           style: TextStyle(
             fontSize: 15,
             color: Colors.white,
