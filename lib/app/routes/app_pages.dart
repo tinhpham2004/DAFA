@@ -28,7 +28,7 @@ abstract class AppPages {
     ),
     GetPage(
       name: AppRoutes.password,
-      page: () => const PasswordScreen(),
+      page: () => PasswordScreen(),
       binding: SignUpBinding(),
     ),
     GetPage(
