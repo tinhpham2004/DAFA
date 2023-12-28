@@ -25,6 +25,7 @@ class SendOTPButton extends StatelessWidget {
         onPressed: () async {
           await FirebaseAuth.instance.verifyPhoneNumber(
             phoneNumber: '+84${signUpController.phoneNumberController.text}',
+            timeout: const Duration(seconds: 120),
             verificationCompleted: (PhoneAuthCredential credential) {},
             verificationFailed: (FirebaseAuthException e) {},
             codeSent: (String verificationId, int? resendToken) {
