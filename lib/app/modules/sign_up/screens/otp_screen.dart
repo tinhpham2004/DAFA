@@ -1,13 +1,17 @@
 import 'package:dafa/app/core/values/app_colors.dart';
 import 'package:dafa/app/core/values/app_icons.dart';
 import 'package:dafa/app/core/values/app_text_style.dart';
+import 'package:dafa/app/modules/sign_up/sign_up_controller.dart';
 import 'package:dafa/app/modules/sign_up/widgets/back_icon.dart';
 import 'package:dafa/app/modules/sign_up/widgets/continue_button.dart';
 import 'package:dafa/app/modules/sign_up/widgets/otp_field.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class OTPScreen extends StatelessWidget {
-  const OTPScreen({super.key});
+  OTPScreen({super.key});
+
+  final SignUpController signUpController = Get.find<SignUpController>();
 
   @override
   Widget build(BuildContext context) {
@@ -88,11 +92,19 @@ class OTPScreen extends StatelessWidget {
                         ),
                       ),
                       //
-                      Container(
-                        margin: const EdgeInsets.only(top: 20),
-                        child: Text(
-                          'Please enter the otp code with 6 numbers that we sent you.',
-                          style: CustomTextStyle.h3(AppColors.thirdColor),
+                      Obx(
+                        () => Container(
+                          margin: const EdgeInsets.only(top: 20),
+                          child: signUpController.checkOTP.value == true
+                              ? Text(
+                                  'Please enter the 6-digit OTP code we sent you. It expires in 2 minutes.',
+                                  style:
+                                      CustomTextStyle.h3(AppColors.thirdColor),
+                                )
+                              : Text(
+                                  'Wrong OTP code, please check your SMS message.',
+                                  style: CustomTextStyle.error_text_style(),
+                                ),
                         ),
                       ),
                       //

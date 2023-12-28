@@ -22,12 +22,16 @@ class ContinueButton extends StatelessWidget {
       ),
       child: ElevatedButton(
         onPressed: () async {
-          PhoneAuthCredential credential = PhoneAuthProvider.credential(
-              verificationId: signUpController.verificationId.value,
-              smsCode: signUpController.smsCode.value);
-          await auth.signInWithCredential(credential);
-          signUpController.UpdateUserId(auth.currentUser!.uid);
-          Get.toNamed(AppRoutes.password);
+          try {
+            PhoneAuthCredential credential = PhoneAuthProvider.credential(
+                verificationId: signUpController.verificationId.value,
+                smsCode: signUpController.smsCode.value);
+            await auth.signInWithCredential(credential);
+            signUpController.UpdateUserId(auth.currentUser!.uid);
+            Get.toNamed(AppRoutes.password);
+          } catch (ex) {
+            signUpController.UpdateCheckOTP();
+          }
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.transparent,

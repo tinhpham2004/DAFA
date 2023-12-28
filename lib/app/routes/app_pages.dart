@@ -21,7 +21,7 @@ abstract class AppPages {
     ),
     GetPage(
       name: AppRoutes.otp,
-      page: () => const OTPScreen(),
+      page: () => OTPScreen(),
       binding: SignUpBinding(),
     ),
     GetPage(
