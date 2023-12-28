@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class CustomTextStyle extends TextStyle {
   static TextStyle h1(Color color) {
@@ -22,6 +23,14 @@ class CustomTextStyle extends TextStyle {
       fontSize: 15,
       fontWeight: FontWeight.w400,
       color: color,
+    );
+  }
+
+    static TextStyle error_text_style() {
+    return TextStyle(
+      fontSize: 15,
+      fontWeight: FontWeight.w400,
+      color: Colors.red,
     );
   }
 }
