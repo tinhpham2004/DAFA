@@ -33,7 +33,7 @@ class SignUpButton extends StatelessWidget {
                   .contains(RegExp(r'[0-9]'))) {
             AppUser appUser = AppUser(
               userId: signUpController.userId.value,
-              phoneNumber: signUpController.phoneNumberController.text,
+              phoneNumber: '0' + signUpController.phoneNumberController.text,
               password: signUpController.passwordController.text,
             );
             databaseService.UpdateUserData(appUser);
