@@ -1,5 +1,10 @@
 import 'package:dafa/app/modules/auth/screens/auth_screen.dart';
 import 'package:dafa/app/modules/auth/auth_binding.dart';
+import 'package:dafa/app/modules/complete_profile/complete_profile_binding.dart';
+import 'package:dafa/app/modules/complete_profile/screens/birth_day_screen.dart';
+import 'package:dafa/app/modules/complete_profile/screens/gender_screen.dart';
+import 'package:dafa/app/modules/complete_profile/screens/name_screen.dart';
+import 'package:dafa/app/modules/complete_profile/screens/upload_images_screen.dart';
 import 'package:dafa/app/modules/sign_in/screens/sign_in_screen.dart';
 import 'package:dafa/app/modules/sign_in/sign_in_binding.dart';
 import 'package:dafa/app/modules/sign_up/screens/otp_screen.dart';
@@ -35,6 +40,26 @@ abstract class AppPages {
       name: AppRoutes.sign_in,
       page: () => SignInScreen(),
       binding: SignInBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.complete_name,
+      page: () => NameScreen(),
+      binding: CompleteProfileBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.complete_birth_day,
+      page: () => BirthDayScreen(),
+      binding: CompleteProfileBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.complete_gerder,
+      page: () => GenderScreen(),
+      binding: CompleteProfileBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.complete_upload_images,
+      page: () => UploadImagesScreen(),
+      binding: CompleteProfileBinding(),
     ),
   ];
 }

@@ -1,17 +1,16 @@
 import 'package:dafa/app/core/values/app_colors.dart';
-import 'package:dafa/app/modules/sign_in/sign_in_controller.dart';
-import 'package:dafa/app/routes/app_routes.dart';
 import 'package:dafa/app/services/database_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 // ignore: must_be_immutable
-class SignInButton extends StatelessWidget {
-  SignInButton({
+class ContinueButton extends StatelessWidget {
+  ContinueButton({
     super.key,
-  });
+    required route,
+  }) : _route = route;
 
-  final SignInController signInController = Get.find<SignInController>();
+  final String _route;
   DatabaseService databaseService = DatabaseService();
 
   @override
@@ -24,13 +23,8 @@ class SignInButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(30),
       ),
       child: ElevatedButton(
-        onPressed: () async {
-          await databaseService.Authenticate(
-            signInController.phoneNumberController.text,
-            signInController.passwordController.text,
-          );
-          if (signInController.signInState == 'Sign in successfully.')
-            Get.toNamed(AppRoutes.complete_name);
+        onPressed: () {
+          Get.toNamed(_route);
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.transparent,
@@ -39,7 +33,7 @@ class SignInButton extends StatelessWidget {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
         ),
         child: const Text(
-          'SIGN IN',
+          'CONTINUE',
           style: TextStyle(
             fontSize: 15,
             color: Colors.white,

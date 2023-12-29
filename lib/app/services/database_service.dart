@@ -9,30 +9,58 @@ class DatabaseService {
   final SignInController signInController = Get.find<SignInController>();
 
   Future UpdateUserData(AppUser user) async {
+    List images = ['', '', '', '', '', ''];
     return await usersCollection.doc(user.phoneNumber).set({
       'userId': user.userId,
       'phoneNumber': user.phoneNumber,
       'password': user.password,
+      'images': images,
     });
   }
 
   // ignore: non_constant_identifier_names
-  void Authenticate(String phoneNumber, String password) async {
-    phoneNumber = phoneNumber.substring(1);
+  Future Authenticate(String phoneNumber, String password) async {
     DocumentReference documentReference = usersCollection.doc(phoneNumber);
-    await documentReference.get().then((DocumentSnapshot documentSnapshot) {
-      if (documentSnapshot.exists) {
-        String actualPassword = documentSnapshot.get("password");
-        if (password == actualPassword) {
-          signInController.UpdateSignInState('Sign in successfully.');
+    await documentReference.get().then(
+      (DocumentSnapshot documentSnapshot) {
+        if (documentSnapshot.exists) {
+          String actualPassword = documentSnapshot.get("password");
+          if (password == actualPassword) {
+            signInController.UpdateSignInState('Sign in successfully.');
+          } else {
+            signInController.UpdateSignInState(
+                'The account or password is incorrect.');
+          }
         } else {
           signInController.UpdateSignInState(
               'The account or password is incorrect.');
         }
+      },
+    );
+  }
+
+  Future UpdateUserImage(int index, String imgUrl) async {
+    return await usersCollection
+        .doc((signInController.phoneNumberController.text))
+        .get()
+        .then((doc) {
+      if (doc.exists) {
+        final images = (doc.data() as dynamic)['images'] as List<dynamic>;
+        images[index - 1] = imgUrl;
+        doc.reference.update({'images': images});
       } else {
-        signInController.UpdateSignInState(
-            'The account or password is incorrect.');
+        //
       }
+    }).catchError((error) {
+      //
     });
+  }
+
+  Stream<QuerySnapshot> GetImageSnapshot(int index) {
+    Stream<QuerySnapshot> imgSnap = usersCollection
+        .doc(signInController.phoneNumberController.text)
+        .collection('images')
+        .snapshots();
+    return imgSnap;
   }
 }
