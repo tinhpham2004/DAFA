@@ -11,6 +11,8 @@ import 'package:dafa/app/modules/sign_up/screens/otp_screen.dart';
 import 'package:dafa/app/modules/sign_up/screens/password.dart';
 import 'package:dafa/app/modules/sign_up/screens/sign_up_screen.dart';
 import 'package:dafa/app/modules/sign_up/sign_up_binding.dart';
+import 'package:dafa/app/modules/swipe/screens/swipe_screen.dart';
+import 'package:dafa/app/modules/swipe/swipe_binding.dart';
 import 'package:dafa/app/routes/app_routes.dart';
 import 'package:get/get.dart';
 
@@ -60,6 +62,11 @@ abstract class AppPages {
       name: AppRoutes.complete_upload_images,
       page: () => UploadImagesScreen(),
       binding: CompleteProfileBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.swipe,
+      page: () => SwipeScreen(),
+      binding: SwipeBinding(),
     ),
   ];
 }
