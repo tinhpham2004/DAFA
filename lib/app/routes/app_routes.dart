@@ -17,4 +17,6 @@ abstract class AppRoutes {
   static const complete_gerder = '/complete_gerder';
   //complete_upload_images
   static const complete_upload_images = '/complete_upload_images';
+  //swipe
+  static const swipe = '/swipe';
 }

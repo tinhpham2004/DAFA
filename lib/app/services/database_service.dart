@@ -56,11 +56,27 @@ class DatabaseService {
     });
   }
 
-  Stream<QuerySnapshot> GetImageSnapshot(int index) {
-    Stream<QuerySnapshot> imgSnap = usersCollection
-        .doc(signInController.phoneNumberController.text)
-        .collection('images')
-        .snapshots();
-    return imgSnap;
+  Future<bool> FirstTimeUpdate() async {
+    bool isFirstTimeUpdate = true;
+    await usersCollection
+        .doc((signInController.phoneNumberController.text))
+        .get()
+        .then(
+      (doc) {
+        if (doc.exists) {
+          final images = (doc.data() as dynamic)['images'] as List<dynamic>;
+          images.forEach((element) {
+            if (element != '') isFirstTimeUpdate = false;
+          });
+        } else {
+          //
+        }
+      },
+    ).catchError(
+      (error) {
+        //
+      },
+    );
+    return isFirstTimeUpdate;
   }
 }

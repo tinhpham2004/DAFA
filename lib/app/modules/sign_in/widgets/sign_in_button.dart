@@ -29,8 +29,14 @@ class SignInButton extends StatelessWidget {
             signInController.phoneNumberController.text,
             signInController.passwordController.text,
           );
-          if (signInController.signInState == 'Sign in successfully.')
-            Get.toNamed(AppRoutes.complete_name);
+          if (signInController.signInState == 'Sign in successfully.') {
+            final bool isFirstTimeUpdate =
+                await databaseService.FirstTimeUpdate();
+            if (isFirstTimeUpdate) {
+              Get.toNamed(AppRoutes.complete_name);
+            } else
+              Get.toNamed(AppRoutes.swipe);
+          }
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.transparent,
