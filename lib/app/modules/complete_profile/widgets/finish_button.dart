@@ -26,17 +26,17 @@ class FinishButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: () async {
           await databaseService.UpdateUserImage(
-              1, completeProfileController.imgUrl1.value);
+              1, completeProfileController.imgDownloadUrl1.value);
           await databaseService.UpdateUserImage(
-              2, completeProfileController.imgUrl2.value);
+              2, completeProfileController.imgDownloadUrl2.value);
           await databaseService.UpdateUserImage(
-              3, completeProfileController.imgUrl3.value);
+              3, completeProfileController.imgDownloadUrl3.value);
           await databaseService.UpdateUserImage(
-              4, completeProfileController.imgUrl4.value);
+              4, completeProfileController.imgDownloadUrl4.value);
           await databaseService.UpdateUserImage(
-              5, completeProfileController.imgUrl5.value);
+              5, completeProfileController.imgDownloadUrl5.value);
           await databaseService.UpdateUserImage(
-              6, completeProfileController.imgUrl6.value);
+              6, completeProfileController.imgDownloadUrl6.value);
           Get.toNamed(AppRoutes.swipe);
         },
         style: ElevatedButton.styleFrom(

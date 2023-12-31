@@ -36,10 +36,11 @@ class ThirdAddImageButton extends StatelessWidget {
               .child('${signInController.phoneNumberController.text}');
           Reference referenceImage = referenceFolderImage.child(fileName);
           try {
+            completeProfileController.UpdateImgUrl3(croppedImg.path);
             await referenceImage.putFile(File(croppedImg.path),
                 SettableMetadata(contentType: 'image/jpeg'));
-            String imgUrl = await referenceImage.getDownloadURL();
-            completeProfileController.UpdateImgUrl3(imgUrl);
+            completeProfileController.UpdateImgDownloadUrl3(
+                await referenceImage.getDownloadURL());
           } catch (error) {
             print(error);
           }
@@ -70,8 +71,8 @@ class ThirdAddImageButton extends StatelessWidget {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: Image.network(
-                        completeProfileController.imgUrl3.string,
+                      child: Image.file(
+                        File(completeProfileController.imgUrl3.value),
                         fit: BoxFit.cover,
                       ),
                     ),
