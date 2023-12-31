@@ -38,10 +38,11 @@ class FourthAddImageButton extends StatelessWidget {
               .child('${signInController.phoneNumberController.text}');
           Reference referenceImage = referenceFolderImage.child(fileName);
           try {
+            completeProfileController.UpdateImgUrl4(croppedImg.path);
             await referenceImage.putFile(File(croppedImg.path),
                 SettableMetadata(contentType: 'image/jpeg'));
-            String imgUrl = await referenceImage.getDownloadURL();
-            completeProfileController.UpdateImgUrl4(imgUrl);
+            completeProfileController.UpdateImgDownloadUrl4(
+                await referenceImage.getDownloadURL());
           } catch (error) {
             print(error);
           }
@@ -72,8 +73,8 @@ class FourthAddImageButton extends StatelessWidget {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: Image.network(
-                        completeProfileController.imgUrl4.string,
+                      child: Image.file(
+                        File(completeProfileController.imgUrl4.value),
                         fit: BoxFit.cover,
                       ),
                     ),
