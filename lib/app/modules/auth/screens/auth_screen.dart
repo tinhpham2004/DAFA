@@ -25,11 +25,7 @@ class AuthnScreen extends StatelessWidget {
                   child: Row(
                     children: [
                       // icon
-                      Icon(
-                        AppIcons.logo.icon,
-                        color: Colors.white,
-                        size: 70,
-                      ),
+                      AppIcons.logo,
                       const Text(
                         'DAFA',
                         style: TextStyle(
@@ -73,7 +69,3 @@ class AuthnScreen extends StatelessWidget {
     );
   }
 }
-
-
-
-
