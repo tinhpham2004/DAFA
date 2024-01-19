@@ -6,6 +6,7 @@ import 'package:dafa/app/modules/complete_profile/widgets/birthday_field.dart';
 import 'package:dafa/app/modules/complete_profile/widgets/continue_button.dart';
 import 'package:dafa/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BirthDayScreen extends StatelessWidget {
   const BirthDayScreen({super.key});
@@ -25,13 +26,13 @@ class BirthDayScreen extends StatelessWidget {
                     children: [
                       Container(
                         alignment: Alignment.topLeft,
-                        margin: const EdgeInsets.only(
-                          top: 20,
+                        margin: EdgeInsets.only(
+                          top: 40.h,
                         ),
                         child: const BackIcon(),
                       ),
                       Container(
-                        margin: const EdgeInsets.only(left: 110, top: 40),
+                        margin: EdgeInsets.only(left: 220.w, top: 80.h),
                         child: AppIcons.logo,
                       ),
                     ],
@@ -40,7 +41,7 @@ class BirthDayScreen extends StatelessWidget {
 
                 //
                 Container(
-                  margin: const EdgeInsets.only(top: 50, left: 30, right: 30),
+                  margin: EdgeInsets.only(top: 100.h, left: 60.w, right: 60.w),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -50,78 +51,78 @@ class BirthDayScreen extends StatelessWidget {
                       ),
                       //
                       Container(
-                        width: 230,
-                        margin: const EdgeInsets.only(left: 20, top: 30),
+                        width: 460.w,
+                        margin: EdgeInsets.only(left: 40.w, top: 60.h),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Container(
-                              height: 30,
-                              width: 20,
+                              height: 60.h,
+                              width: 40.w,
                               child: BirthdayField(),
                             ),
                             Container(
-                              margin: EdgeInsets.only(left: 5),
-                              height: 30,
-                              width: 20,
+                              margin: EdgeInsets.only(left: 10.w),
+                              height: 60.h,
+                              width: 40.w,
                               child: BirthdayField(),
                             ),
                             //
                             Container(
-                              margin: EdgeInsets.only(left: 4, bottom: 5),
+                              margin: EdgeInsets.only(left: 8.w, bottom: 10.h),
                               child: Text(
                                 '/',
                                 style: TextStyle(
-                                    fontSize: 25,
+                                    fontSize: 50.sp,
                                     color: AppColors.secondaryColor),
                               ),
                             ),
                             //
                             Container(
-                              margin: EdgeInsets.only(left: 5),
-                              height: 30,
-                              width: 20,
+                              margin: EdgeInsets.only(left: 10.w),
+                              height: 60.h,
+                              width: 40.w,
                               child: BirthdayField(),
                             ),
                             Container(
-                              margin: EdgeInsets.only(left: 5),
-                              height: 30,
-                              width: 20,
+                              margin: EdgeInsets.only(left: 10.w),
+                              height: 60.h,
+                              width: 40.w,
                               child: BirthdayField(),
                             ),
                             //
                             Container(
-                              margin: EdgeInsets.only(left: 4, bottom: 5),
+                              margin: EdgeInsets.only(left: 8.w, bottom: 10.h),
                               child: Text(
                                 '/',
                                 style: TextStyle(
-                                    fontSize: 25,
+                                    fontSize: 50.sp,
                                     color: AppColors.secondaryColor),
                               ),
                             ),
                             //
                             Container(
-                              margin: EdgeInsets.only(left: 5),
-                              height: 30,
-                              width: 20,
+                              margin: EdgeInsets.only(left: 10.w),
+                              height: 60.h,
+                              width: 40.w,
                               child: BirthdayField(),
                             ),
                             Container(
-                              margin: EdgeInsets.only(left: 5),
-                              height: 30,
-                              width: 20,
+                              margin: EdgeInsets.only(left: 10.w),
+                              height: 60.h,
+                              width: 40.w,
                               child: BirthdayField(),
                             ),
                             Container(
-                              margin: EdgeInsets.only(left: 5),
-                              height: 30,
-                              width: 20,
+                              margin: EdgeInsets.only(left: 10.w),
+                              height: 60.h,
+                              width: 40.w,
                               child: BirthdayField(),
                             ),
                             Container(
-                              margin: EdgeInsets.only(left: 5),
-                              height: 30,
-                              width: 20,
+                              margin: EdgeInsets.only(left: 10.w),
+                              height: 60.h,
+                              width: 40.w,
                               child: BirthdayField(),
                             ),
                           ],
@@ -130,7 +131,7 @@ class BirthDayScreen extends StatelessWidget {
 
                       //
                       Container(
-                        margin: const EdgeInsets.only(top: 50),
+                        margin: EdgeInsets.only(top: 100.h),
                         child: Text(
                           'Please, enter your birthday here so that other people can know your age.',
                           style: CustomTextStyle.h3(AppColors.thirdColor),

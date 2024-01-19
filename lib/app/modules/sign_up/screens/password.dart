@@ -6,6 +6,7 @@ import 'package:dafa/app/modules/sign_up/widgets/back_icon.dart';
 import 'package:dafa/app/modules/sign_up/widgets/password_field.dart';
 import 'package:dafa/app/modules/sign_up/widgets/sign_up_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class PasswordScreen extends StatelessWidget {
@@ -28,13 +29,13 @@ class PasswordScreen extends StatelessWidget {
                     children: [
                       Container(
                         alignment: Alignment.topLeft,
-                        margin: const EdgeInsets.only(
-                          top: 20,
+                        margin: EdgeInsets.only(
+                          top: 40.h,
                         ),
                         child: const BackIcon(),
                       ),
                       Container(
-                        margin: const EdgeInsets.only(left: 110, top: 40),
+                        margin: EdgeInsets.only(left: 220.w, top: 80.h),
                         child: AppIcons.logo,
                       ),
                     ],
@@ -43,7 +44,7 @@ class PasswordScreen extends StatelessWidget {
 
                 //
                 Container(
-                  margin: const EdgeInsets.only(top: 50, left: 30, right: 30),
+                  margin: EdgeInsets.only(top: 100.h, left: 60.w, right: 60.w),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -54,13 +55,13 @@ class PasswordScreen extends StatelessWidget {
 
                       //
                       SizedBox(
-                        width: 300,
+                        width: 600.w,
                         child: PasswordField(),
                       ),
 
                       Obx(
                         () => Container(
-                          margin: const EdgeInsets.only(top: 20),
+                          margin: EdgeInsets.only(top: 40.h),
                           child: signUpController.validPassword.isEmpty
                               ? Text(
                                   'Your password should be at leasest 6 characters and contain a mix of uppercase and lowercase letters, numbers, and symbols.',

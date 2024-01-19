@@ -3,6 +3,7 @@ import 'package:dafa/app/modules/complete_profile/complete_profile_controller.da
 import 'package:dafa/app/routes/app_routes.dart';
 import 'package:dafa/app/services/database_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 // ignore: must_be_immutable
@@ -17,11 +18,11 @@ class FinishButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 50),
+      margin: EdgeInsets.only(top: 100.h),
       width: double.infinity,
       decoration: BoxDecoration(
         gradient: AppColors.primaryColor,
-        borderRadius: BorderRadius.circular(30),
+        borderRadius: BorderRadius.circular(60.r),
       ),
       child: ElevatedButton(
         onPressed: () async {
@@ -43,12 +44,12 @@ class FinishButton extends StatelessWidget {
           backgroundColor: Colors.transparent,
           shadowColor: Colors.transparent,
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(60.r)),
         ),
-        child: const Text(
+        child: Text(
           'FINSIH',
           style: TextStyle(
-            fontSize: 15,
+            fontSize: 30.sp,
             color: Colors.white,
           ),
         ),
