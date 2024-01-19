@@ -1,3 +1,5 @@
 import 'package:get/get.dart';
 
-class SwipeController extends GetxController {}
+class SwipeController extends GetxController {
+  //
+}

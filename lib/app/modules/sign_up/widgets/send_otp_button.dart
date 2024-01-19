@@ -3,6 +3,7 @@ import 'package:dafa/app/modules/sign_up/sign_up_controller.dart';
 import 'package:dafa/app/routes/app_routes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class SendOTPButton extends StatelessWidget {
@@ -39,12 +40,12 @@ class SendOTPButton extends StatelessWidget {
           backgroundColor: Colors.transparent,
           shadowColor: Colors.transparent,
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.r)),
         ),
-        child: const Text(
+        child: Text(
           'SEND OTP',
           style: TextStyle(
-            fontSize: 15,
+            fontSize: 30.sp,
             color: Colors.white,
           ),
         ),
