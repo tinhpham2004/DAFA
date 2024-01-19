@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppIcons {
   AppIcons.__();
@@ -13,6 +14,6 @@ class AppIcons {
       'assets/images/logo.png',
       fit: BoxFit.cover,
     ),
-    height: 60,
+    height: 120.sp,
   );
 }

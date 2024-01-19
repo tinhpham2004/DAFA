@@ -6,6 +6,7 @@ import 'package:dafa/app/modules/sign_up/widgets/back_icon.dart';
 import 'package:dafa/app/modules/sign_up/widgets/continue_button.dart';
 import 'package:dafa/app/modules/sign_up/widgets/otp_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class OTPScreen extends StatelessWidget {
@@ -28,13 +29,13 @@ class OTPScreen extends StatelessWidget {
                     children: [
                       Container(
                         alignment: Alignment.topLeft,
-                        margin: const EdgeInsets.only(
-                          top: 20,
+                        margin: EdgeInsets.only(
+                          top: 40.h,
                         ),
                         child: const BackIcon(),
                       ),
                       Container(
-                        margin: const EdgeInsets.only(left: 110, top: 40),
+                        margin: EdgeInsets.only(left: 220.w, top: 80.h),
                         child: AppIcons.logo,
                       ),
                     ],
@@ -43,7 +44,7 @@ class OTPScreen extends StatelessWidget {
 
                 //
                 Container(
-                  margin: const EdgeInsets.only(top: 50, left: 30, right: 30),
+                  margin: EdgeInsets.only(top: 100.h, left: 60.w, right: 60.w),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -54,38 +55,38 @@ class OTPScreen extends StatelessWidget {
 
                       //
                       Container(
-                        margin: const EdgeInsets.only(top: 50),
+                        margin: EdgeInsets.only(top: 100.h),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             SizedBox(
-                              height: 30,
-                              width: 40,
+                              height: 60.h,
+                              width: 80.w,
                               child: OTPField(),
                             ),
                             SizedBox(
-                              height: 30,
-                              width: 40,
+                              height: 60.h,
+                              width: 80.w,
                               child: OTPField(),
                             ),
                             SizedBox(
-                              height: 30,
-                              width: 40,
+                              height: 60.h,
+                              width: 80.w,
                               child: OTPField(),
                             ),
                             SizedBox(
-                              height: 30,
-                              width: 40,
+                              height: 60.h,
+                              width: 80.w,
                               child: OTPField(),
                             ),
                             SizedBox(
-                              height: 30,
-                              width: 40,
+                              height: 60.h,
+                              width: 80.w,
                               child: OTPField(),
                             ),
                             SizedBox(
-                              height: 30,
-                              width: 40,
+                              height: 60.h,
+                              width: 80.w,
                               child: OTPField(),
                             ),
                           ],
@@ -94,7 +95,7 @@ class OTPScreen extends StatelessWidget {
                       //
                       Obx(
                         () => Container(
-                          margin: const EdgeInsets.only(top: 20),
+                          margin: EdgeInsets.only(top: 20.h),
                           child: signUpController.checkOTP.value == true
                               ? Text(
                                   'Please enter the 6-digit OTP code we sent you. It expires in 2 minutes.',

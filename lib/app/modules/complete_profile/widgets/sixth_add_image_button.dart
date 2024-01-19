@@ -4,6 +4,7 @@ import 'package:dafa/app/modules/complete_profile/complete_profile_controller.da
 import 'package:dafa/app/modules/sign_in/sign_in_controller.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -49,27 +50,27 @@ class SixthAddImageButton extends StatelessWidget {
         }
       },
       child: Container(
-        margin: EdgeInsets.only(right: 5),
+        margin: EdgeInsets.only(right: 10.w),
         child: Stack(
           alignment: Alignment.bottomRight,
           children: [
             Obx(
               () => completeProfileController.imgUrl6.value == ''
                   ? Container(
-                      height: 120,
-                      width: 90,
-                      margin: EdgeInsets.only(right: 5),
+                      height: 240.h,
+                      width: 180.w,
+                      margin: EdgeInsets.only(right: 10.w),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(20.r),
                         color: AppColors.thirdColor,
                       ),
                     )
                   : Container(
-                      height: 120,
-                      width: 90,
-                      margin: EdgeInsets.only(right: 5),
+                      height: 240.h,
+                      width: 180.w,
+                      margin: EdgeInsets.only(right: 10.w),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(20.r),
                       ),
                       child: Image.file(
                         File(completeProfileController.imgUrl6.value),

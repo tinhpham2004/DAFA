@@ -3,6 +3,7 @@ import 'package:dafa/app/core/values/app_icons.dart';
 import 'package:dafa/app/modules/auth/widgets/sign_in_button.dart';
 import 'package:dafa/app/modules/auth/widgets/sign_up_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AuthnScreen extends StatelessWidget {
   const AuthnScreen({super.key});
@@ -21,16 +22,16 @@ class AuthnScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  margin: const EdgeInsets.fromLTRB(80, 200, 80, 20),
+                  margin: EdgeInsets.fromLTRB(175.w, 300.h, 175.w, 75.h),
                   child: Row(
                     children: [
                       // icon
                       AppIcons.logo,
-                      const Text(
+                      Text(
                         'DAFA',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 50,
+                          fontSize: 100.sp,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -40,7 +41,7 @@ class AuthnScreen extends StatelessWidget {
 
                 // message
                 Container(
-                  margin: const EdgeInsets.only(top: 100),
+                  margin: EdgeInsets.only(top: 200.h),
                   child: const Text(
                     'Welcome to DAFA where you can chat, make friends, and find your soulmate!',
                     style: TextStyle(
@@ -52,13 +53,13 @@ class AuthnScreen extends StatelessWidget {
 
                 // sign_in button
                 Container(
-                  margin: const EdgeInsets.only(top: 30),
+                  margin: EdgeInsets.only(top: 50.h),
                   child: SignInButton(),
                 ),
 
                 // sign_up button
                 Container(
-                  margin: const EdgeInsets.only(top: 30),
+                  margin: EdgeInsets.only(top: 50.h),
                   child: SignUpButton(),
                 ),
               ],

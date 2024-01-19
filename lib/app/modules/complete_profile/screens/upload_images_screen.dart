@@ -1,9 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dafa/app/core/values/app_colors.dart';
 import 'package:dafa/app/core/values/app_icons.dart';
 import 'package:dafa/app/core/values/app_text_style.dart';
 import 'package:dafa/app/modules/complete_profile/widgets/back_icon.dart';
-import 'package:dafa/app/modules/complete_profile/widgets/continue_button.dart';
 import 'package:dafa/app/modules/complete_profile/widgets/fifth_add_image_button.dart';
 import 'package:dafa/app/modules/complete_profile/widgets/finish_button.dart';
 import 'package:dafa/app/modules/complete_profile/widgets/first_add_image_button.dart';
@@ -11,8 +9,8 @@ import 'package:dafa/app/modules/complete_profile/widgets/fourth_add_image_butto
 import 'package:dafa/app/modules/complete_profile/widgets/second_add_image_button.dart';
 import 'package:dafa/app/modules/complete_profile/widgets/sixth_add_image_button.dart';
 import 'package:dafa/app/modules/complete_profile/widgets/third_add_image_button.dart';
-import 'package:dafa/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 // ignore: must_be_immutable
 class UploadImagesScreen extends StatelessWidget {
@@ -33,13 +31,13 @@ class UploadImagesScreen extends StatelessWidget {
                     children: [
                       Container(
                         alignment: Alignment.topLeft,
-                        margin: const EdgeInsets.only(
-                          top: 20,
+                        margin: EdgeInsets.only(
+                          top: 40.h,
                         ),
                         child: const BackIcon(),
                       ),
                       Container(
-                        margin: const EdgeInsets.only(left: 110, top: 40),
+                        margin: EdgeInsets.only(left: 220.w, top: 80.h),
                         child: AppIcons.logo,
                       ),
                     ],
@@ -48,7 +46,7 @@ class UploadImagesScreen extends StatelessWidget {
 
                 //
                 Container(
-                  margin: const EdgeInsets.only(top: 50, left: 30, right: 30),
+                  margin: EdgeInsets.only(top: 100.h, left: 60.w, right: 60.w),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -58,7 +56,7 @@ class UploadImagesScreen extends StatelessWidget {
                       ),
                       //
                       Container(
-                        margin: const EdgeInsets.only(top: 30),
+                        margin: EdgeInsets.only(top: 60.h),
                         child: Row(
                           children: [
                             FirstAddImageButton(),
@@ -69,7 +67,7 @@ class UploadImagesScreen extends StatelessWidget {
                       ),
                       //
                       Container(
-                        margin: const EdgeInsets.only(top: 30),
+                        margin: EdgeInsets.only(top: 60.h),
                         child: Row(
                           children: [
                             FourthAddImageButton(),
@@ -80,7 +78,7 @@ class UploadImagesScreen extends StatelessWidget {
                       ),
                       //
                       Container(
-                        margin: const EdgeInsets.only(top: 50),
+                        margin: EdgeInsets.only(top: 100.h),
                         child: Text(
                           'Please, select at least 3 photos.',
                           style: CustomTextStyle.h3(AppColors.thirdColor),
