@@ -8,6 +8,7 @@ import 'package:dafa/app/modules/complete_profile/widgets/man_button.dart';
 import 'package:dafa/app/modules/complete_profile/widgets/woman_button.dart';
 import 'package:dafa/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class GenderScreen extends StatelessWidget {
   const GenderScreen({super.key});
@@ -27,13 +28,13 @@ class GenderScreen extends StatelessWidget {
                     children: [
                       Container(
                         alignment: Alignment.topLeft,
-                        margin: const EdgeInsets.only(
-                          top: 20,
+                        margin: EdgeInsets.only(
+                          top: 40.h,
                         ),
                         child: const BackIcon(),
                       ),
                       Container(
-                        margin: const EdgeInsets.only(left: 110, top: 40),
+                        margin: EdgeInsets.only(left: 220.w, top: 80.h),
                         child: AppIcons.logo,
                       ),
                     ],
@@ -42,7 +43,7 @@ class GenderScreen extends StatelessWidget {
 
                 //
                 Container(
-                  margin: const EdgeInsets.only(top: 50, left: 30, right: 30),
+                  margin: EdgeInsets.only(top: 100.h, left: 60.w, right: 60.w),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -58,7 +59,7 @@ class GenderScreen extends StatelessWidget {
 
                       //
                       Container(
-                        margin: const EdgeInsets.only(top: 50),
+                        margin: EdgeInsets.only(top: 100.h),
                         child: Text(
                           'Please, select your gender.',
                           style: CustomTextStyle.h3(AppColors.thirdColor),

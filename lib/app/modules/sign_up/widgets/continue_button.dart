@@ -3,6 +3,7 @@ import 'package:dafa/app/modules/sign_up/sign_up_controller.dart';
 import 'package:dafa/app/routes/app_routes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class ContinueButton extends StatelessWidget {
@@ -14,11 +15,11 @@ class ContinueButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 50),
+      margin: EdgeInsets.only(top: 100.h),
       width: double.infinity,
       decoration: BoxDecoration(
         gradient: AppColors.primaryColor,
-        borderRadius: BorderRadius.circular(30),
+        borderRadius: BorderRadius.circular(60.r),
       ),
       child: ElevatedButton(
         onPressed: () async {
@@ -37,12 +38,12 @@ class ContinueButton extends StatelessWidget {
           backgroundColor: Colors.transparent,
           shadowColor: Colors.transparent,
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(60.r)),
         ),
-        child: const Text(
+        child: Text(
           'CONTINUE',
           style: TextStyle(
-            fontSize: 15,
+            fontSize: 30.sp,
             color: Colors.white,
           ),
         ),
