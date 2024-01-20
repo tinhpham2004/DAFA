@@ -30,7 +30,7 @@ class AuthnScreen extends StatelessWidget {
                       Text(
                         'DAFA',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: AppColors.white,
                           fontSize: 100.sp,
                           fontWeight: FontWeight.bold,
                         ),
@@ -45,7 +45,7 @@ class AuthnScreen extends StatelessWidget {
                   child: const Text(
                     'Welcome to DAFA where you can chat, make friends, and find your soulmate!',
                     style: TextStyle(
-                      color: Colors.white,
+                      color: AppColors.white,
                     ),
                     textAlign: TextAlign.center,
                   ),

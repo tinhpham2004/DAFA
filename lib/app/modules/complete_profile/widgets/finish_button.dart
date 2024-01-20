@@ -50,7 +50,7 @@ class FinishButton extends StatelessWidget {
           'FINSIH',
           style: TextStyle(
             fontSize: 30.sp,
-            color: Colors.white,
+            color: AppColors.white,
           ),
         ),
       ),

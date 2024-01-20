@@ -89,12 +89,12 @@ class FirstAddImageButton extends StatelessWidget {
                           borderRadius: BorderRadius.circular(180)),
                       child: Icon(
                         Icons.add_rounded,
-                        color: Colors.white,
+                        color: AppColors.white,
                       ),
                     )
                   : Container(
                       decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: AppColors.white,
                           borderRadius: BorderRadius.circular(180)),
                       child: Icon(
                         Icons.close_rounded,

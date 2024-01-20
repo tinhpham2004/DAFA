@@ -53,7 +53,7 @@ class SignUpButton extends StatelessWidget {
           'SIGN UP',
           style: TextStyle(
             fontSize: 30.h,
-            color: Colors.white,
+            color: AppColors.white,
           ),
         ),
       ),
