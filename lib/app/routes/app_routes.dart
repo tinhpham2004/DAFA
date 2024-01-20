@@ -19,4 +19,10 @@ abstract class AppRoutes {
   static const complete_upload_images = '/complete_upload_images';
   //swipe
   static const swipe = '/swipe';
+  //profile
+  static const profile = '/profile';
+  //chat
+  static const chat = '/chat';
+  //anonym_chat
+  static const anonym_chat = '/anonym_chat';
 }
