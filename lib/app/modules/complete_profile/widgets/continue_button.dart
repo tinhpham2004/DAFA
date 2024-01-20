@@ -37,7 +37,7 @@ class ContinueButton extends StatelessWidget {
           'CONTINUE',
           style: TextStyle(
             fontSize: 30.sp,
-            color: Colors.white,
+            color: AppColors.white,
           ),
         ),
       ),

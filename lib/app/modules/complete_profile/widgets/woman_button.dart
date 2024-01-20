@@ -24,9 +24,9 @@ class WomanButton extends StatelessWidget {
           },
           style: ElevatedButton.styleFrom(
             minimumSize: Size(460.w, 100.h),
-            foregroundColor: Colors.white,
-            backgroundColor: Colors.white,
-            shadowColor: Colors.white,
+            foregroundColor: AppColors.white,
+            backgroundColor: AppColors.white,
+            shadowColor: AppColors.white,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(60.r),
               side: BorderSide(
