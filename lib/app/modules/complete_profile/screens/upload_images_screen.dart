@@ -1,6 +1,7 @@
 import 'package:dafa/app/core/values/app_colors.dart';
 import 'package:dafa/app/core/values/app_icons.dart';
 import 'package:dafa/app/core/values/app_text_style.dart';
+import 'package:dafa/app/modules/complete_profile/complete_profile_controller.dart';
 import 'package:dafa/app/modules/complete_profile/widgets/back_icon.dart';
 import 'package:dafa/app/modules/complete_profile/widgets/fifth_add_image_button.dart';
 import 'package:dafa/app/modules/complete_profile/widgets/finish_button.dart';
@@ -11,11 +12,13 @@ import 'package:dafa/app/modules/complete_profile/widgets/sixth_add_image_button
 import 'package:dafa/app/modules/complete_profile/widgets/third_add_image_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 // ignore: must_be_immutable
 class UploadImagesScreen extends StatelessWidget {
   UploadImagesScreen({super.key});
-
+  final CompleteProfileController completeProfileController =
+      Get.find<CompleteProfileController>();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -77,11 +80,20 @@ class UploadImagesScreen extends StatelessWidget {
                         ),
                       ),
                       //
-                      Container(
-                        margin: EdgeInsets.only(top: 100.h),
-                        child: Text(
-                          'Please, select at least 3 photos.',
-                          style: CustomTextStyle.h3(AppColors.thirdColor),
+                      Obx(
+                        () => Container(
+                          margin: EdgeInsets.only(top: 100.h),
+                          child: completeProfileController.errorImages.value ==
+                                  false
+                              ? Text(
+                                  'Please, select at least 3 photos.',
+                                  style:
+                                      CustomTextStyle.h3(AppColors.thirdColor),
+                                )
+                              : Text(
+                                  'Please, select at least 3 photos.',
+                                  style: CustomTextStyle.error_text_style(),
+                                ),
                         ),
                       ),
                       //

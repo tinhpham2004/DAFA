@@ -36,8 +36,12 @@ class SignUpButton extends StatelessWidget {
               userId: signUpController.userId.value,
               phoneNumber: '0' + signUpController.phoneNumberController.text,
               password: signUpController.passwordController.text,
+              images: ['', '', '', '', '', ''],
+              name: '',
+              dateOfBirth: '',
+              gender: '',
             );
-            databaseService.UpdateUserData(appUser);
+            databaseService.InsertUserData(appUser);
             Get.toNamed(AppRoutes.sign_in);
           } else {
             signUpController.UpdateValidPassword('Invalid password.');

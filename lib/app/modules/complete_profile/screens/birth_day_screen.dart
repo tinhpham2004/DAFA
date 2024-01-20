@@ -1,15 +1,20 @@
 import 'package:dafa/app/core/values/app_colors.dart';
 import 'package:dafa/app/core/values/app_icons.dart';
 import 'package:dafa/app/core/values/app_text_style.dart';
+import 'package:dafa/app/modules/complete_profile/complete_profile_controller.dart';
 import 'package:dafa/app/modules/complete_profile/widgets/back_icon.dart';
 import 'package:dafa/app/modules/complete_profile/widgets/birthday_field.dart';
 import 'package:dafa/app/modules/complete_profile/widgets/continue_button.dart';
 import 'package:dafa/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class BirthDayScreen extends StatelessWidget {
-  const BirthDayScreen({super.key});
+  BirthDayScreen({super.key});
+
+  final CompleteProfileController completeProfileController =
+      Get.find<CompleteProfileController>();
 
   @override
   Widget build(BuildContext context) {
@@ -59,13 +64,17 @@ class BirthDayScreen extends StatelessWidget {
                             Container(
                               height: 60.h,
                               width: 40.w,
-                              child: BirthdayField(),
+                              child: BirthdayField(
+                                controller: completeProfileController.dateOB1,
+                              ),
                             ),
                             Container(
                               margin: EdgeInsets.only(left: 10.w),
                               height: 60.h,
                               width: 40.w,
-                              child: BirthdayField(),
+                              child: BirthdayField(
+                                controller: completeProfileController.dateOB2,
+                              ),
                             ),
                             //
                             Container(
@@ -82,13 +91,17 @@ class BirthDayScreen extends StatelessWidget {
                               margin: EdgeInsets.only(left: 10.w),
                               height: 60.h,
                               width: 40.w,
-                              child: BirthdayField(),
+                              child: BirthdayField(
+                                controller: completeProfileController.dateOB3,
+                              ),
                             ),
                             Container(
                               margin: EdgeInsets.only(left: 10.w),
                               height: 60.h,
                               width: 40.w,
-                              child: BirthdayField(),
+                              child: BirthdayField(
+                                controller: completeProfileController.dateOB4,
+                              ),
                             ),
                             //
                             Container(
@@ -105,36 +118,52 @@ class BirthDayScreen extends StatelessWidget {
                               margin: EdgeInsets.only(left: 10.w),
                               height: 60.h,
                               width: 40.w,
-                              child: BirthdayField(),
+                              child: BirthdayField(
+                                controller: completeProfileController.dateOB5,
+                              ),
                             ),
                             Container(
                               margin: EdgeInsets.only(left: 10.w),
                               height: 60.h,
                               width: 40.w,
-                              child: BirthdayField(),
+                              child: BirthdayField(
+                                controller: completeProfileController.dateOB6,
+                              ),
                             ),
                             Container(
                               margin: EdgeInsets.only(left: 10.w),
                               height: 60.h,
                               width: 40.w,
-                              child: BirthdayField(),
+                              child: BirthdayField(
+                                controller: completeProfileController.dateOB7,
+                              ),
                             ),
                             Container(
                               margin: EdgeInsets.only(left: 10.w),
                               height: 60.h,
                               width: 40.w,
-                              child: BirthdayField(),
+                              child: BirthdayField(
+                                controller: completeProfileController.dateOB8,
+                              ),
                             ),
                           ],
                         ),
                       ),
 
                       //
-                      Container(
-                        margin: EdgeInsets.only(top: 100.h),
-                        child: Text(
-                          'Please, enter your birthday here so that other people can know your age.',
-                          style: CustomTextStyle.h3(AppColors.thirdColor),
+                      Obx(
+                        () => Container(
+                          margin: EdgeInsets.only(top: 100.h),
+                          child: completeProfileController.errorDate == false
+                              ? Text(
+                                  'Please, enter your birthday here so that other people can know your age.',
+                                  style:
+                                      CustomTextStyle.h3(AppColors.thirdColor),
+                                )
+                              : Text(
+                                  'The date of birth you entered is invalid or you are not yet 18 years old.',
+                                  style: CustomTextStyle.error_text_style(),
+                                ),
                         ),
                       ),
 

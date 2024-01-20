@@ -8,13 +8,15 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('users');
   final SignInController signInController = Get.find<SignInController>();
 
-  Future UpdateUserData(AppUser user) async {
-    List images = ['', '', '', '', '', ''];
+  Future InsertUserData(AppUser user) async {
     return await usersCollection.doc(user.phoneNumber).set({
       'userId': user.userId,
       'phoneNumber': user.phoneNumber,
       'password': user.password,
-      'images': images,
+      'images': user.images,
+      'name': user.name,
+      'dateOfBirth': user.dateOfBirth,
+      'gender': user.gender,
     });
   }
 
@@ -39,20 +41,12 @@ class DatabaseService {
     );
   }
 
-  Future UpdateUserImage(int index, String imgUrl) async {
-    return await usersCollection
-        .doc((signInController.phoneNumberController.text))
-        .get()
-        .then((doc) {
-      if (doc.exists) {
-        final images = (doc.data() as dynamic)['images'] as List<dynamic>;
-        images[index - 1] = imgUrl;
-        doc.reference.update({'images': images});
-      } else {
-        //
-      }
-    }).catchError((error) {
-      //
+    Future UpdateUserData(List<String> images, String name, String dateOfBirth, String gender) async {
+    return await usersCollection.doc(signInController.phoneNumberController.text).update({
+      'images': images,
+      'name': name,
+      'dateOfBirth': dateOfBirth,
+      'gender': gender,
     });
   }
 

@@ -4,11 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class BirthdayField extends StatelessWidget {
-  const BirthdayField({super.key});
+  BirthdayField({super.key, required controller})
+      : dateOfBirthController = controller;
+
+  final TextEditingController dateOfBirthController;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: dateOfBirthController,
       onChanged: (value) {
         if (value.length == 1) {
           //
