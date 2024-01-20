@@ -49,7 +49,7 @@ class SignInButton extends StatelessWidget {
           'SIGN IN',
           style: TextStyle(
             fontSize: 30.sp,
-            color: Colors.white,
+            color: AppColors.white,
           ),
         ),
       ),

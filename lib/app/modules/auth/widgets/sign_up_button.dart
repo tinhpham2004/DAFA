@@ -1,3 +1,4 @@
+import 'package:dafa/app/core/values/app_colors.dart';
 import 'package:dafa/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,14 +17,14 @@ class SignUpButton extends StatelessWidget {
         backgroundColor: Colors.transparent,
         shadowColor: Colors.transparent,
         side: const BorderSide(
-          color: Colors.white,
+          color: AppColors.white,
           width: 2,
         ),
       ),
       child: const Text(
         'SIGN UP',
         style: TextStyle(
-          color: Colors.white,
+          color: AppColors.white,
           fontSize: 15,
         ),
       ),

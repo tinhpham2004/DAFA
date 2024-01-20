@@ -17,7 +17,7 @@ class BirthDayScreen extends StatelessWidget {
       child: Scaffold(
         body: SingleChildScrollView(
           child: Container(
-            color: Colors.white,
+            color: AppColors.white,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
