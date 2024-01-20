@@ -1,15 +1,18 @@
 import 'package:dafa/app/core/values/app_colors.dart';
 import 'package:dafa/app/core/values/app_icons.dart';
 import 'package:dafa/app/core/values/app_text_style.dart';
+import 'package:dafa/app/modules/complete_profile/complete_profile_controller.dart';
 import 'package:dafa/app/modules/complete_profile/widgets/back_icon.dart';
 import 'package:dafa/app/modules/complete_profile/widgets/continue_button.dart';
 import 'package:dafa/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class NameScreen extends StatelessWidget {
-  const NameScreen({super.key});
-
+  NameScreen({super.key});
+  final CompleteProfileController completeProfileController =
+      Get.find<CompleteProfileController>();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -52,15 +55,26 @@ class NameScreen extends StatelessWidget {
                       Container(
                         width: 460.w,
                         margin: EdgeInsets.only(left: 40.w, top: 60.h),
-                        child: TextFormField(),
+                        child: TextFormField(
+                          controller: completeProfileController.name,
+                        ),
                       ),
 
                       //
-                      Container(
-                        margin: EdgeInsets.only(top: 100.h),
-                        child: Text(
-                          'Please, enter your name here.',
-                          style: CustomTextStyle.h3(AppColors.thirdColor),
+                      Obx(
+                        () => Container(
+                          margin: EdgeInsets.only(top: 100.h),
+                          child: completeProfileController.errorName.value ==
+                                  false
+                              ? Text(
+                                  'Please, enter your name here.',
+                                  style:
+                                      CustomTextStyle.h3(AppColors.thirdColor),
+                                )
+                              : Text(
+                                  'Your name cannot be empty.',
+                                  style: CustomTextStyle.error_text_style(),
+                                ),
                         ),
                       ),
 
