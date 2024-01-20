@@ -10,4 +10,5 @@ class AppColors {
 
   static const Color secondaryColor = Color(0XFF444142);
   static const Color thirdColor = Color(0xFF828693);
+  static const Color white = Colors.white;
 }
