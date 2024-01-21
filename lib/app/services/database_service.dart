@@ -17,6 +17,11 @@ class DatabaseService {
       'name': user.name,
       'dateOfBirth': user.dateOfBirth,
       'gender': user.gender,
+      'bio': user.bio,
+      'height': user.height,
+      'coordinate': user.coordinate,
+      'address': user.address,
+      'hobby': user.hobby,
     });
   }
 
@@ -41,12 +46,21 @@ class DatabaseService {
     );
   }
 
-    Future UpdateUserData(List<String> images, String name, String dateOfBirth, String gender) async {
-    return await usersCollection.doc(signInController.phoneNumberController.text).update({
-      'images': images,
-      'name': name,
-      'dateOfBirth': dateOfBirth,
-      'gender': gender,
+  Future UpdateUserData(AppUser user) async {
+    return await usersCollection
+        .doc(signInController.phoneNumberController.text)
+        .update({
+      'userId': user.userId,
+      'phoneNumber': user.phoneNumber,
+      'images': user.images,
+      'name': user.name,
+      'dateOfBirth': user.dateOfBirth,
+      'bio': user.bio,
+      'gender': user.gender,
+      'height': user.height,
+      'coordinate': user.coordinate,
+      'address': user.address,
+      'hobby': user.hobby,
     });
   }
 
@@ -72,5 +86,39 @@ class DatabaseService {
       },
     );
     return isFirstTimeUpdate;
+  }
+
+  Future<AppUser> LoadUserData() async {
+    AppUser user = AppUser(
+      phoneNumber: '',
+    );
+    await usersCollection
+        .doc(signInController.phoneNumberController.text)
+        .get()
+        .then(
+      (value) {
+        final _images = (value.data() as dynamic)['images'] as List<dynamic>;
+        _images.forEach((element) {
+          user.images.add(element.toString());
+        });
+        user.userId =
+            ((value.data() as dynamic)['userId'] as dynamic).toString();
+        user.phoneNumber =
+            ((value.data() as dynamic)['phoneNumber'] as dynamic).toString();
+        user.name = ((value.data() as dynamic)['name'] as dynamic).toString();
+        user.gender =
+            ((value.data() as dynamic)['gender'] as dynamic).toString();
+        user.dateOfBirth =
+            ((value.data() as dynamic)['dateOfBirth'] as dynamic).toString();
+        user.bio = ((value.data() as dynamic)['bio'] as dynamic).toString();
+        user.address =
+            ((value.data() as dynamic)['address'] as dynamic).toString();
+        user.coordinate = ((value.data() as dynamic)['coordinate'] as dynamic);
+        user.height =
+            ((value.data() as dynamic)['height'] as dynamic).toString();
+        user.hobby = ((value.data() as dynamic)['hobby'] as dynamic).toString();
+      },
+    );
+    return user;
   }
 }

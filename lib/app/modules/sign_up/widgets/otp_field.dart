@@ -8,15 +8,17 @@ import 'package:get/get.dart';
 class OTPField extends StatelessWidget {
   OTPField({
     super.key,
+    required this.smsController,
   });
   final SignUpController signUpController = Get.find<SignUpController>();
+  final TextEditingController smsController;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: smsController,
       onChanged: (value) {
         if (value.length == 1) {
-          signUpController.UpdateSmsCode(value);
           FocusScope.of(context).nextFocus();
         }
       },

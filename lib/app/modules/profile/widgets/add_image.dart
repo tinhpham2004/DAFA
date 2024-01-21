@@ -1,30 +1,29 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dafa/app/core/values/app_colors.dart';
-import 'package:dafa/app/modules/complete_profile/complete_profile_controller.dart';
+import 'package:dafa/app/modules/profile/profile_controller.dart';
 import 'package:dafa/app/modules/sign_in/sign_in_controller.dart';
-import 'package:dafa/app/services/database_service.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
-class FirstAddImageButton extends StatelessWidget {
-  FirstAddImageButton({
+class AddImage extends StatelessWidget {
+  AddImage({
     super.key,
+    required this.index,
   });
 
+  final ProfileController profileController = Get.find<ProfileController>();
   final SignInController signInController = Get.find<SignInController>();
-  final CompleteProfileController completeProfileController =
-      Get.find<CompleteProfileController>();
+  final index;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        if (completeProfileController.imgUrl1.value == '') {
+        if (profileController.imgUrl[index].value == '') {
           final file =
               await ImagePicker().pickImage(source: ImageSource.gallery);
           if (file == null) return;
@@ -34,35 +33,22 @@ class FirstAddImageButton extends StatelessWidget {
             compressQuality: 100,
           );
           if (croppedImg == null) return;
-          String fileName = DateTime.now().microsecondsSinceEpoch.toString();
-          Reference referenceRoot = FirebaseStorage.instance.ref();
-          Reference referenceFolderImage = referenceRoot
-              .child('${signInController.phoneNumberController.text}');
-          Reference referenceImage = referenceFolderImage.child(fileName);
-          try {
-            completeProfileController.UpdateImgUrl1(croppedImg.path);
-            await referenceImage.putFile(File(croppedImg.path),
-                SettableMetadata(contentType: 'image/jpeg'));
-            completeProfileController.UpdateImgDownloadUrl1(
-                await referenceImage.getDownloadURL());
-          } catch (error) {
-            print(error);
-          }
+          profileController.UpdateImgUrl(index, croppedImg.path);
         } else {
-          completeProfileController.UpdateImgUrl1('');
+          profileController.UpdateImgUrl(index, '');
         }
       },
       child: Container(
-        margin: EdgeInsets.only(right: 10.w),
+        margin: EdgeInsets.only(right: 20.w),
         child: Stack(
           alignment: Alignment.bottomRight,
           children: [
             Obx(
-              () => completeProfileController.imgUrl1.value == ''
+              () => profileController.imgUrl[index].value == ''
                   ? Container(
                       height: 240.h,
                       width: 180.w,
-                      margin: EdgeInsets.only(right: 10.w),
+                      margin: EdgeInsets.only(right: 20.w),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20.r),
                         color: AppColors.thirdColor,
@@ -71,18 +57,24 @@ class FirstAddImageButton extends StatelessWidget {
                   : Container(
                       height: 240.h,
                       width: 180.w,
-                      margin: EdgeInsets.only(right: 10.w),
+                      margin: EdgeInsets.only(right: 20.w),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20.r),
                       ),
-                      child: Image.file(
-                        File(completeProfileController.imgUrl1.value),
-                        fit: BoxFit.cover,
-                      ),
+                      child: profileController.imgUrl[index].value.contains(
+                              'https://firebasestorage.googleapis.com/v0/b/dafa-98847.appspot.com')
+                          ? Image.network(
+                              profileController.imgUrl[index].value,
+                              fit: BoxFit.cover,
+                            )
+                          : Image.file(
+                              File(profileController.imgUrl[index].value),
+                              fit: BoxFit.cover,
+                            ),
                     ),
             ),
             Obx(
-              () => completeProfileController.imgUrl1.value == ''
+              () => profileController.imgUrl[index].value == ''
                   ? Container(
                       decoration: BoxDecoration(
                           gradient: AppColors.primaryColor,
