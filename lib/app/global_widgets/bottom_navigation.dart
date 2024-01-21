@@ -35,7 +35,6 @@ class _BottomNavigationState extends State<BottomNavigation> {
         {
           Get.toNamed(AppRoutes.anonym_chat);
           break;
-          // Get.toNamed(AppRoutes.profile);
         }
     }
   }

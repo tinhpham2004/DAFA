@@ -16,7 +16,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       child: GetMaterialApp(
-        initialRoute: AppRoutes.swipe,
+        initialRoute: AppRoutes.auth,
         getPages: AppPages.pages,
         debugShowCheckedModeBanner: false,
       ),
