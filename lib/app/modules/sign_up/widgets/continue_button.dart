@@ -23,10 +23,16 @@ class ContinueButton extends StatelessWidget {
       ),
       child: ElevatedButton(
         onPressed: () async {
+          String smsCode = signUpController.smsCode1.text +
+              signUpController.smsCode2.text +
+              signUpController.smsCode3.text +
+              signUpController.smsCode4.text +
+              signUpController.smsCode5.text +
+              signUpController.smsCode6.text;
           try {
             PhoneAuthCredential credential = PhoneAuthProvider.credential(
                 verificationId: signUpController.verificationId.value,
-                smsCode: signUpController.smsCode.value);
+                smsCode: smsCode);
             await auth.signInWithCredential(credential);
             signUpController.UpdateUserId(auth.currentUser!.uid);
             Get.toNamed(AppRoutes.password);

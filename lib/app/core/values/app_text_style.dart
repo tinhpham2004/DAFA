@@ -27,6 +27,14 @@ class CustomTextStyle extends TextStyle {
     );
   }
 
+  static TextStyle profileHeader(Color color) {
+    return TextStyle(
+      fontSize: 50.sp,
+      fontWeight: FontWeight.w600,
+      color: color,
+    );
+  }
+
   static TextStyle error_text_style() {
     return TextStyle(
       fontSize: 30.sp,

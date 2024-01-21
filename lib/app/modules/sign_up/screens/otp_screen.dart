@@ -62,32 +62,44 @@ class OTPScreen extends StatelessWidget {
                             SizedBox(
                               height: 60.h,
                               width: 80.w,
-                              child: OTPField(),
+                              child: OTPField(
+                                smsController: signUpController.smsCode1,
+                              ),
                             ),
                             SizedBox(
                               height: 60.h,
                               width: 80.w,
-                              child: OTPField(),
+                              child: OTPField(
+                                smsController: signUpController.smsCode2,
+                              ),
                             ),
                             SizedBox(
                               height: 60.h,
                               width: 80.w,
-                              child: OTPField(),
+                              child: OTPField(
+                                smsController: signUpController.smsCode3,
+                              ),
                             ),
                             SizedBox(
                               height: 60.h,
                               width: 80.w,
-                              child: OTPField(),
+                              child: OTPField(
+                                smsController: signUpController.smsCode4,
+                              ),
                             ),
                             SizedBox(
                               height: 60.h,
                               width: 80.w,
-                              child: OTPField(),
+                              child: OTPField(
+                                smsController: signUpController.smsCode5,
+                              ),
                             ),
                             SizedBox(
                               height: 60.h,
                               width: 80.w,
-                              child: OTPField(),
+                              child: OTPField(
+                                smsController: signUpController.smsCode6,
+                              ),
                             ),
                           ],
                         ),
