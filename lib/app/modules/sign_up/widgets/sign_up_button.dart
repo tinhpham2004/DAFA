@@ -32,16 +32,13 @@ class SignUpButton extends StatelessWidget {
                   .contains(RegExp(r'[a-z]')) &&
               signUpController.passwordController.text
                   .contains(RegExp(r'[0-9]'))) {
-            AppUser appUser = AppUser(
-              userId: signUpController.userId.value,
-              phoneNumber: '0' + signUpController.phoneNumberController.text,
-              password: signUpController.passwordController.text,
-              images: ['', '', '', '', '', ''],
-              name: '',
-              dateOfBirth: '',
-              gender: '',
+            AppUser user = AppUser(
+              phoneNumber: signUpController.phoneNumberController.text,
             );
-            databaseService.InsertUserData(appUser);
+            if (user.phoneNumber[0] != '0')
+              user.phoneNumber = '0' + user.phoneNumber;
+            user.password = signUpController.passwordController.text;
+            databaseService.InsertUserData(user);
             Get.toNamed(AppRoutes.sign_in);
           } else {
             signUpController.UpdateValidPassword('Invalid password.');

@@ -5,6 +5,8 @@ import 'package:dafa/app/modules/complete_profile/screens/birth_day_screen.dart'
 import 'package:dafa/app/modules/complete_profile/screens/gender_screen.dart';
 import 'package:dafa/app/modules/complete_profile/screens/name_screen.dart';
 import 'package:dafa/app/modules/complete_profile/screens/upload_images_screen.dart';
+import 'package:dafa/app/modules/profile/screens/profile_screen.dart';
+import 'package:dafa/app/modules/profile/profile_binding.dart';
 import 'package:dafa/app/modules/sign_in/screens/sign_in_screen.dart';
 import 'package:dafa/app/modules/sign_in/sign_in_binding.dart';
 import 'package:dafa/app/modules/sign_up/screens/otp_screen.dart';
@@ -67,6 +69,11 @@ abstract class AppPages {
       name: AppRoutes.swipe,
       page: () => SwipeScreen(),
       binding: SwipeBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.profile,
+      page: () => ProfileScreen(),
+      binding: ProfileBinding(),
     ),
   ];
 }

@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:dafa/app/core/values/app_colors.dart';
 import 'package:dafa/app/modules/complete_profile/complete_profile_controller.dart';
 import 'package:dafa/app/routes/app_routes.dart';

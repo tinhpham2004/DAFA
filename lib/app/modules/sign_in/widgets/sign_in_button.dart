@@ -14,7 +14,6 @@ class SignInButton extends StatelessWidget {
 
   final SignInController signInController = Get.find<SignInController>();
   DatabaseService databaseService = DatabaseService();
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -35,8 +34,10 @@ class SignInButton extends StatelessWidget {
                 await databaseService.FirstTimeUpdate();
             if (isFirstTimeUpdate) {
               Get.toNamed(AppRoutes.complete_name);
-            } else
+            } else {
               Get.toNamed(AppRoutes.swipe);
+              signInController.UpdateUser(await databaseService.LoadUserData());
+            }
           }
         },
         style: ElevatedButton.styleFrom(

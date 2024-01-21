@@ -49,7 +49,7 @@ class NameScreen extends StatelessWidget {
                     children: [
                       Text(
                         'My name is',
-                        style: CustomTextStyle.h1(Colors.black),
+                        style: CustomTextStyle.h1(AppColors.black),
                       ),
                       //
                       Container(

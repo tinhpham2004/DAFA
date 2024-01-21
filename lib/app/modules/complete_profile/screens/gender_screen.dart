@@ -52,7 +52,7 @@ class GenderScreen extends StatelessWidget {
                     children: [
                       Text(
                         'I am a',
-                        style: CustomTextStyle.h1(Colors.black),
+                        style: CustomTextStyle.h1(AppColors.black),
                       ),
                       //
 

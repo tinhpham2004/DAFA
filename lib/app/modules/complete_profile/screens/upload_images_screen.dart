@@ -2,14 +2,10 @@ import 'package:dafa/app/core/values/app_colors.dart';
 import 'package:dafa/app/core/values/app_icons.dart';
 import 'package:dafa/app/core/values/app_text_style.dart';
 import 'package:dafa/app/modules/complete_profile/complete_profile_controller.dart';
+import 'package:dafa/app/modules/complete_profile/widgets/add_image.dart';
 import 'package:dafa/app/modules/complete_profile/widgets/back_icon.dart';
-import 'package:dafa/app/modules/complete_profile/widgets/fifth_add_image_button.dart';
 import 'package:dafa/app/modules/complete_profile/widgets/finish_button.dart';
-import 'package:dafa/app/modules/complete_profile/widgets/first_add_image_button.dart';
-import 'package:dafa/app/modules/complete_profile/widgets/fourth_add_image_button.dart';
-import 'package:dafa/app/modules/complete_profile/widgets/second_add_image_button.dart';
-import 'package:dafa/app/modules/complete_profile/widgets/sixth_add_image_button.dart';
-import 'package:dafa/app/modules/complete_profile/widgets/third_add_image_button.dart';
+import 'package:dafa/app/modules/sign_in/sign_in_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -19,6 +15,7 @@ class UploadImagesScreen extends StatelessWidget {
   UploadImagesScreen({super.key});
   final CompleteProfileController completeProfileController =
       Get.find<CompleteProfileController>();
+  final SignInController signInController = Get.find<SignInController>();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -55,28 +52,18 @@ class UploadImagesScreen extends StatelessWidget {
                     children: [
                       Text(
                         'Add photos',
-                        style: CustomTextStyle.h1(Colors.black),
+                        style: CustomTextStyle.h1(AppColors.black),
                       ),
-                      //
-                      Container(
-                        margin: EdgeInsets.only(top: 60.h),
-                        child: Row(
-                          children: [
-                            FirstAddImageButton(),
-                            SecondAddImageButton(),
-                            ThirdAddImageButton(),
-                          ],
-                        ),
-                      ),
-                      //
-                      Container(
-                        margin: EdgeInsets.only(top: 60.h),
-                        child: Row(
-                          children: [
-                            FourthAddImageButton(),
-                            FifthAddImageButton(),
-                            SixthAddImageButton(),
-                          ],
+
+                      Padding(
+                        padding: EdgeInsets.only(top: 60.h),
+                        child: GridView.count(
+                          shrinkWrap: true,
+                          crossAxisCount: 3,
+                          childAspectRatio: 0.75,
+                          children: List.generate(6, (index) {
+                            return AddImage(index: index);
+                          }),
                         ),
                       ),
                       //
