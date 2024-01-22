@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:dafa/app/models/app_user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dafa/app/models/match_user.dart';
 import 'package:dafa/app/modules/sign_in/sign_in_controller.dart';
 import 'package:get/get.dart';
 
@@ -120,5 +123,108 @@ class DatabaseService {
       },
     );
     return user;
+  }
+
+  Future<List<MatchUser>> LoadMatchList(AppUser appUser) async {
+    List<MatchUser> matchList = [];
+    await usersCollection.get().then(
+      (otherUsersQuerysnapshot) {
+        List<DocumentSnapshot> otherUsers = otherUsersQuerysnapshot.docs;
+        otherUsers.forEach(
+          (value) {
+            String phoneNumber =
+                ((value.data() as dynamic)['phoneNumber'] as dynamic)
+                    .toString();
+            AppUser user = AppUser(phoneNumber: phoneNumber);
+            final _images =
+                (value.data() as dynamic)['images'] as List<dynamic>;
+            _images.forEach((element) {
+              user.images.add(element.toString());
+            });
+            user.userId =
+                ((value.data() as dynamic)['userId'] as dynamic).toString();
+            user.name =
+                ((value.data() as dynamic)['name'] as dynamic).toString();
+            user.gender =
+                ((value.data() as dynamic)['gender'] as dynamic).toString();
+            user.dateOfBirth =
+                ((value.data() as dynamic)['dateOfBirth'] as dynamic)
+                    .toString();
+            user.bio = ((value.data() as dynamic)['bio'] as dynamic).toString();
+            user.address =
+                ((value.data() as dynamic)['address'] as dynamic).toString();
+            user.coordinate =
+                ((value.data() as dynamic)['coordinate'] as dynamic);
+            user.height =
+                ((value.data() as dynamic)['height'] as dynamic).toString();
+            user.hobby =
+                ((value.data() as dynamic)['hobby'] as dynamic).toString();
+            double distance = calculateDistance(
+                appUser.coordinate.latitude,
+                appUser.coordinate.longitude,
+                user.coordinate.latitude,
+                user.coordinate.longitude);
+            if (appUser.gender == "Man" && user.gender == "Woman")
+              matchList.add(MatchUser(user: user, distance: distance));
+            if (appUser.gender == "Woman" && user.gender == "Man")
+              matchList.add(MatchUser(user: user, distance: distance));
+            if (appUser.gender == "LGBT" && user.gender == "LGBT")
+              matchList.add(MatchUser(user: user, distance: distance));
+          },
+        );
+      },
+    );
+    List<MatchUser> hobbyMatchList = [];
+    List<MatchUser> distanceMatchList = [];
+    matchList.forEach(
+      (user) {
+        if (appUser.hobby == user.user.hobby)
+          hobbyMatchList.add(user);
+        else
+          distanceMatchList.add(user);
+      },
+    );
+
+    for (int i = 0; i < hobbyMatchList.length - 1; i++) {
+      for (int j = i + 1; j < hobbyMatchList.length; j++) {
+        if (hobbyMatchList[i].distance > hobbyMatchList[j].distance) {
+          MatchUser temp = hobbyMatchList[i];
+          hobbyMatchList[i] = hobbyMatchList[j];
+          hobbyMatchList[j] = temp;
+        }
+      }
+    }
+
+    for (int i = 0; i < distanceMatchList.length - 1; i++) {
+      for (int j = i + 1; j < distanceMatchList.length; j++) {
+        if (distanceMatchList[i].distance > distanceMatchList[j].distance) {
+          MatchUser temp = distanceMatchList[i];
+          distanceMatchList[i] = distanceMatchList[j];
+          distanceMatchList[j] = temp;
+        }
+      }
+    }
+
+    matchList.clear();
+    hobbyMatchList.forEach(
+      (user) {
+        matchList.add(user);
+      },
+    );
+    distanceMatchList.forEach(
+      (user) {
+        matchList.add(user);
+      },
+    );
+    return matchList;
+  }
+
+  double calculateDistance(lat1, lon1, lat2, lon2) {
+    var p = 0.017453292519943295;
+    var c = cos;
+    var a = 0.5 -
+        c((lat2 - lat1) * p) / 2 +
+        c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
+    return 12742 * asin(sqrt(a));
   }
 }

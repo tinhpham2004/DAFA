@@ -35,6 +35,14 @@ class CustomTextStyle extends TextStyle {
     );
   }
 
+  static TextStyle cardTextStyle(Color color) {
+    return TextStyle(
+      fontSize: 35.sp,
+      fontWeight: FontWeight.w500,
+      color: color,
+    );
+  }
+
   static TextStyle error_text_style() {
     return TextStyle(
       fontSize: 30.sp,
