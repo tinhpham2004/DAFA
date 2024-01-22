@@ -2,8 +2,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
 class LocationService {
-
-    Future<Position> GetCoordinate() async {
+  Future<Position> GetCoordinate() async {
     bool serviceEnabled;
     LocationPermission permission;
 
@@ -61,7 +60,8 @@ class LocationService {
       if (element.locality != '') city = element.locality!;
       if (element.country != '') country = element.country!;
     });
-    address = district + ', ' + city + ', ' + country;
+    //address = district + ', ' + city + ', ' + country;
+    address = district + ', ' + city;
     return address;
   }
 }
