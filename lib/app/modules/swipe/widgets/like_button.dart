@@ -17,7 +17,7 @@ class DislikeButton extends StatelessWidget {
       },
       child: Container(
         margin: EdgeInsets.only(
-          right: 100.w,
+          right: 250.w,
           top: 1150.h,
         ),
         height: 200.h,

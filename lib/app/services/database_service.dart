@@ -9,10 +9,12 @@ import 'package:get/get.dart';
 class DatabaseService {
   final CollectionReference usersCollection =
       FirebaseFirestore.instance.collection('users');
+  final CollectionReference matchedListCollection =
+      FirebaseFirestore.instance.collection('matchedList');
   final SignInController signInController = Get.find<SignInController>();
 
   Future InsertUserData(AppUser user) async {
-    return await usersCollection.doc(user.phoneNumber).set({
+    await usersCollection.doc(user.phoneNumber).set({
       'userId': user.userId,
       'phoneNumber': user.phoneNumber,
       'password': user.password,
@@ -26,6 +28,12 @@ class DatabaseService {
       'address': user.address,
       'hobby': user.hobby,
     });
+    await matchedListCollection.doc(user.phoneNumber).set(
+      {
+        'like': [],
+        'dislike': [],
+      },
+    );
   }
 
   // ignore: non_constant_identifier_names
@@ -159,6 +167,7 @@ class DatabaseService {
                 ((value.data() as dynamic)['height'] as dynamic).toString();
             user.hobby =
                 ((value.data() as dynamic)['hobby'] as dynamic).toString();
+
             double distance = calculateDistance(
                 appUser.coordinate.latitude,
                 appUser.coordinate.longitude,
@@ -178,7 +187,7 @@ class DatabaseService {
     List<MatchUser> distanceMatchList = [];
     matchList.forEach(
       (user) {
-        if (appUser.hobby == user.user.hobby)
+        if (appUser.hobby == user.user!.hobby)
           hobbyMatchList.add(user);
         else
           distanceMatchList.add(user);
@@ -216,6 +225,27 @@ class DatabaseService {
         matchList.add(user);
       },
     );
+    List<int> matchedListId = [];
+    for (int index = 0; index < matchList.length; index++) {
+      for (int j = 0; j < signInController.likeList.length; j++) {
+        if (matchList[index].user!.phoneNumber ==
+            signInController.likeList[j]) {
+          matchedListId.add(index);
+        }
+      }
+      if (matchedListId.length == 0 ||
+          (matchedListId.length > 0 &&
+              matchedListId[matchedListId.length - 1] != index))
+        for (int j = 0; j < signInController.dislikeList.length; j++) {
+          if (matchList[index].user!.phoneNumber ==
+              signInController.dislikeList[j]) {
+            matchedListId.add(index);
+          }
+        }
+    }
+    for (int index = matchedListId.length - 1; index >= 0; index--) {
+      matchList.removeAt(matchedListId[index]);
+    }
     return matchList;
   }
 
@@ -226,5 +256,37 @@ class DatabaseService {
         c((lat2 - lat1) * p) / 2 +
         c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
     return 12742 * asin(sqrt(a));
+  }
+
+  Future<void> UpdateMatchedList() async {
+    await matchedListCollection.doc(signInController.user.phoneNumber).set(
+      {
+        'like': signInController.likeList,
+        'dislike': signInController.dislikeList,
+      },
+    );
+  }
+
+  Future<void> LoadMatchedList() async {
+    await matchedListCollection
+        .doc(signInController.user.phoneNumber)
+        .get()
+        .then(
+      (docs) {
+        final likeList = (docs.data() as dynamic)['like'] as List<dynamic>;
+        final dislikeList =
+            (docs.data() as dynamic)['dislike'] as List<dynamic>;
+        likeList.forEach(
+          (element) {
+            signInController.likeList.add(element);
+          },
+        );
+        dislikeList.forEach(
+          (element) {
+            signInController.dislikeList.add(element);
+          },
+        );
+      },
+    );
   }
 }

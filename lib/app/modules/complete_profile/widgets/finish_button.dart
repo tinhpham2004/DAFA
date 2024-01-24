@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dafa/app/core/values/app_colors.dart';
 import 'package:dafa/app/models/app_user.dart';
+import 'package:dafa/app/models/match_user.dart';
 import 'package:dafa/app/modules/complete_profile/complete_profile_controller.dart';
 import 'package:dafa/app/modules/sign_in/sign_in_controller.dart';
 import 'package:dafa/app/routes/app_routes.dart';
@@ -57,7 +58,6 @@ class FinishButton extends StatelessWidget {
           if (count > 3) {
             completeProfileController.UpdateErrorImages(true);
           } else {
-            Get.toNamed(AppRoutes.swipe);
             String name = completeProfileController.name.text;
             String dateOfBirth = completeProfileController.dateOB1.text +
                 completeProfileController.dateOB2.text +
@@ -86,7 +86,17 @@ class FinishButton extends StatelessWidget {
             signInController.user.coordinate =
                 GeoPoint(coordinate.latitude, coordinate.longitude);
             signInController.user.address = await locationService.GetAddress();
-            await databaseService.UpdateUserData(signInController.user);
+            databaseService.UpdateUserData(signInController.user);
+            await databaseService.LoadMatchedList();
+            signInController.matchList =
+                await databaseService.LoadMatchList(signInController.user);
+            signInController.matchList.add(
+              MatchUser(
+                user: null,
+                distance: 0,
+              ),
+            );
+            Get.toNamed(AppRoutes.swipe);
           }
         },
         style: ElevatedButton.styleFrom(
