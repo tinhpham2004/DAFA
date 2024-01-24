@@ -38,25 +38,6 @@ class SwipeScreen extends StatelessWidget {
                       DislikeButton(
                         swipeController: swipeController,
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          swipeController.cardSwiperController.undo();
-                        },
-                        child: Container(
-                          margin: EdgeInsets.only(top: 1150.h, right: 100.w),
-                          height: 200.h,
-                          width: 150.w,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            gradient: AppColors.primaryColor,
-                          ),
-                          child: Icon(
-                            Icons.replay_rounded,
-                            color: AppColors.white,
-                            size: 70.sp,
-                          ),
-                        ),
-                      ),
                       LikeButton(
                         swipeController: swipeController,
                       ),

@@ -14,6 +14,8 @@ class SignInController extends GetxController {
   );
   RxBool obscure = true.obs;
   List<MatchUser> matchList = [];
+  List<String> likeList = [];
+  List<String> dislikeList = [];
 
   void UpdateSignInState(String data) => signInState.value = data;
   void UpdateUser(AppUser data) => user = data;
