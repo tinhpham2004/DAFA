@@ -25,4 +25,6 @@ abstract class AppRoutes {
   static const chat = '/chat';
   //anonym_chat
   static const anonym_chat = '/anonym_chat';
+  //message
+  static const message = '/message';
 }

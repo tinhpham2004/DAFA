@@ -1,5 +1,8 @@
 import 'package:dafa/app/modules/auth/screens/auth_screen.dart';
 import 'package:dafa/app/modules/auth/auth_binding.dart';
+import 'package:dafa/app/modules/chat/chat_binding.dart';
+import 'package:dafa/app/modules/chat/screens/chat_screen.dart';
+import 'package:dafa/app/modules/chat/screens/message_screen.dart';
 import 'package:dafa/app/modules/complete_profile/complete_profile_binding.dart';
 import 'package:dafa/app/modules/complete_profile/screens/birth_day_screen.dart';
 import 'package:dafa/app/modules/complete_profile/screens/gender_screen.dart';
@@ -74,6 +77,16 @@ abstract class AppPages {
       name: AppRoutes.profile,
       page: () => ProfileScreen(),
       binding: ProfileBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.chat,
+      page: () => ChatScreen(),
+      binding: ChatBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.message,
+      page: () => MessageScreen(),
+      binding: ChatBinding(),
     ),
   ];
 }

@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:dafa/app/models/app_user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dafa/app/models/match_user.dart';
+import 'package:dafa/app/models/message.dart';
 import 'package:dafa/app/modules/sign_in/sign_in_controller.dart';
 import 'package:get/get.dart';
 
@@ -11,6 +12,8 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('users');
   final CollectionReference matchedListCollection =
       FirebaseFirestore.instance.collection('matchedList');
+  final CollectionReference messagesCollection =
+      FirebaseFirestore.instance.collection('messages');
   final SignInController signInController = Get.find<SignInController>();
 
   Future InsertUserData(AppUser user) async {
@@ -32,6 +35,7 @@ class DatabaseService {
       {
         'like': [],
         'dislike': [],
+        'compatible': [],
       },
     );
   }
@@ -225,6 +229,11 @@ class DatabaseService {
         matchList.add(user);
       },
     );
+    matchList.forEach(
+      (element) {
+        signInController.matchListForChat.add(element);
+      },
+    );
     List<int> matchedListId = [];
     for (int index = 0; index < matchList.length; index++) {
       for (int j = 0; j < signInController.likeList.length; j++) {
@@ -263,6 +272,7 @@ class DatabaseService {
       {
         'like': signInController.likeList,
         'dislike': signInController.dislikeList,
+        'compatible': signInController.compatibleList,
       },
     );
   }
@@ -276,6 +286,8 @@ class DatabaseService {
         final likeList = (docs.data() as dynamic)['like'] as List<dynamic>;
         final dislikeList =
             (docs.data() as dynamic)['dislike'] as List<dynamic>;
+        final compatibleList =
+            (docs.data() as dynamic)['compatible'] as List<dynamic>;
         likeList.forEach(
           (element) {
             signInController.likeList.add(element);
@@ -286,7 +298,51 @@ class DatabaseService {
             signInController.dislikeList.add(element);
           },
         );
+        compatibleList.forEach(
+          (element) {
+            signInController.compatibleList.add(element);
+          },
+        );
       },
     );
+  }
+
+  Future<void> UpdateCompatibleList(String phoneNumber) async {
+    await matchedListCollection.doc(phoneNumber).get().then(
+      (docs) async {
+        final compatibleList =
+            (docs.data() as dynamic)['compatible'] as List<dynamic>;
+        compatibleList.add(signInController.user.phoneNumber);
+        await matchedListCollection.doc(phoneNumber).update(
+          {
+            'compatible': compatibleList,
+          },
+        );
+      },
+    );
+  }
+
+  Future<bool> CheckIsLike(String phoneNumber) async {
+    bool check = false;
+    await matchedListCollection.doc(phoneNumber).get().then(
+      (docs) {
+        final likeList = (docs.data() as dynamic)['like'] as List<dynamic>;
+        likeList.forEach(
+          (value) {
+            if (value == signInController.user.phoneNumber) check = true;
+          },
+        );
+      },
+    );
+    return check;
+  }
+
+  Future<void> SendMessage(Message message) async {
+    await messagesCollection.doc().set({
+      'sender': message.sender,
+      'receiver': message.receiver,
+      'content': message.content,
+      'time': message.time,
+    });
   }
 }
