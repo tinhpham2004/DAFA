@@ -27,7 +27,7 @@ class CardSwipable extends StatelessWidget {
       () => CardSwiper(
         numberOfCardsDisplayed: signInController.matchList.length > 1 ? 2 : 1,
         initialIndex: swipeController.curIndex.value,
-        onSwipe: (previousIndex, currentIndex, direction) {
+        onSwipe: (previousIndex, currentIndex, direction) async {
           if (swipeController.swipeState.value == 'left') {
             signInController.dislikeList.add(signInController
                 .matchList[swipeController.curIndex.value].user!.phoneNumber);
@@ -35,6 +35,13 @@ class CardSwipable extends StatelessWidget {
           } else if (swipeController.swipeState.value == 'right') {
             signInController.likeList.add(signInController
                 .matchList[swipeController.curIndex.value].user!.phoneNumber);
+            if (await databaseService.CheckIsLike(signInController
+                .matchList[swipeController.curIndex.value].user!.phoneNumber)) {
+              signInController.compatibleList.add(signInController
+                  .matchList[swipeController.curIndex.value].user!.phoneNumber);
+              databaseService.UpdateCompatibleList(signInController
+                  .matchList[swipeController.curIndex.value].user!.phoneNumber);
+            }
             databaseService.UpdateMatchedList();
           }
           swipeController.UpdateCurIndex(currentIndex!);
