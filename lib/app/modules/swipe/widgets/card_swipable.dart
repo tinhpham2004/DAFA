@@ -13,12 +13,10 @@ import 'package:get/get.dart';
 class CardSwipable extends StatelessWidget {
   CardSwipable({
     super.key,
-    required this.signInController,
-    required this.swipeController,
   });
 
-  final SignInController signInController;
-  final SwipeController swipeController;
+  final SignInController signInController = Get.find<SignInController>();
+  final SwipeController swipeController = Get.find<SwipeController>();
   DatabaseService databaseService = DatabaseService();
 
   @override

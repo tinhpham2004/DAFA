@@ -67,9 +67,25 @@ class ChatScreen extends StatelessWidget {
                         title: Text(
                           chatController.compatibleUserList[index].user!.name,
                         ),
-                        subtitle: Text(
-                          'subItem $index',
-                        ),
+                        subtitle: chatController.lastMessae[chatController
+                                    .compatibleUserList[index]
+                                    .user!
+                                    .phoneNumber] !=
+                                null
+                            ? chatController
+                                        .lastMessae[chatController
+                                            .compatibleUserList[index]
+                                            .user!
+                                            .phoneNumber]!
+                                        .sender ==
+                                    signInController.user.phoneNumber
+                                ? Text(
+                                    'You: ${chatController.lastMessae[chatController.compatibleUserList[index].user!.phoneNumber]!.content} • ${chatController.lastMessae[chatController.compatibleUserList[index].user!.phoneNumber]!.time.day}/${chatController.lastMessae[chatController.compatibleUserList[index].user!.phoneNumber]!.time.month}/${chatController.lastMessae[chatController.compatibleUserList[index].user!.phoneNumber]!.time.year}',
+                                  )
+                                : Text(
+                                    '${chatController.lastMessae[chatController.compatibleUserList[index].user!.phoneNumber]!.content} • ${chatController.lastMessae[chatController.compatibleUserList[index].user!.phoneNumber]!.time.day}/${chatController.lastMessae[chatController.compatibleUserList[index].user!.phoneNumber]!.time.month}/${chatController.lastMessae[chatController.compatibleUserList[index].user!.phoneNumber]!.time.year}',
+                                  )
+                            : Text(''),
                       ),
                     );
                   },
