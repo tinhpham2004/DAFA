@@ -17,4 +17,6 @@ class AppColors {
   static const Color backgroundColor = Color.fromARGB(255, 24, 23, 23);
   static const Color cardTextColor = Color.fromARGB(209, 255, 255, 255);
   static const Color disabledBackground = Color.fromARGB(255, 186, 189, 198);
+  static const Color send = Colors.blue;
+  static const Color receive = Color.fromARGB(255, 208, 208, 208);
 }
