@@ -24,6 +24,7 @@ class MessageScreen extends StatelessWidget {
       .snapshots();
   @override
   Widget build(BuildContext context) {
+    chatController.UpdateIsFirstTimeScroll(true);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -63,11 +64,18 @@ class MessageScreen extends StatelessWidget {
                     );
                   }
                   return ListView.builder(
+                    controller: chatController.scrollController,
                     itemCount:
                         snapshot.data != null ? snapshot.data!.docs.length : 0,
                     physics: ScrollPhysics(),
                     shrinkWrap: true,
                     itemBuilder: (_, index) {
+                      if (index == 0 &&
+                          chatController.isFirstTimeScroll == true) {
+                        chatController.scrollController
+                            .jumpTo(1000.h * snapshot.data!.docs.length);
+                        chatController.UpdateIsFirstTimeScroll(false);
+                      }
                       QueryDocumentSnapshot message =
                           snapshot.data!.docs[index];
                       Timestamp time = message['time'];

@@ -20,7 +20,7 @@ class SendMessageButton extends StatelessWidget {
         Icons.send,
         color: AppColors.white,
       ),
-      onPressed: () {
+      onPressed: () async {
         Message message = Message(
           sender: signInController.user.phoneNumber,
           receiver: chatController
@@ -30,8 +30,12 @@ class SendMessageButton extends StatelessWidget {
           content: chatController.messageController.text,
           time: DateTime.now(),
         );
-        databaseService.SendMessage(message);
-        chatController.messageController.text = '';
+        if (message.content != '') {
+          await databaseService.SendMessage(message);
+          chatController.messageController.text = '';
+          chatController.scrollController
+              .jumpTo(chatController.scrollController.position.maxScrollExtent);
+        }
       },
     );
   }

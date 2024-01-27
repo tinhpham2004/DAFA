@@ -14,6 +14,8 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('matchedList');
   final CollectionReference messagesCollection =
       FirebaseFirestore.instance.collection('messages');
+  final CollectionReference reportCollection =
+      FirebaseFirestore.instance.collection('report');
   final SignInController signInController = Get.find<SignInController>();
 
   Future InsertUserData(AppUser user) async {
@@ -36,6 +38,11 @@ class DatabaseService {
         'like': [],
         'dislike': [],
         'compatible': [],
+      },
+    );
+    await reportCollection.doc(user.phoneNumber).set(
+      {
+        'reporters': [],
       },
     );
   }
@@ -344,5 +351,37 @@ class DatabaseService {
       'content': message.content,
       'time': message.time,
     });
+  }
+
+  Future<bool> IsReported(String reportedUser) async {
+    bool isReported = false;
+    await reportCollection.doc(reportedUser).get().then(
+      (docs) async {
+        final reportersList =
+            (docs.data() as dynamic)['reporters'] as List<dynamic>;
+
+        isReported = reportersList.contains(signInController.user.phoneNumber);
+      },
+    );
+    return isReported;
+  }
+
+  Future<void> Report(String reportedUser) async {
+    await reportCollection.doc(reportedUser).get().then(
+      (docs) async {
+        final reportersList =
+            (docs.data() as dynamic)['reporters'] as List<dynamic>;
+        if (reportersList.contains(signInController.user.phoneNumber) ==
+            false) {
+          reportersList.add(signInController.user.phoneNumber);
+
+          await reportCollection.doc(reportedUser).update(
+            {
+              'reporters': reportersList,
+            },
+          );
+        } 
+      },
+    );
   }
 }

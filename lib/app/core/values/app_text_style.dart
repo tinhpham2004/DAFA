@@ -58,4 +58,12 @@ class CustomTextStyle extends TextStyle {
       color: color,
     );
   }
+
+  static TextStyle communityRulesHeader(Color color) {
+    return TextStyle(
+      fontSize: 30.sp,
+      fontWeight: FontWeight.w500,
+      color: color,
+    );
+  }
 }
