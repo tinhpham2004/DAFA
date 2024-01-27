@@ -26,10 +26,7 @@ class SwipeScreen extends StatelessWidget {
           child: Stack(
             alignment: Alignment.center,
             children: [
-              CardSwipable(
-                signInController: signInController,
-                swipeController: swipeController,
-              ),
+              CardSwipable(),
               Column(
                 children: [
                   Wrap(

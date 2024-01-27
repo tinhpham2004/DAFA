@@ -28,6 +28,14 @@ class ProfileScreen extends StatelessWidget {
     }
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            'Profile',
+            style: CustomTextStyle.profileHeader(
+              AppColors.black,
+            ),
+          ),
+        ),
         bottomNavigationBar: BottomNavigation(
           onItem: 0,
         ),
