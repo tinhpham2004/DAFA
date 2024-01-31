@@ -32,6 +32,9 @@ class DatabaseService {
       'coordinate': user.coordinate,
       'address': user.address,
       'hobby': user.hobby,
+      'isOnline': user.isOnline,
+      'isSearching': user.isSearching,
+      'lastActive': user.lastActive,
     });
     await matchedListCollection.doc(user.phoneNumber).set(
       {
@@ -83,6 +86,9 @@ class DatabaseService {
       'coordinate': user.coordinate,
       'address': user.address,
       'hobby': user.hobby,
+      'isOnline': user.isOnline,
+      'isSearching': user.isSearching,
+      'lastActive': user.lastActive,
     });
   }
 
@@ -139,6 +145,11 @@ class DatabaseService {
         user.height =
             ((value.data() as dynamic)['height'] as dynamic).toString();
         user.hobby = ((value.data() as dynamic)['hobby'] as dynamic).toString();
+        user.isOnline = ((value.data() as dynamic)['isOnline'] as dynamic);
+        user.isSearching =
+            ((value.data() as dynamic)['isSearching'] as dynamic);
+        user.lastActive =
+            ((value.data() as dynamic)['lastActive'] as Timestamp).toDate();
       },
     );
     return user;
@@ -178,6 +189,13 @@ class DatabaseService {
                 ((value.data() as dynamic)['height'] as dynamic).toString();
             user.hobby =
                 ((value.data() as dynamic)['hobby'] as dynamic).toString();
+            user.isOnline = ((value.data() as dynamic)['isOnline'] as dynamic);
+            user.isSearching =
+                ((value.data() as dynamic)['isSearching'] as dynamic);
+            user.lastActive =
+                ((value.data() as dynamic)['lastActive'] as Timestamp).toDate();
+
+            signInController.listUsersGender[user.phoneNumber] = user.gender;
 
             double distance = calculateDistance(
                 appUser.coordinate.latitude,
@@ -188,7 +206,9 @@ class DatabaseService {
               matchList.add(MatchUser(user: user, distance: distance));
             if (appUser.gender == "Woman" && user.gender == "Man")
               matchList.add(MatchUser(user: user, distance: distance));
-            if (appUser.gender == "LGBT" && user.gender == "LGBT")
+            if (appUser.phoneNumber != user.phoneNumber &&
+                appUser.gender == "LGBT" &&
+                user.gender == "LGBT")
               matchList.add(MatchUser(user: user, distance: distance));
           },
         );
@@ -380,7 +400,7 @@ class DatabaseService {
               'reporters': reportersList,
             },
           );
-        } 
+        }
       },
     );
   }

@@ -13,6 +13,9 @@ class AppUser {
   String address = '';
   String height = '';
   String hobby = '';
+  bool isOnline = false;
+  bool isSearching = false;
+  DateTime lastActive = DateTime.now();
   AppUser({
     required this.phoneNumber,
   });
