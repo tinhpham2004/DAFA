@@ -8,6 +8,7 @@ import 'package:dafa/app/modules/complete_profile/complete_profile_controller.da
 import 'package:dafa/app/modules/sign_in/sign_in_controller.dart';
 import 'package:dafa/app/routes/app_routes.dart';
 import 'package:dafa/app/services/database_service.dart';
+import 'package:dafa/app/services/firebase_listener_service.dart';
 import 'package:dafa/app/services/location_service.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +26,7 @@ class FinishButton extends StatelessWidget {
   final SignInController signInController = Get.find<SignInController>();
   DatabaseService databaseService = DatabaseService();
   LocationService locationService = LocationService();
+  FirebaseListenerService firebaseListenerService = FirebaseListenerService();
 
   @override
   Widget build(BuildContext context) {
@@ -86,10 +88,15 @@ class FinishButton extends StatelessWidget {
             signInController.user.coordinate =
                 GeoPoint(coordinate.latitude, coordinate.longitude);
             signInController.user.address = await locationService.GetAddress();
+            signInController.user.isOnline = true;
+            signInController.user.lastActive = DateTime.now();
             databaseService.UpdateUserData(signInController.user);
             await databaseService.LoadMatchedList();
             signInController.matchList =
                 await databaseService.LoadMatchList(signInController.user);
+            firebaseListenerService.LoadAllUsersOnlineState();
+            firebaseListenerService.LoadAllUsersSearchingState();
+            firebaseListenerService.LoadGraphMatchList();
             signInController.matchList.add(
               MatchUser(
                 user: null,

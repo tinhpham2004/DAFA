@@ -5,34 +5,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-class DislikeButton extends StatelessWidget {
-  DislikeButton({
+class LikeButton extends StatelessWidget {
+  LikeButton({
     super.key,
     required this.swipeController,
   });
   final SwipeController swipeController;
   final SignInController signInController = Get.find<SignInController>();
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         if (swipeController.curIndex.value !=
             signInController.matchList.length - 1)
-          swipeController.cardSwiperController.swipeLeft();
+          swipeController.cardSwiperController.swipeRight();
       },
       child: Container(
-        margin: EdgeInsets.only(
-          right: 250.w,
-          top: 1150.h,
-        ),
+        margin: EdgeInsets.only(top: 1150.h),
         height: 200.h,
         width: 150.w,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: AppColors.red,
+          color: AppColors.pink,
         ),
         child: Icon(
-          Icons.close_rounded,
+          Icons.favorite,
           color: AppColors.white,
           size: 70.sp,
         ),

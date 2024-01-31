@@ -1,5 +1,6 @@
 import 'package:dafa/app/core/values/app_colors.dart';
 import 'package:dafa/app/models/message.dart';
+import 'package:dafa/app/modules/anonymous_chat/anonymous_chat_controller.dart';
 import 'package:dafa/app/modules/chat/chat_controller.dart';
 import 'package:dafa/app/modules/sign_in/sign_in_controller.dart';
 import 'package:dafa/app/services/database_service.dart';
@@ -10,7 +11,8 @@ class SendMessageButton extends StatelessWidget {
   SendMessageButton({
     super.key,
   });
-  final ChatController chatController = Get.find<ChatController>();
+  final AnonymousChatController anonymousChatController =
+      Get.find<AnonymousChatController>();
   final SignInController signInController = Get.find<SignInController>();
   DatabaseService databaseService = DatabaseService();
   @override
@@ -23,16 +25,16 @@ class SendMessageButton extends StatelessWidget {
       onPressed: () {
         Message message = Message(
           sender: signInController.user.phoneNumber,
-          receiver: chatController
-              .compatibleUserList[chatController.currIndex.value]
+          receiver: signInController
+              .matchList[anonymousChatController.currIndex.value]
               .user!
               .phoneNumber,
-          content: chatController.messageController.text,
+          content: anonymousChatController.messageController.text,
           time: DateTime.now(),
         );
         if (message.content != '') {
           databaseService.SendMessage(message);
-          chatController.messageController.text = '';
+          anonymousChatController.messageController.text = '';
         }
       },
     );

@@ -27,231 +27,235 @@ class ProfileScreen extends StatelessWidget {
           index, signInController.user.images[index]);
     }
     return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'Profile',
-            style: CustomTextStyle.profileHeader(
-              AppColors.black,
+      child: PopScope(
+        canPop: false,
+        child: Scaffold(
+          appBar: AppBar(
+            leading: Container(),
+            title: Text(
+              'Profile',
+              style: CustomTextStyle.profileHeader(
+                AppColors.black,
+              ),
             ),
           ),
-        ),
-        bottomNavigationBar: BottomNavigation(
-          onItem: 0,
-        ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.only(left: 40.w, top: 40.h),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  child: Text(
-                    'Images',
-                    style: CustomTextStyle.profileHeader(AppColors.black),
-                  ),
-                ),
-                GridView.count(
-                  shrinkWrap: true,
-                  crossAxisCount: 3,
-                  childAspectRatio: 0.75,
-                  children: List.generate(
-                    6,
-                    (index) {
-                      return AddImage(index: index);
-                    },
-                  ),
-                ),
-
-                //
-                Container(
-                  margin: EdgeInsets.only(top: 100.h),
-                  child: Text(
-                    'Bio',
-                    style: CustomTextStyle.profileHeader(AppColors.black),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 40.h, right: 20.w),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20.r),
-                    border: Border.all(
-                      width: 1.0,
+          bottomNavigationBar: BottomNavigation(
+            onItem: 0,
+          ),
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.only(left: 40.w, top: 40.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    child: Text(
+                      'Images',
+                      style: CustomTextStyle.profileHeader(AppColors.black),
                     ),
                   ),
-                  child: Container(
-                    padding: EdgeInsets.only(left: 20.w),
-                    child: BioField(
-                      profileController: profileController,
-                      signInController: signInController,
+                  GridView.count(
+                    shrinkWrap: true,
+                    crossAxisCount: 3,
+                    childAspectRatio: 0.75,
+                    children: List.generate(
+                      6,
+                      (index) {
+                        return AddImage(index: index);
+                      },
                     ),
                   ),
-                ),
-
-                //
-                Container(
-                  margin: EdgeInsets.only(top: 100.h),
-                  child: Text(
-                    'Basic Information',
-                    style: CustomTextStyle.profileHeader(AppColors.black),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 40.h, right: 20.w),
-                  decoration: BoxDecoration(
-                    color: AppColors.disabledBackground,
-                    borderRadius: BorderRadius.circular(20.r),
-                    border: Border.all(
-                      width: 1.0,
+        
+                  //
+                  Container(
+                    margin: EdgeInsets.only(top: 100.h),
+                    child: Text(
+                      'Bio',
+                      style: CustomTextStyle.profileHeader(AppColors.black),
                     ),
                   ),
-                  child: Container(
-                    padding: EdgeInsets.only(left: 20.w),
-                    child: TextFormField(
-                      initialValue: signInController.user.name,
-                      readOnly: true,
-                      style: CustomTextStyle.h3(AppColors.black),
-                      decoration: InputDecoration(
-                        suffixIcon: Icon(Icons.lock),
-                        labelText: 'Name',
-                        labelStyle: CustomTextStyle.h3(AppColors.thirdColor),
-                        border: InputBorder.none,
+                  Container(
+                    margin: EdgeInsets.only(top: 40.h, right: 20.w),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20.r),
+                      border: Border.all(
+                        width: 1.0,
                       ),
                     ),
-                  ),
-                ),
-
-                //
-                Container(
-                  margin: EdgeInsets.only(top: 40.h, right: 20.w),
-                  decoration: BoxDecoration(
-                    color: AppColors.disabledBackground,
-                    borderRadius: BorderRadius.circular(20.r),
-                    border: Border.all(
-                      width: 1.0,
-                    ),
-                  ),
-                  child: Container(
-                    padding: EdgeInsets.only(left: 20.w),
-                    child: TextFormField(
-                      initialValue: (DateTime.now().year -
-                              int.parse(signInController.user.dateOfBirth
-                                  .substring(6)))
-                          .toString(),
-                      readOnly: true,
-                      style: CustomTextStyle.h3(AppColors.black),
-                      decoration: InputDecoration(
-                        suffixIcon: Icon(Icons.lock),
-                        labelText: 'Age',
-                        labelStyle: CustomTextStyle.h3(AppColors.thirdColor),
-                        border: InputBorder.none,
-                      ),
-                    ),
-                  ),
-                ),
-
-                //
-                Container(
-                  margin: EdgeInsets.only(top: 40.h, right: 20.w),
-                  decoration: BoxDecoration(
-                    color: AppColors.disabledBackground,
-                    borderRadius: BorderRadius.circular(20.r),
-                    border: Border.all(
-                      width: 1.0,
-                    ),
-                  ),
-                  child: Container(
-                    padding: EdgeInsets.only(left: 20.w),
-                    child: TextFormField(
-                      initialValue: signInController.user.address,
-                      readOnly: true,
-                      style: CustomTextStyle.h3(AppColors.black),
-                      decoration: InputDecoration(
-                        suffixIcon: Icon(Icons.lock),
-                        labelText: 'Address',
-                        labelStyle: CustomTextStyle.h3(AppColors.thirdColor),
-                        border: InputBorder.none,
-                      ),
-                    ),
-                  ),
-                ),
-
-                //
-                Container(
-                  margin: EdgeInsets.only(top: 40.h, right: 20.w),
-                  decoration: BoxDecoration(
-                    color: AppColors.disabledBackground,
-                    borderRadius: BorderRadius.circular(20.r),
-                    border: Border.all(
-                      width: 1.0,
-                    ),
-                  ),
-                  child: Container(
-                    padding: EdgeInsets.only(left: 20.w),
-                    child: TextFormField(
-                      initialValue: "Man",
-                      readOnly: true,
-                      style: CustomTextStyle.h3(AppColors.black),
-                      decoration: InputDecoration(
-                        suffixIcon: Icon(Icons.lock),
-                        labelText: 'Gender',
-                        labelStyle: CustomTextStyle.h3(AppColors.thirdColor),
-                        border: InputBorder.none,
-                      ),
-                    ),
-                  ),
-                ),
-
-                //
-                Container(
-                  margin: EdgeInsets.only(top: 40.h, right: 20.w),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20.r),
-                    border: Border.all(
-                      width: 1.0,
-                    ),
-                  ),
-                  child: Container(
-                    margin: EdgeInsets.only(left: 20.w),
-                    child: HeightField(
+                    child: Container(
+                      padding: EdgeInsets.only(left: 20.w),
+                      child: BioField(
+                        profileController: profileController,
                         signInController: signInController,
-                        profileController: profileController),
-                  ),
-                ),
-
-                //
-                Container(
-                  margin: EdgeInsets.only(top: 40.h, right: 20.w),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20.r),
-                    border: Border.all(
-                      width: 1.0,
+                      ),
                     ),
                   ),
-                  child: Container(
-                    margin: EdgeInsets.only(left: 20.w),
-                    child: HobbyField(
-                        signInController: signInController,
-                        profileController: profileController),
+        
+                  //
+                  Container(
+                    margin: EdgeInsets.only(top: 100.h),
+                    child: Text(
+                      'Basic Information',
+                      style: CustomTextStyle.profileHeader(AppColors.black),
+                    ),
                   ),
-                ),
-                Obx(
-                  () => profileController.errorImages.value == true
-                      ? Container(
-                          margin: EdgeInsets.only(top: 40.h),
-                          child: Text(
-                            'Please select at least 3 images.',
-                            style: CustomTextStyle.error_text_style(),
-                          ),
-                        )
-                      : Container(
-                          margin: EdgeInsets.only(top: 60.h),
+                  Container(
+                    margin: EdgeInsets.only(top: 40.h, right: 20.w),
+                    decoration: BoxDecoration(
+                      color: AppColors.disabledBackground,
+                      borderRadius: BorderRadius.circular(20.r),
+                      border: Border.all(
+                        width: 1.0,
+                      ),
+                    ),
+                    child: Container(
+                      padding: EdgeInsets.only(left: 20.w),
+                      child: TextFormField(
+                        initialValue: signInController.user.name,
+                        readOnly: true,
+                        style: CustomTextStyle.h3(AppColors.black),
+                        decoration: InputDecoration(
+                          suffixIcon: Icon(Icons.lock),
+                          labelText: 'Name',
+                          labelStyle: CustomTextStyle.h3(AppColors.thirdColor),
+                          border: InputBorder.none,
                         ),
-                ),
-
-                //
-                SaveButton(),
-              ],
+                      ),
+                    ),
+                  ),
+        
+                  //
+                  Container(
+                    margin: EdgeInsets.only(top: 40.h, right: 20.w),
+                    decoration: BoxDecoration(
+                      color: AppColors.disabledBackground,
+                      borderRadius: BorderRadius.circular(20.r),
+                      border: Border.all(
+                        width: 1.0,
+                      ),
+                    ),
+                    child: Container(
+                      padding: EdgeInsets.only(left: 20.w),
+                      child: TextFormField(
+                        initialValue: (DateTime.now().year -
+                                int.parse(signInController.user.dateOfBirth
+                                    .substring(6)))
+                            .toString(),
+                        readOnly: true,
+                        style: CustomTextStyle.h3(AppColors.black),
+                        decoration: InputDecoration(
+                          suffixIcon: Icon(Icons.lock),
+                          labelText: 'Age',
+                          labelStyle: CustomTextStyle.h3(AppColors.thirdColor),
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                  ),
+        
+                  //
+                  Container(
+                    margin: EdgeInsets.only(top: 40.h, right: 20.w),
+                    decoration: BoxDecoration(
+                      color: AppColors.disabledBackground,
+                      borderRadius: BorderRadius.circular(20.r),
+                      border: Border.all(
+                        width: 1.0,
+                      ),
+                    ),
+                    child: Container(
+                      padding: EdgeInsets.only(left: 20.w),
+                      child: TextFormField(
+                        initialValue: signInController.user.address,
+                        readOnly: true,
+                        style: CustomTextStyle.h3(AppColors.black),
+                        decoration: InputDecoration(
+                          suffixIcon: Icon(Icons.lock),
+                          labelText: 'Address',
+                          labelStyle: CustomTextStyle.h3(AppColors.thirdColor),
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                  ),
+        
+                  //
+                  Container(
+                    margin: EdgeInsets.only(top: 40.h, right: 20.w),
+                    decoration: BoxDecoration(
+                      color: AppColors.disabledBackground,
+                      borderRadius: BorderRadius.circular(20.r),
+                      border: Border.all(
+                        width: 1.0,
+                      ),
+                    ),
+                    child: Container(
+                      padding: EdgeInsets.only(left: 20.w),
+                      child: TextFormField(
+                        initialValue: "Man",
+                        readOnly: true,
+                        style: CustomTextStyle.h3(AppColors.black),
+                        decoration: InputDecoration(
+                          suffixIcon: Icon(Icons.lock),
+                          labelText: 'Gender',
+                          labelStyle: CustomTextStyle.h3(AppColors.thirdColor),
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                  ),
+        
+                  //
+                  Container(
+                    margin: EdgeInsets.only(top: 40.h, right: 20.w),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20.r),
+                      border: Border.all(
+                        width: 1.0,
+                      ),
+                    ),
+                    child: Container(
+                      margin: EdgeInsets.only(left: 20.w),
+                      child: HeightField(
+                          signInController: signInController,
+                          profileController: profileController),
+                    ),
+                  ),
+        
+                  //
+                  Container(
+                    margin: EdgeInsets.only(top: 40.h, right: 20.w),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20.r),
+                      border: Border.all(
+                        width: 1.0,
+                      ),
+                    ),
+                    child: Container(
+                      margin: EdgeInsets.only(left: 20.w),
+                      child: HobbyField(
+                          signInController: signInController,
+                          profileController: profileController),
+                    ),
+                  ),
+                  Obx(
+                    () => profileController.errorImages.value == true
+                        ? Container(
+                            margin: EdgeInsets.only(top: 40.h),
+                            child: Text(
+                              'Please select at least 3 images.',
+                              style: CustomTextStyle.error_text_style(),
+                            ),
+                          )
+                        : Container(
+                            margin: EdgeInsets.only(top: 60.h),
+                          ),
+                  ),
+        
+                  //
+                  SaveButton(),
+                ],
+              ),
             ),
           ),
         ),
