@@ -1,11 +1,14 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dafa/app/core/values/app_colors.dart';
 import 'package:dafa/app/core/values/app_text_style.dart';
-import 'package:dafa/app/models/message.dart';
+import 'package:dafa/app/modules/anonymous_chat/anonymous_chat_controller.dart';
+import 'package:dafa/app/modules/anonymous_chat/widgets/add_message_field.dart';
+import 'package:dafa/app/modules/anonymous_chat/widgets/like.dart';
+import 'package:dafa/app/modules/anonymous_chat/widgets/report.dart';
+import 'package:dafa/app/modules/anonymous_chat/widgets/send_message_button.dart';
 import 'package:dafa/app/modules/chat/chat_controller.dart';
-import 'package:dafa/app/modules/chat/widgets/add_message_field.dart';
-import 'package:dafa/app/modules/chat/widgets/report.dart';
-import 'package:dafa/app/modules/chat/widgets/send_message_button.dart';
 import 'package:dafa/app/modules/sign_in/sign_in_controller.dart';
 import 'package:dafa/app/routes/app_routes.dart';
 import 'package:dafa/app/services/database_service.dart';
@@ -14,81 +17,194 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-class MessageScreen extends StatefulWidget {
-  MessageScreen({super.key});
+class AnonymouseMessageScreen extends StatefulWidget {
+  const AnonymouseMessageScreen({super.key});
 
   @override
-  State<MessageScreen> createState() => _MessageScreenState();
+  State<AnonymouseMessageScreen> createState() =>
+      _AnonymouseMessageScreenState();
 }
 
-class _MessageScreenState extends State<MessageScreen> {
-  final ChatController chatController = Get.find<ChatController>();
+class _AnonymouseMessageScreenState extends State<AnonymouseMessageScreen> {
+  final AnonymousChatController anonymousChatController =
+      Get.find<AnonymousChatController>();
 
   final SignInController signInController = Get.find<SignInController>();
 
   final FirebaseListenerService firebaseListenerService =
       FirebaseListenerService();
 
-  DatabaseService databaseService = DatabaseService();
+  final DatabaseService databaseService = DatabaseService();
+
+  final ChatController chatController = Get.find<ChatController>();
 
   Stream<QuerySnapshot> messageStream = FirebaseFirestore.instance
       .collection('messages')
       .orderBy('time', descending: true)
       .snapshots();
 
+  Duration remainingTime = Duration(seconds: 180);
+  Timer? timer;
+
   @override
   void initState() {
     super.initState();
-    chatController.UpdateIsFirstTimeScroll(true);
+    anonymousChatController.UpdateIsFirstTimeScroll(true);
+    anonymousChatController.UpdateIsMatch(false);
+    anonymousChatController.UpdateIsFirstTimeLike(true);
+    firebaseListenerService.LoadCompatibleList();
+    _startTimer();
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
+
+  void _startTimer() {
+    timer = Timer.periodic(
+      Duration(seconds: 1),
+      (timer) {
+        if (remainingTime > Duration.zero) {
+          setState(() {
+            remainingTime -= Duration(seconds: 1);
+            if (anonymousChatController.isMatch == false &&
+                signInController.compatibleList.contains(signInController
+                        .matchList[anonymousChatController.currIndex.value]
+                        .user!
+                        .phoneNumber) ==
+                    true) {
+              int index = 0;
+              if (chatController.compatibleUserList.length <
+                  signInController.compatibleList.length) {
+                for (int i = 0;
+                    i < signInController.matchListForChat.length;
+                    i++) {
+                  for (int j = 0;
+                      j < signInController.compatibleList.length;
+                      j++) {
+                    if (signInController
+                                .matchListForChat[i].user!.phoneNumber ==
+                            signInController.compatibleList[j] &&
+                        chatController.compatibleUserList.contains(
+                                signInController.matchListForChat[i]) ==
+                            false) {
+                      chatController.compatibleUserList
+                          .add(signInController.matchListForChat[i]);
+                      if (signInController.compatibleList[j] ==
+                          signInController
+                              .matchList[
+                                  anonymousChatController.currIndex.value]
+                              .user!
+                              .phoneNumber) {
+                        index = chatController.compatibleUserList.length - 1;
+                      }
+                    }
+                  }
+                }
+              }
+
+              chatController.UpdateCurrIndex(index);
+              anonymousChatController.UpdateIsMatch(true);
+              anonymousChatController.UpdateIsSearching(false);
+              signInController.user.isSearching = false;
+              databaseService.UpdateUserData(signInController.user);
+              Get.toNamed(AppRoutes.message);
+            }
+            if (anonymousChatController.isMatch) timer.cancel();
+          });
+        } else {
+          if (signInController.dislikeList.contains(signInController
+                  .matchList[anonymousChatController.currIndex.value]
+                  .user!
+                  .phoneNumber) ==
+              false) {
+            signInController.dislikeList.add(signInController
+                .matchList[anonymousChatController.currIndex.value]
+                .user!
+                .phoneNumber);
+            databaseService.UpdateMatchedList();
+          }
+          anonymousChatController.UpdateIsSearching(false);
+          signInController.user.isSearching = false;
+          databaseService.UpdateUserData(signInController.user);
+          Get.toNamed(AppRoutes.anonymous_chat);
+          timer.cancel();
+        }
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: PopScope(
-        canPop: false,
+        onPopInvoked: (didPop) {
+          if (signInController.dislikeList.contains(signInController
+                  .matchList[anonymousChatController.currIndex.value]
+                  .user!
+                  .phoneNumber) ==
+              false) {
+            signInController.dislikeList.add(signInController
+                .matchList[anonymousChatController.currIndex.value]
+                .user!
+                .phoneNumber);
+            databaseService.UpdateMatchedList();
+          }
+          anonymousChatController.UpdateIsSearching(false);
+          signInController.user.isSearching = false;
+          databaseService.UpdateUserData(signInController.user);
+          timer?.cancel();
+        },
         child: Scaffold(
+          backgroundColor: AppColors.backgroundColor,
           appBar: AppBar(
+            flexibleSpace: Container(color: AppColors.backgroundColor),
             titleSpacing: 2,
             leading: GestureDetector(
               onTap: () {
-                Get.toNamed(AppRoutes.chat);
+                if (signInController.dislikeList.contains(signInController
+                        .matchList[anonymousChatController.currIndex.value]
+                        .user!
+                        .phoneNumber) ==
+                    false) {
+                  signInController.dislikeList.add(signInController
+                      .matchList[anonymousChatController.currIndex.value]
+                      .user!
+                      .phoneNumber);
+                  databaseService.UpdateMatchedList();
+                }
+                anonymousChatController.UpdateIsSearching(false);
+                signInController.user.isSearching = false;
+                databaseService.UpdateUserData(signInController.user);
+                Get.back();
+                timer?.cancel();
               },
-              child: Icon(Icons.arrow_back),
+              child: Icon(
+                Icons.arrow_back,
+                color: AppColors.white,
+              ),
             ),
             title: ListTile(
-              leading: GestureDetector(
-                onTap: () {
-                  Get.toNamed(AppRoutes.view_profile);
-                },
-                child: CircleAvatar(
-                  backgroundImage: NetworkImage(chatController
-                      .compatibleUserList[chatController.currIndex.value]
-                      .user!
-                      .images
-                      .first),
-                ),
+              leading: CircleAvatar(
+                backgroundImage:
+                    ExactAssetImage('assets/images/anonymous_avatar.jpg'),
               ),
               title: Text(
-                chatController
-                    .compatibleUserList[chatController.currIndex.value]
+                signInController
+                    .matchList[anonymousChatController.currIndex.value]
                     .user!
                     .name,
-                style: CustomTextStyle.profileHeader(AppColors.black),
+                style: CustomTextStyle.profileHeader(AppColors.white),
               ),
-              subtitle: Obx(
-                () => Text(
-                  (signInController.listUsersOnlineState[chatController
-                              .compatibleUserList[
-                                  chatController.currIndex.value]
-                              .user!
-                              .phoneNumber] ==
-                          true)
-                      ? 'online'
-                      : 'offline',
-                ),
-              ),
-              trailing: Report(chatController: chatController),
+              subtitle: remainingTime.inSeconds % 60 < 10
+                  ? Text(
+                      '0${remainingTime.inMinutes.toString()} : 0${(remainingTime.inSeconds % 60).toString()}')
+                  : Text(
+                      '0${remainingTime.inMinutes.toString()} : ${(remainingTime.inSeconds % 60).toString()}'),
+              trailing:
+                  Report(anonymousChatController: anonymousChatController),
             ),
           ),
           body: Stack(
@@ -106,7 +222,7 @@ class _MessageScreenState extends State<MessageScreen> {
                     }
                     return ListView.builder(
                       reverse: true,
-                      controller: chatController.scrollController,
+                      controller: anonymousChatController.scrollController,
                       itemCount: snapshot.data != null
                           ? snapshot.data!.docs.length
                           : 0,
@@ -120,18 +236,17 @@ class _MessageScreenState extends State<MessageScreen> {
                         DateTime date = time.toDate();
                         String sender = message['sender'];
                         String receiver = message['receiver'];
-
-                        if ((chatController
-                                        .compatibleUserList[
-                                            chatController.currIndex.value]
+                        if ((signInController
+                                        .matchList[anonymousChatController
+                                            .currIndex.value]
                                         .user!
                                         .phoneNumber ==
                                     sender &&
                                 signInController.user.phoneNumber ==
                                     receiver) ||
-                            (chatController
-                                        .compatibleUserList[
-                                            chatController.currIndex.value]
+                            (signInController
+                                        .matchList[anonymousChatController
+                                            .currIndex.value]
                                         .user!
                                         .phoneNumber ==
                                     receiver &&
@@ -171,29 +286,24 @@ class _MessageScreenState extends State<MessageScreen> {
                                 textAlign: TextAlign.end,
                               ),
                             );
-                          } else if (chatController
-                                  .compatibleUserList[
-                                      chatController.currIndex.value]
+                          } else if (signInController
+                                  .matchList[
+                                      anonymousChatController.currIndex.value]
                                   .user!
                                   .phoneNumber ==
                               sender) {
-                            if (chatController.reportMessages
+                            if (anonymousChatController.reportMessages
                                     .contains(content) ==
                                 false)
-                              chatController.reportMessages.add(content);
+                              anonymousChatController.reportMessages
+                                  .add(content);
                             return ListTile(
                               leading: Container(
                                 height: 80.h,
                                 width: 80.w,
                                 child: CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                    chatController
-                                        .compatibleUserList[
-                                            chatController.currIndex.value]
-                                        .user!
-                                        .images
-                                        .first,
-                                  ),
+                                  backgroundImage: ExactAssetImage(
+                                      'assets/images/anonymous_avatar.jpg'),
                                 ),
                               ),
                               title: Column(
@@ -208,7 +318,7 @@ class _MessageScreenState extends State<MessageScreen> {
                                     child: Text(
                                       content,
                                       style: CustomTextStyle.messageStyle(
-                                          AppColors.black),
+                                          AppColors.white),
                                     ),
                                     decoration: BoxDecoration(
                                       color: AppColors.receive,
@@ -250,22 +360,24 @@ class _MessageScreenState extends State<MessageScreen> {
                             left: 20.w,
                             bottom: 40.h,
                           ),
-                          child:
-                              AddMessageField(chatController: chatController),
+                          child: AddMessageField(
+                            anonymousChatController: anonymousChatController,
+                          ),
                           decoration: BoxDecoration(
-                            color: AppColors.white,
+                            color: AppColors.transparent,
                           ),
                         ),
                       ),
                       Container(
                         margin: EdgeInsets.only(
-                            left: 10.w, right: 20.w, bottom: 40.h),
+                            left: 10.w, right: 10.w, bottom: 40.h),
                         decoration: BoxDecoration(
                           gradient: AppColors.primaryColor,
                           shape: BoxShape.circle,
                         ),
                         child: SendMessageButton(),
                       ),
+                      LikeButton(),
                     ],
                   ),
                 ],

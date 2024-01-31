@@ -1,3 +1,6 @@
+import 'package:dafa/app/modules/anonymous_chat/anonymous_chat_binding.dart';
+import 'package:dafa/app/modules/anonymous_chat/screens/anonymous_chat_screen.dart';
+import 'package:dafa/app/modules/anonymous_chat/screens/anonymous_message_screen.dart';
 import 'package:dafa/app/modules/auth/screens/auth_screen.dart';
 import 'package:dafa/app/modules/auth/auth_binding.dart';
 import 'package:dafa/app/modules/chat/chat_binding.dart';
@@ -93,6 +96,16 @@ abstract class AppPages {
       name: AppRoutes.view_profile,
       page: () => ViewProfile(),
       binding: ChatBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.anonymous_chat,
+      page: () => AnonymousChatScreen(),
+      binding: AnonymousChatBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.anonymous_message,
+      page: () => AnonymouseMessageScreen(),
+      binding: AnonymousChatBinding(),
     ),
   ];
 }

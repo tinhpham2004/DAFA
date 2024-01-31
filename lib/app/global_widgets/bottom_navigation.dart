@@ -1,10 +1,9 @@
 import 'package:dafa/app/core/values/app_colors.dart';
-import 'package:dafa/app/core/values/app_icons.dart';
 import 'package:dafa/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
+// ignore: must_be_immutable
 class BottomNavigation extends StatefulWidget {
   late int onItem;
   BottomNavigation({super.key, required this.onItem});
@@ -33,7 +32,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
         }
       case 3:
         {
-          Get.toNamed(AppRoutes.anonym_chat);
+          Get.toNamed(AppRoutes.anonymous_chat);
           break;
         }
     }
@@ -41,30 +40,46 @@ class _BottomNavigationState extends State<BottomNavigation> {
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      type: BottomNavigationBarType.fixed,
-      items: <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          icon: Icon(Icons.person),
-          label: '',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.favorite),
-          label: '',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.chat),
-          label: '',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.chat_bubble),
-          label: '',
-        ),
-      ],
-      currentIndex: widget.onItem,
-      selectedItemColor: AppColors.secondaryColor,
-      unselectedItemColor: AppColors.thirdColor,
-      onTap: _onItemTapped,
+    return Container(
+      decoration: BoxDecoration(gradient: AppColors.primaryColor),
+      child: BottomNavigationBar(
+        backgroundColor: Colors.transparent,
+        type: BottomNavigationBarType.fixed,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.person,
+              color: AppColors.white,
+            ),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.favorite,
+              color: AppColors.white,
+            ),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.chat,
+              color: AppColors.white,
+            ),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.chat_bubble,
+              color: AppColors.white,
+            ),
+            label: '',
+          ),
+        ],
+        currentIndex: widget.onItem,
+        selectedItemColor: AppColors.secondaryColor,
+        unselectedItemColor: AppColors.thirdColor,
+        onTap: _onItemTapped,
+      ),
     );
   }
 }

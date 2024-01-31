@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 class ChatController extends GetxController {
   RxInt currIndex = 0.obs;
   List<MatchUser> compatibleUserList = [];
-  Map<String, Message> lastMessae = Map();
   TextEditingController messageController = TextEditingController();
   List<String> reportMessages = [];
   RxBool reportCheckbox = false.obs;
