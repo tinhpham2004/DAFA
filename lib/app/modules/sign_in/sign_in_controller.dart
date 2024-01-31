@@ -18,6 +18,10 @@ class SignInController extends GetxController {
   List<String> dislikeList = [];
   List<String> compatibleList = [];
   List<MatchUser> matchListForChat = [];
+  RxMap<String, bool> listUsersOnlineState = RxMap<String, bool>();
+  RxMap<String, bool> listUsersSearchingState = RxMap<String, bool>();
+  Map<String, String> listUsersGender = Map();
+  Map<String, List<String>> graphMatchUser = Map();
 
   void UpdateSignInState(String data) => signInState.value = data;
   void UpdateUser(AppUser data) => user = data;
