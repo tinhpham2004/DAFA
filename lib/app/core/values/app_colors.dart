@@ -20,5 +20,6 @@ class AppColors {
   static const Color send = Colors.blue;
   static const Color receive = Color.fromARGB(255, 208, 208, 208);
   static const Color active = Color.fromARGB(255, 60, 213, 65);
+  static const Color warning = Color.fromARGB(255, 220, 215, 50);
   static const Color transparent = Colors.transparent;
 }
