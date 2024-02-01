@@ -89,6 +89,7 @@ class _AnonymousChatScreenState extends State<AnonymousChatScreen> {
   }
 
   void searchMatchUser() {
+    remainingTime = Duration(seconds: 60);
     timer = Timer.periodic(Duration(seconds: 1), (timer) {
       if (remainingTime > Duration.zero) {
         setState(() {
@@ -145,10 +146,9 @@ class _AnonymousChatScreenState extends State<AnonymousChatScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    anonymousChatController.isSearching.value == false ||
-                            remainingTime == Duration.zero
-                        ? 'Press the button to start searching your soulmate.'
-                        : 'Don\'t leave! Just wait for a moment, we\'re looking for your soulmate.',
+                    anonymousChatController.isSearching.value == false
+                        ? 'Who will you match with today? Tap search to find out!'
+                        : 'Searching for your perfect match! Buckle up, we\'ll connect you in under 60 seconds. Feeling impatient? Tap the X to cancel.',
                     textAlign: TextAlign.center,
                     style: CustomTextStyle.cardTextStyle(AppColors.white),
                   ),
@@ -173,8 +173,7 @@ class _AnonymousChatScreenState extends State<AnonymousChatScreen> {
                           border: Border.all(color: AppColors.white, width: 3),
                           shape: BoxShape.circle),
                       child: Icon(
-                        anonymousChatController.isSearching.value == false ||
-                                remainingTime == Duration.zero
+                        anonymousChatController.isSearching.value == false
                             ? Icons.search
                             : Icons.close_rounded,
                         color: AppColors.white,

@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dafa/app/core/values/app_colors.dart';
+import 'package:dafa/app/core/values/app_icons.dart';
 import 'package:dafa/app/core/values/app_text_style.dart';
 import 'package:dafa/app/models/match_user.dart';
 import 'package:dafa/app/modules/sign_in/sign_in_controller.dart';
@@ -75,10 +77,27 @@ class CardSwipable extends StatelessWidget {
                       children: [
                         signInController.matchList[index].user!.images.length >
                                 0
-                            ? Image.network(
-                                signInController
+                            // ? Image.network(
+                            //     signInController
+                            //         .matchList[index].user!.images[0],
+                            //     fit: BoxFit.cover,
+                            //   )
+                            ? CachedNetworkImage(
+                                imageUrl: signInController
                                     .matchList[index].user!.images[0],
-                                fit: BoxFit.cover,
+                                imageBuilder: (context, imageProvider) {
+                                  return Container(
+                                    height: 1075.h,
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image: imageProvider,
+                                            fit: BoxFit.cover)),
+                                  );
+                                },
+                                placeholder: (context, url) {
+                                  return CircularProgressIndicator();
+                                },
                               )
                             : Container(),
                         Container(
@@ -205,10 +224,26 @@ class CardSwipable extends StatelessWidget {
                                       child: ClipRRect(
                                         borderRadius:
                                             BorderRadius.circular(20.r),
-                                        child: Image.network(
-                                          signInController
+                                        // child: Image.network(
+                                        //   signInController
+                                        //       .matchList[index].user!.images[1],
+                                        //   fit: BoxFit.cover,
+                                        // ),
+                                        child: CachedNetworkImage(
+                                          imageUrl: signInController
                                               .matchList[index].user!.images[1],
-                                          fit: BoxFit.cover,
+                                          imageBuilder:
+                                              (context, imageProvider) {
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                      image: imageProvider,
+                                                      fit: BoxFit.cover)),
+                                            );
+                                          },
+                                          placeholder: (context, url) {
+                                            return CircularProgressIndicator();
+                                          },
                                         ),
                                       ),
                                     )
@@ -225,10 +260,26 @@ class CardSwipable extends StatelessWidget {
                                       child: ClipRRect(
                                         borderRadius:
                                             BorderRadius.circular(20.r),
-                                        child: Image.network(
-                                          signInController
+                                        // child: Image.network(
+                                        //   signInController
+                                        //       .matchList[index].user!.images[2],
+                                        //   fit: BoxFit.cover,
+                                        // ),
+                                        child: CachedNetworkImage(
+                                          imageUrl: signInController
                                               .matchList[index].user!.images[2],
-                                          fit: BoxFit.cover,
+                                          imageBuilder:
+                                              (context, imageProvider) {
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                      image: imageProvider,
+                                                      fit: BoxFit.cover)),
+                                            );
+                                          },
+                                          placeholder: (context, url) {
+                                            return CircularProgressIndicator();
+                                          },
                                         ),
                                       ),
                                     )
@@ -245,10 +296,26 @@ class CardSwipable extends StatelessWidget {
                                       child: ClipRRect(
                                         borderRadius:
                                             BorderRadius.circular(20.r),
-                                        child: Image.network(
-                                          signInController
+                                        // child: Image.network(
+                                        //   signInController
+                                        //       .matchList[index].user!.images[3],
+                                        //   fit: BoxFit.cover,
+                                        // ),
+                                        child: CachedNetworkImage(
+                                          imageUrl: signInController
                                               .matchList[index].user!.images[3],
-                                          fit: BoxFit.cover,
+                                          imageBuilder:
+                                              (context, imageProvider) {
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                      image: imageProvider,
+                                                      fit: BoxFit.cover)),
+                                            );
+                                          },
+                                          placeholder: (context, url) {
+                                            return CircularProgressIndicator();
+                                          },
                                         ),
                                       ),
                                     )
@@ -265,10 +332,26 @@ class CardSwipable extends StatelessWidget {
                                       child: ClipRRect(
                                         borderRadius:
                                             BorderRadius.circular(20.r),
-                                        child: Image.network(
-                                          signInController
+                                        // child: Image.network(
+                                        //   signInController
+                                        //       .matchList[index].user!.images[4],
+                                        //   fit: BoxFit.cover,
+                                        // ),
+                                        child: CachedNetworkImage(
+                                          imageUrl: signInController
                                               .matchList[index].user!.images[4],
-                                          fit: BoxFit.cover,
+                                          imageBuilder:
+                                              (context, imageProvider) {
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                      image: imageProvider,
+                                                      fit: BoxFit.cover)),
+                                            );
+                                          },
+                                          placeholder: (context, url) {
+                                            return CircularProgressIndicator();
+                                          },
                                         ),
                                       ),
                                     )
@@ -286,10 +369,26 @@ class CardSwipable extends StatelessWidget {
                                       child: ClipRRect(
                                         borderRadius:
                                             BorderRadius.circular(20.r),
-                                        child: Image.network(
-                                          signInController
+                                        // child: Image.network(
+                                        //   signInController
+                                        //       .matchList[index].user!.images[5],
+                                        //   fit: BoxFit.cover,
+                                        // ),
+                                        child: CachedNetworkImage(
+                                          imageUrl: signInController
                                               .matchList[index].user!.images[5],
-                                          fit: BoxFit.cover,
+                                          imageBuilder:
+                                              (context, imageProvider) {
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                      image: imageProvider,
+                                                      fit: BoxFit.cover)),
+                                            );
+                                          },
+                                          placeholder: (context, url) {
+                                            return CircularProgressIndicator();
+                                          },
                                         ),
                                       ),
                                     )
@@ -305,7 +404,7 @@ class CardSwipable extends StatelessWidget {
                   alignment: WrapAlignment.center,
                   children: [
                     Obx(
-                      () => swipeController.swipeState == 'left' &&
+                      () => swipeController.swipeState.value == 'left' &&
                               swipeController.curIndex.value == index
                           ? Container(
                               margin: EdgeInsets.only(right: 400.w),
@@ -328,7 +427,7 @@ class CardSwipable extends StatelessWidget {
                           : Container(),
                     ),
                     Obx(
-                      () => swipeController.swipeState == 'right' &&
+                      () => swipeController.swipeState.value == 'right' &&
                               swipeController.curIndex.value == index
                           ? Container(
                               margin: EdgeInsets.only(left: 500.w),
@@ -358,13 +457,9 @@ class CardSwipable extends StatelessWidget {
             return Container(
               child: Column(
                 children: [
-                  Icon(
-                    Icons.mood_bad_rounded,
-                    size: 100.sp,
-                    color: AppColors.red,
-                  ),
+                  AppIcons.logo,
                   Text(
-                    'What a pity! There aren\'t any people who are suitable for you.',
+                    'Love guru alert! You\'ve seen everyone! Take a breather, recharge your love radar, and new singles will appear like magic ✨.',
                     style: CustomTextStyle.h2(AppColors.backgroundColor),
                     textAlign: TextAlign.center,
                   ),
