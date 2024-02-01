@@ -15,12 +15,15 @@ class SignUpController extends GetxController {
   RxString userId = ''.obs;
   RxBool checkOTP = true.obs;
   RxString validPassword = ''.obs;
+  RxInt validPhoneNumber = 0.obs;
 
   void UpdateVerificationId(String data) => verificationId.value = data;
 
   void UpdateUserId(String data) => userId.value = data;
 
   void UpdateCheckOTP() => checkOTP.value = false;
+
+  void UpdateValidPhoneNumber(int data) => validPhoneNumber.value = data;
 
   void UpdateValidPassword(String data) => validPassword.value = data;
 }

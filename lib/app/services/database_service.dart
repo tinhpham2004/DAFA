@@ -35,6 +35,7 @@ class DatabaseService {
       'isOnline': user.isOnline,
       'isSearching': user.isSearching,
       'lastActive': user.lastActive,
+      'isBanned': user.isBanned,
     });
     await matchedListCollection.doc(user.phoneNumber).set(
       {
@@ -57,8 +58,13 @@ class DatabaseService {
       (DocumentSnapshot documentSnapshot) {
         if (documentSnapshot.exists) {
           String actualPassword = documentSnapshot.get("password");
+          bool isBanned = documentSnapshot.get("isBanned");
           if (password == actualPassword) {
-            signInController.UpdateSignInState('Sign in successfully.');
+            if (isBanned == false)
+              signInController.UpdateSignInState('Sign in successfully.');
+            else
+              signInController.UpdateSignInState(
+                  'We regret to inform you that your account access has been terminated due to policy violations.');
           } else {
             signInController.UpdateSignInState(
                 'The account or password is incorrect.');
@@ -150,6 +156,7 @@ class DatabaseService {
             ((value.data() as dynamic)['isSearching'] as dynamic);
         user.lastActive =
             ((value.data() as dynamic)['lastActive'] as Timestamp).toDate();
+        user.isBanned = ((value.data() as dynamic)['isBanned'] as dynamic);
       },
     );
     return user;
@@ -194,6 +201,7 @@ class DatabaseService {
                 ((value.data() as dynamic)['isSearching'] as dynamic);
             user.lastActive =
                 ((value.data() as dynamic)['lastActive'] as Timestamp).toDate();
+            user.isBanned = ((value.data() as dynamic)['isBanned'] as dynamic);
 
             signInController.listUsersGender[user.phoneNumber] = user.gender;
 
@@ -403,5 +411,34 @@ class DatabaseService {
         }
       },
     );
+  }
+
+  Future<bool> CanBeBanned(String reportedUser) async {
+    bool canBeBanned = false;
+    await reportCollection.doc(reportedUser).get().then(
+      (docs) async {
+        final reportersList =
+            (docs.data() as dynamic)['reporters'] as List<dynamic>;
+        if (reportersList.length == 5) canBeBanned = true;
+      },
+    );
+    return canBeBanned;
+  }
+
+  Future<void> BanUser(String reportedUser) async {
+    await usersCollection.doc(reportedUser).update({
+      'isBanned': true,
+    });
+  }
+
+  Future<bool> IsPhoneNumberExisted(String phoneNumber) async {
+    bool checkPhoneNumber = false;
+    await usersCollection.get().then((value) {
+      List<DocumentSnapshot> users = value.docs;
+      users.forEach((element) {
+        if (element.id == phoneNumber) checkPhoneNumber = true;
+      });
+    });
+    return checkPhoneNumber;
   }
 }

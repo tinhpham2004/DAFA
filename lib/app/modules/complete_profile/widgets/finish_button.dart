@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dafa/app/core/values/app_colors.dart';
+import 'package:dafa/app/core/values/app_text_style.dart';
 import 'package:dafa/app/models/app_user.dart';
 import 'package:dafa/app/models/match_user.dart';
 import 'package:dafa/app/modules/complete_profile/complete_profile_controller.dart';
@@ -39,6 +40,39 @@ class FinishButton extends StatelessWidget {
       ),
       child: ElevatedButton(
         onPressed: () async {
+          showDialog(
+            barrierDismissible: false,
+            context: context,
+            builder: (context) {
+              return Dialog(
+                child: Padding(
+                  padding: EdgeInsets.all(16.sp),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                          padding: EdgeInsets.only(
+                            top: 150.h,
+                            bottom: 150.h,
+                          ),
+                          child: CircularProgressIndicator()),
+                      Container(
+                        margin: EdgeInsets.only(bottom: 40.h),
+                        child: Text(
+                          'Please, wait for a moment!',
+                          style: CustomTextStyle.cardTextStyle(
+                            AppColors.black,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
           List<String> images = [];
           int count = 0;
 
@@ -103,6 +137,7 @@ class FinishButton extends StatelessWidget {
                 distance: 0,
               ),
             );
+            Get.back();
             Get.toNamed(AppRoutes.swipe);
           }
         },

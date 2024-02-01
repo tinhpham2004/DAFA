@@ -24,28 +24,144 @@ class ReportButton extends StatelessWidget {
     return Obx(() => GestureDetector(
           onTap: () async {
             if (chatController.reportCheckbox.value == true) {
-              if (await databaseService.IsReported(
-                      chatController
-                          .compatibleUserList[
-                              chatController.currIndex.value]
-                          .user!
-                          .phoneNumber) ==
+              if (await databaseService.IsReported(chatController
+                      .compatibleUserList[chatController.currIndex.value]
+                      .user!
+                      .phoneNumber) ==
                   false) {
-                if (await openAIService
-                        .CommunityRulesViolationCheck(
-                            chatController.reportMessages) ==
+                if (await openAIService.CommunityRulesViolationCheck(
+                        chatController.reportMessages) ==
                     true) {
-                  databaseService.Report(chatController
-                      .compatibleUserList[
-                          chatController.currIndex.value]
+                  await databaseService.Report(chatController
+                      .compatibleUserList[chatController.currIndex.value]
                       .user!
                       .phoneNumber);
-                  print('Success');
+                  if (await databaseService.CanBeBanned(chatController
+                      .compatibleUserList[chatController.currIndex.value]
+                      .user!
+                      .phoneNumber)) {
+                    databaseService.BanUser(chatController
+                        .compatibleUserList[chatController.currIndex.value]
+                        .user!
+                        .phoneNumber);
+                  }
+                  await showDialog(
+                    context: context,
+                    builder: (context) {
+                      return Dialog(
+                        child: Padding(
+                          padding: EdgeInsets.all(16.sp),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                height: 300.h,
+                                child: Icon(
+                                  Icons.check,
+                                  size: 100.sp,
+                                  color: AppColors.white,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: AppColors.active,
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(bottom: 40.h),
+                                child: Text(
+                                  'Your report has been submitted successfully. We take community safety seriously and will address this issue accordingly.',
+                                  style: CustomTextStyle.cardTextStyle(
+                                    AppColors.black,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
                 } else {
-                  print('Not violate community rules');
+                  await showDialog(
+                    context: context,
+                    builder: (context) {
+                      return Dialog(
+                        child: Padding(
+                          padding: EdgeInsets.all(16.sp),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                height: 300.h,
+                                child: Icon(
+                                  Icons.close,
+                                  size: 100.sp,
+                                  color: AppColors.white,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: AppColors.red,
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(bottom: 40.h),
+                                child: Text(
+                                  'Thank you for bringing this to our attention. We have reviewed the user\'s activity and haven\'t found any violations of our community guidelines at this time.',
+                                  style: CustomTextStyle.cardTextStyle(
+                                    AppColors.black,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
                 }
               } else {
-                print('You reported this person');
+                await showDialog(
+                  context: context,
+                  builder: (context) {
+                    return Dialog(
+                      child: Padding(
+                        padding: EdgeInsets.all(16.sp),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              height: 300.h,
+                              child: Icon(
+                                Icons.warning_rounded,
+                                size: 100.sp,
+                                color: AppColors.white,
+                              ),
+                              decoration: BoxDecoration(
+                                color: AppColors.warning,
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(bottom: 40.h),
+                              child: Text(
+                                'Looks like you\'ve already flagged this user\'s behavior. We\'re on it! Rest assured, we take all reports seriously.',
+                                style: CustomTextStyle.cardTextStyle(
+                                  AppColors.black,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
               }
             }
           },
@@ -53,10 +169,9 @@ class ReportButton extends StatelessWidget {
             margin: EdgeInsets.only(top: 20.h, bottom: 40.h),
             padding: EdgeInsets.all(15.sp),
             decoration: BoxDecoration(
-              color:
-                  chatController.reportCheckbox.value == true
-                      ? AppColors.red
-                      : AppColors.disabledBackground,
+              color: chatController.reportCheckbox.value == true
+                  ? AppColors.red
+                  : AppColors.disabledBackground,
               borderRadius: BorderRadius.circular(20.r),
             ),
             child: Text(

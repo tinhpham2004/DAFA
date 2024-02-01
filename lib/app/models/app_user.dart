@@ -15,6 +15,7 @@ class AppUser {
   String hobby = '';
   bool isOnline = false;
   bool isSearching = false;
+  bool isBanned = false;
   DateTime lastActive = DateTime.now();
   AppUser({
     required this.phoneNumber,

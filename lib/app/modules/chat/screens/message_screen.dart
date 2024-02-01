@@ -54,7 +54,7 @@ class _MessageScreenState extends State<MessageScreen> {
               onTap: () {
                 Get.toNamed(AppRoutes.chat);
               },
-              child: Icon(Icons.arrow_back),
+              child: Icon(Icons.arrow_back_ios_new),
             ),
             title: ListTile(
               leading: GestureDetector(

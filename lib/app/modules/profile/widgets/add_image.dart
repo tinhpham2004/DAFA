@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dafa/app/core/values/app_colors.dart';
 import 'package:dafa/app/modules/profile/profile_controller.dart';
 import 'package:dafa/app/modules/sign_in/sign_in_controller.dart';
@@ -63,9 +64,23 @@ class AddImage extends StatelessWidget {
                       ),
                       child: profileController.imgUrl[index].value.contains(
                               'https://firebasestorage.googleapis.com/v0/b/dafa-98847.appspot.com')
-                          ? Image.network(
-                              profileController.imgUrl[index].value,
-                              fit: BoxFit.cover,
+                          // ? Image.network(
+                          //     profileController.imgUrl[index].value,
+                          //     fit: BoxFit.cover,
+                          //   )
+                          ? CachedNetworkImage(
+                              imageUrl: profileController.imgUrl[index].value,
+                              imageBuilder: (context, imageProvider) {
+                                return Container(
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          image: imageProvider,
+                                          fit: BoxFit.cover)),
+                                );
+                              },
+                              placeholder: (context, url) {
+                                return CircularProgressIndicator();
+                              },
                             )
                           : Image.file(
                               File(profileController.imgUrl[index].value),
