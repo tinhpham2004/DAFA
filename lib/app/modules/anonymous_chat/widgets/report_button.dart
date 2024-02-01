@@ -35,16 +35,136 @@ class ReportButton extends StatelessWidget {
                 if (await openAIService.CommunityRulesViolationCheck(
                         anonymousChatController.reportMessages) ==
                     true) {
-                  databaseService.Report(signInController
+                  await databaseService.Report(signInController
                       .matchList[anonymousChatController.currIndex.value]
                       .user!
                       .phoneNumber);
-                  print('Success');
+                  if (await databaseService.CanBeBanned(signInController
+                      .matchList[anonymousChatController.currIndex.value]
+                      .user!
+                      .phoneNumber)) {
+                    databaseService.BanUser(signInController
+                        .matchList[anonymousChatController.currIndex.value]
+                        .user!
+                        .phoneNumber);
+                  }
+                  await showDialog(
+                    context: context,
+                    builder: (context) {
+                      return Dialog(
+                        child: Padding(
+                          padding: EdgeInsets.all(16.sp),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                height: 300.h,
+                                child: Icon(
+                                  Icons.check,
+                                  size: 100.sp,
+                                  color: AppColors.white,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: AppColors.active,
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(bottom: 40.h),
+                                child: Text(
+                                  'Your report has been submitted successfully. We take community safety seriously and will address this issue accordingly.',
+                                  style: CustomTextStyle.cardTextStyle(
+                                    AppColors.black,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
                 } else {
-                  print('Not violate community rules');
+                  await showDialog(
+                    context: context,
+                    builder: (context) {
+                      return Dialog(
+                        child: Padding(
+                          padding: EdgeInsets.all(16.sp),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                height: 300.h,
+                                child: Icon(
+                                  Icons.close,
+                                  size: 100.sp,
+                                  color: AppColors.white,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: AppColors.red,
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(bottom: 40.h),
+                                child: Text(
+                                  'Thank you for bringing this to our attention. We have reviewed the user\'s activity and haven\'t found any violations of our community guidelines at this time.',
+                                  style: CustomTextStyle.cardTextStyle(
+                                    AppColors.black,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
                 }
               } else {
-                print('You reported this person');
+                await showDialog(
+                  context: context,
+                  builder: (context) {
+                    return Dialog(
+                      child: Padding(
+                        padding: EdgeInsets.all(16.sp),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              height: 300.h,
+                              child: Icon(
+                                Icons.warning_rounded,
+                                size: 100.sp,
+                                color: AppColors.white,
+                              ),
+                              decoration: BoxDecoration(
+                                color: AppColors.warning,
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(bottom: 40.h),
+                              child: Text(
+                                'Looks like you\'ve already flagged this user\'s behavior. We\'re on it! Rest assured, we take all reports seriously.',
+                                style: CustomTextStyle.cardTextStyle(
+                                  AppColors.black,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
               }
             }
           },

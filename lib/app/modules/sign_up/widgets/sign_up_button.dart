@@ -1,4 +1,5 @@
 import 'package:dafa/app/core/values/app_colors.dart';
+import 'package:dafa/app/core/values/app_text_style.dart';
 import 'package:dafa/app/models/app_user.dart';
 import 'package:dafa/app/modules/sign_up/sign_up_controller.dart';
 import 'package:dafa/app/routes/app_routes.dart';
@@ -24,7 +25,7 @@ class SignUpButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(60.r),
       ),
       child: ElevatedButton(
-        onPressed: () {
+        onPressed: () async {
           if (signUpController.passwordController.text.length >= 6 &&
               signUpController.passwordController.text
                   .contains(RegExp(r'[A-Z]')) &&
@@ -39,6 +40,44 @@ class SignUpButton extends StatelessWidget {
               user.phoneNumber = '0' + user.phoneNumber;
             user.password = signUpController.passwordController.text;
             databaseService.InsertUserData(user);
+            await showDialog(
+              context: context,
+              builder: (context) {
+                return Dialog(
+                  child: Padding(
+                    padding: EdgeInsets.all(16.sp),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          height: 300.h,
+                          child: Icon(
+                            Icons.check,
+                            size: 100.sp,
+                            color: AppColors.white,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppColors.active,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(bottom: 40.h),
+                          child: Text(
+                            'Cogratulations, your account has been successfully created!',
+                            style: CustomTextStyle.cardTextStyle(
+                              AppColors.black,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            );
             Get.toNamed(AppRoutes.sign_in);
           } else {
             signUpController.UpdateValidPassword('Invalid password.');

@@ -82,13 +82,26 @@ class SignUpScreen extends StatelessWidget {
                       ),
 
                       //
-                      Container(
-                        margin: EdgeInsets.only(top: 100.h),
-                        child: Text(
-                          'We will send a text with verification code via this phone number.',
-                          style: CustomTextStyle.h3(AppColors.thirdColor),
-                        ),
-                      ),
+                      Obx(() => Container(
+                            margin: EdgeInsets.only(top: 100.h),
+                            child: signUpController.validPhoneNumber.value == 0
+                                ? Text(
+                                    'We will send a text with verification code via this phone number.',
+                                    style: CustomTextStyle.h3(
+                                        AppColors.thirdColor),
+                                  )
+                                : signUpController.validPhoneNumber.value == 1
+                                    ? Text(
+                                        'The phone number you entered is already associated with an account. Please log in or use a different number.',
+                                        style:
+                                            CustomTextStyle.error_text_style(),
+                                      )
+                                    : Text(
+                                        'Uh oh! You\'ve reached the maximum number of OTP requests allowed for your phone number in a 24-hour period. Please try again in 24 hours.',
+                                        style:
+                                            CustomTextStyle.error_text_style(),
+                                      ),
+                          )),
 
                       //
                       SendOTPButton(),

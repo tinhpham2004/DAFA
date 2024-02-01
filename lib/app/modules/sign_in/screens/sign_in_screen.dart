@@ -87,8 +87,10 @@ class SignInScreen extends StatelessWidget {
                           margin: EdgeInsets.only(top: 100.h),
                           child: Text(
                             signInController.signInState.value,
-                            style: signInController.signInState.value !=
-                                    'The account or password is incorrect.'
+                            style: signInController.signInState.value ==
+                                        'Sign in with your phone number and password that you signed up before.' ||
+                                    signInController.signInState.value ==
+                                        'Sign in successfully.'
                                 ? CustomTextStyle.h3(AppColors.thirdColor)
                                 : CustomTextStyle.error_text_style(),
                           ),
