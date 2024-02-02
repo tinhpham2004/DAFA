@@ -65,7 +65,7 @@ class ProfileScreen extends StatelessWidget {
                       },
                     ),
                   ),
-        
+
                   //
                   Container(
                     margin: EdgeInsets.only(top: 100.h),
@@ -90,7 +90,7 @@ class ProfileScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-        
+
                   //
                   Container(
                     margin: EdgeInsets.only(top: 100.h),
@@ -123,7 +123,7 @@ class ProfileScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-        
+
                   //
                   Container(
                     margin: EdgeInsets.only(top: 40.h, right: 20.w),
@@ -152,7 +152,7 @@ class ProfileScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-        
+
                   //
                   Container(
                     margin: EdgeInsets.only(top: 40.h, right: 20.w),
@@ -178,7 +178,7 @@ class ProfileScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-        
+
                   //
                   Container(
                     margin: EdgeInsets.only(top: 40.h, right: 20.w),
@@ -192,7 +192,7 @@ class ProfileScreen extends StatelessWidget {
                     child: Container(
                       padding: EdgeInsets.only(left: 20.w),
                       child: TextFormField(
-                        initialValue: "Man",
+                        initialValue: signInController.user.gender,
                         readOnly: true,
                         style: CustomTextStyle.h3(AppColors.black),
                         decoration: InputDecoration(
@@ -204,7 +204,7 @@ class ProfileScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-        
+
                   //
                   Container(
                     margin: EdgeInsets.only(top: 40.h, right: 20.w),
@@ -221,7 +221,7 @@ class ProfileScreen extends StatelessWidget {
                           profileController: profileController),
                     ),
                   ),
-        
+
                   //
                   Container(
                     margin: EdgeInsets.only(top: 40.h, right: 20.w),
@@ -251,7 +251,7 @@ class ProfileScreen extends StatelessWidget {
                             margin: EdgeInsets.only(top: 60.h),
                           ),
                   ),
-        
+
                   //
                   SaveButton(),
                 ],

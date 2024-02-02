@@ -41,6 +41,36 @@ class CardSwipable extends StatelessWidget {
                   .matchList[swipeController.curIndex.value].user!.phoneNumber);
               databaseService.UpdateCompatibleList(signInController
                   .matchList[swipeController.curIndex.value].user!.phoneNumber);
+              await showDialog(
+                context: context,
+                builder: (context) {
+                  return Dialog(
+                    child: Padding(
+                      padding: EdgeInsets.all(16.sp),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            height: 300.h,
+                            child: AppIcons.logo,
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(bottom: 40.h),
+                            child: Text(
+                              'Double tap magic! You and ${signInController.matchList[swipeController.curIndex.value].user!.name} are a match. Say hi and see where things go!✨',
+                              style: CustomTextStyle.cardTextStyle(
+                                AppColors.black,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              );
             }
             databaseService.UpdateMatchedList();
           }
@@ -174,44 +204,52 @@ class CardSwipable extends StatelessWidget {
                               ),
 
                               //
-                              Container(
-                                margin: EdgeInsets.only(top: 10.h),
-                                child: Wrap(
-                                  children: [
-                                    Icon(Icons.favorite_outline_sharp),
-                                    Container(
-                                      margin: EdgeInsets.only(left: 10.w),
-                                      child: Text(
-                                        (signInController
-                                            .matchList[index].user!.hobby),
-                                        style: CustomTextStyle.cardTextStyle(
-                                          AppColors.black,
-                                        ),
+                              signInController.matchList[index].user!.hobby !=
+                                      ''
+                                  ? Container(
+                                      margin: EdgeInsets.only(top: 10.h),
+                                      child: Wrap(
+                                        children: [
+                                          Icon(Icons.favorite_outline_sharp),
+                                          Container(
+                                            margin: EdgeInsets.only(left: 10.w),
+                                            child: Text(
+                                              (signInController.matchList[index]
+                                                  .user!.hobby),
+                                              style:
+                                                  CustomTextStyle.cardTextStyle(
+                                                AppColors.black,
+                                              ),
+                                            ),
+                                          )
+                                        ],
                                       ),
                                     )
-                                  ],
-                                ),
-                              ),
+                                  : Container(),
 
                               //
-                              Container(
-                                margin: EdgeInsets.only(top: 10.h),
-                                child: Wrap(
-                                  children: [
-                                    Icon(Icons.straighten_rounded),
-                                    Container(
-                                      margin: EdgeInsets.only(left: 10.w),
-                                      child: Text(
-                                        signInController
-                                            .matchList[index].user!.height,
-                                        style: CustomTextStyle.cardTextStyle(
-                                          AppColors.black,
-                                        ),
+                              signInController.matchList[index].user!.height !=
+                                      ''
+                                  ? Container(
+                                      margin: EdgeInsets.only(top: 10.h),
+                                      child: Wrap(
+                                        children: [
+                                          Icon(Icons.straighten_rounded),
+                                          Container(
+                                            margin: EdgeInsets.only(left: 10.w),
+                                            child: Text(
+                                              signInController.matchList[index]
+                                                  .user!.height,
+                                              style:
+                                                  CustomTextStyle.cardTextStyle(
+                                                AppColors.black,
+                                              ),
+                                            ),
+                                          )
+                                        ],
                                       ),
                                     )
-                                  ],
-                                ),
-                              ),
+                                  : Container(),
 
                               //
                               signInController.matchList[index].user!.images
@@ -224,11 +262,6 @@ class CardSwipable extends StatelessWidget {
                                       child: ClipRRect(
                                         borderRadius:
                                             BorderRadius.circular(20.r),
-                                        // child: Image.network(
-                                        //   signInController
-                                        //       .matchList[index].user!.images[1],
-                                        //   fit: BoxFit.cover,
-                                        // ),
                                         child: CachedNetworkImage(
                                           imageUrl: signInController
                                               .matchList[index].user!.images[1],
@@ -260,11 +293,6 @@ class CardSwipable extends StatelessWidget {
                                       child: ClipRRect(
                                         borderRadius:
                                             BorderRadius.circular(20.r),
-                                        // child: Image.network(
-                                        //   signInController
-                                        //       .matchList[index].user!.images[2],
-                                        //   fit: BoxFit.cover,
-                                        // ),
                                         child: CachedNetworkImage(
                                           imageUrl: signInController
                                               .matchList[index].user!.images[2],
@@ -296,11 +324,6 @@ class CardSwipable extends StatelessWidget {
                                       child: ClipRRect(
                                         borderRadius:
                                             BorderRadius.circular(20.r),
-                                        // child: Image.network(
-                                        //   signInController
-                                        //       .matchList[index].user!.images[3],
-                                        //   fit: BoxFit.cover,
-                                        // ),
                                         child: CachedNetworkImage(
                                           imageUrl: signInController
                                               .matchList[index].user!.images[3],
@@ -332,11 +355,6 @@ class CardSwipable extends StatelessWidget {
                                       child: ClipRRect(
                                         borderRadius:
                                             BorderRadius.circular(20.r),
-                                        // child: Image.network(
-                                        //   signInController
-                                        //       .matchList[index].user!.images[4],
-                                        //   fit: BoxFit.cover,
-                                        // ),
                                         child: CachedNetworkImage(
                                           imageUrl: signInController
                                               .matchList[index].user!.images[4],
@@ -369,11 +387,6 @@ class CardSwipable extends StatelessWidget {
                                       child: ClipRRect(
                                         borderRadius:
                                             BorderRadius.circular(20.r),
-                                        // child: Image.network(
-                                        //   signInController
-                                        //       .matchList[index].user!.images[5],
-                                        //   fit: BoxFit.cover,
-                                        // ),
                                         child: CachedNetworkImage(
                                           imageUrl: signInController
                                               .matchList[index].user!.images[5],
