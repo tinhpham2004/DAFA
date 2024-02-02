@@ -26,7 +26,7 @@ class HobbyField extends StatelessWidget {
         labelStyle: CustomTextStyle.h3(AppColors.thirdColor),
       ),
       isExpanded: true,
-      items: ['Gym', 'Yoga', 'Shopping', 'Video games'].map(
+      items: ['Gym', 'Yoga', 'Shopping', 'Video games', 'Chat', 'Coding'].map(
         (e) {
           return DropdownMenuItem(
             child: Text(
