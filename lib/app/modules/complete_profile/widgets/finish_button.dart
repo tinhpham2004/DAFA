@@ -40,60 +40,65 @@ class FinishButton extends StatelessWidget {
       ),
       child: ElevatedButton(
         onPressed: () async {
-          showDialog(
-            barrierDismissible: false,
-            context: context,
-            builder: (context) {
-              return Dialog(
-                child: Padding(
-                  padding: EdgeInsets.all(16.sp),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                          padding: EdgeInsets.only(
-                            top: 150.h,
-                            bottom: 150.h,
-                          ),
-                          child: CircularProgressIndicator()),
-                      Container(
-                        margin: EdgeInsets.only(bottom: 40.h),
-                        child: Text(
-                          'Please, wait for a moment!',
-                          style: CustomTextStyle.cardTextStyle(
-                            AppColors.black,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          );
           List<String> images = [];
           int count = 0;
 
           for (int index = 0; index < 6; index++) {
             if (completeProfileController.imgUrl[index].value == '') {
               count++;
-              continue;
             }
-            String fileName = DateTime.now().microsecondsSinceEpoch.toString();
-            Reference referenceRoot = FirebaseStorage.instance.ref();
-            Reference referenceFolderImage = referenceRoot
-                .child('${signInController.phoneNumberController.text}');
-            Reference referenceImage = referenceFolderImage.child(fileName);
-            await referenceImage.putFile(
-                File(completeProfileController.imgUrl[index].value),
-                SettableMetadata(contentType: 'image/jpeg'));
-            images.add(await referenceImage.getDownloadURL());
           }
           if (count > 3) {
             completeProfileController.UpdateErrorImages(true);
           } else {
+            showDialog(
+              barrierDismissible: false,
+              context: context,
+              builder: (context) {
+                return Dialog(
+                  child: Padding(
+                    padding: EdgeInsets.all(16.sp),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                            padding: EdgeInsets.only(
+                              top: 150.h,
+                              bottom: 150.h,
+                            ),
+                            child: CircularProgressIndicator()),
+                        Container(
+                          margin: EdgeInsets.only(bottom: 40.h),
+                          child: Text(
+                            'Please, wait for a moment!',
+                            style: CustomTextStyle.cardTextStyle(
+                              AppColors.black,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            );
+            for (int index = 0; index < 6; index++) {
+              if (completeProfileController.imgUrl[index].value == '') {
+                continue;
+              }
+              String fileName =
+                  DateTime.now().microsecondsSinceEpoch.toString();
+              Reference referenceRoot = FirebaseStorage.instance.ref();
+              Reference referenceFolderImage = referenceRoot
+                  .child('${signInController.phoneNumberController.text}');
+              Reference referenceImage = referenceFolderImage.child(fileName);
+              await referenceImage.putFile(
+                  File(completeProfileController.imgUrl[index].value),
+                  SettableMetadata(contentType: 'image/jpeg'));
+              images.add(await referenceImage.getDownloadURL());
+            }
             String name = completeProfileController.name.text;
             String dateOfBirth = completeProfileController.dateOB1.text +
                 completeProfileController.dateOB2.text +
