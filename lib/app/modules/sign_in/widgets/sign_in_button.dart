@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: must_be_immutable
 class SignInButton extends StatelessWidget {
@@ -98,6 +99,13 @@ class SignInButton extends StatelessWidget {
                   distance: 0,
                 ),
               );
+              try {
+                SharedPreferences pref = await SharedPreferences.getInstance();
+                pref.setString(
+                    "phoneNumber", signInController.user.phoneNumber);
+              } catch (error) {
+                print("Error: " + error.toString());
+              }
               Get.back();
               Get.toNamed(AppRoutes.swipe);
             }
