@@ -48,6 +48,8 @@ dependencies:
   flutter_card_swiper: ^6.1.0
   chat_gpt_sdk: ^2.2.8
   cached_network_image: ^3.3.1
+  shared_preferences: ^2.2.2
+
 
 
 
