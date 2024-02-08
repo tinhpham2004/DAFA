@@ -106,6 +106,8 @@ class SignInButton extends StatelessWidget {
               } catch (error) {
                 print("Error: " + error.toString());
               }
+              signInController.phoneNumberController = TextEditingController();
+              signInController.passwordController = TextEditingController();
               Get.back();
               Get.toNamed(AppRoutes.swipe);
             }

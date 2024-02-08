@@ -9,6 +9,7 @@ import 'package:dafa/app/services/firebase_listener_service.dart';
 import 'package:dafa/app/services/location_service.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -16,9 +17,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'app.dart';
 import 'firebase_options.dart';
 
+
 String initialRoute = AppRoutes.auth;
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     name: 'dafa',
     options: DefaultFirebaseOptions.currentPlatform,
@@ -59,6 +61,5 @@ Future<void> main() async {
       initialRoute = AppRoutes.swipe;
     }
   }
-
   runApp(const MyApp());
 }

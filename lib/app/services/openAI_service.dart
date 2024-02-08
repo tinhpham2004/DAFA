@@ -39,4 +39,28 @@ class OpenAIService {
       return false;
     }
   }
+
+  Future<String> ChatBotReply(String message) async {
+    String promt =
+        'Bạn tên là Cupid, nhiệm vụ của bạn chỉ là tư vấn về tình yêu, không trả lời câu hỏi không liên quan đến tình yêu, hãy trả lời câu hỏi sau: ' +
+            message;
+    final request = ChatCompleteText(
+      model: GptTurbo0631Model(),
+      maxToken: 200,
+      messages: [
+        Messages(
+          role: Role.user,
+          content: promt,
+        ),
+      ],
+    );
+    final response = await openAI.onChatCompletion(request: request);
+    String answer = 'Xin hãy đặt câu hỏi khác.';
+    for (var element in response!.choices) {
+      if (element.message != null) {
+        answer = element.message!.content;
+      }
+    }
+    return answer;
+  }
 }

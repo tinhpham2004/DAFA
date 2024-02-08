@@ -10,9 +10,7 @@ class ChatController extends GetxController {
   List<String> reportMessages = [];
   RxBool reportCheckbox = false.obs;
   ScrollController scrollController = ScrollController();
-  bool isFirstTimeScroll = true;
 
   void UpdateCurrIndex(int data) => currIndex.value = data;
   void UpdateReportCheckbox(bool data) => reportCheckbox.value = data;
-  void UpdateIsFirstTimeScroll(bool data) => isFirstTimeScroll = data;
 }
