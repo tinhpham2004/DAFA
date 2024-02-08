@@ -1,45 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dafa/app/core/values/app_colors.dart';
 import 'package:dafa/app/core/values/app_text_style.dart';
-import 'package:dafa/app/models/message.dart';
-import 'package:dafa/app/modules/chat/chat_controller.dart';
-import 'package:dafa/app/modules/chat/widgets/add_message_field.dart';
-import 'package:dafa/app/modules/chat/widgets/report.dart';
-import 'package:dafa/app/modules/chat/widgets/send_message_button.dart';
+import 'package:dafa/app/modules/chat_bot/widgets/add_message_field.dart';
+import 'package:dafa/app/modules/chat_bot/widgets/send_message_button.dart';
 import 'package:dafa/app/modules/sign_in/sign_in_controller.dart';
 import 'package:dafa/app/routes/app_routes.dart';
-import 'package:dafa/app/services/database_service.dart';
-import 'package:dafa/app/services/firebase_listener_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-class MessageScreen extends StatefulWidget {
-  MessageScreen({super.key});
-
-  @override
-  State<MessageScreen> createState() => _MessageScreenState();
-}
-
-class _MessageScreenState extends State<MessageScreen> {
-  final ChatController chatController = Get.find<ChatController>();
+class ChatBotScreen extends StatelessWidget {
+  ChatBotScreen({super.key});
 
   final SignInController signInController = Get.find<SignInController>();
-
-  final FirebaseListenerService firebaseListenerService =
-      FirebaseListenerService();
-
-  DatabaseService databaseService = DatabaseService();
 
   Stream<QuerySnapshot> messageStream = FirebaseFirestore.instance
       .collection('messages')
       .orderBy('time', descending: true)
       .snapshots();
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,43 +29,19 @@ class _MessageScreenState extends State<MessageScreen> {
             titleSpacing: 2,
             leading: GestureDetector(
               onTap: () {
-                Get.toNamed(AppRoutes.chat);
+                Get.toNamed(AppRoutes.swipe);
               },
               child: Icon(Icons.arrow_back_ios_new),
             ),
             title: ListTile(
-              leading: GestureDetector(
-                onTap: () {
-                  Get.toNamed(AppRoutes.view_profile);
-                },
-                child: CircleAvatar(
-                  backgroundImage: NetworkImage(chatController
-                      .compatibleUserList[chatController.currIndex.value]
-                      .user!
-                      .images
-                      .first),
-                ),
+              leading: CircleAvatar(
+                backgroundImage:
+                    ExactAssetImage('assets/images/chat_bot_avatar.jpg'),
               ),
               title: Text(
-                chatController
-                    .compatibleUserList[chatController.currIndex.value]
-                    .user!
-                    .name,
+                'Cupid',
                 style: CustomTextStyle.profileHeader(AppColors.black),
               ),
-              subtitle: Obx(
-                () => Text(
-                  (signInController.listUsersOnlineState[chatController
-                              .compatibleUserList[
-                                  chatController.currIndex.value]
-                              .user!
-                              .phoneNumber] ==
-                          true)
-                      ? 'online'
-                      : 'offline',
-                ),
-              ),
-              trailing: Report(chatController: chatController),
             ),
           ),
           body: Stack(
@@ -105,7 +59,6 @@ class _MessageScreenState extends State<MessageScreen> {
                     }
                     return ListView.builder(
                       reverse: true,
-                      controller: chatController.scrollController,
                       itemCount: snapshot.data != null
                           ? snapshot.data!.docs.length
                           : 0,
@@ -119,22 +72,10 @@ class _MessageScreenState extends State<MessageScreen> {
                         DateTime date = time.toDate();
                         String sender = message['sender'];
                         String receiver = message['receiver'];
-
-                        if ((chatController
-                                        .compatibleUserList[
-                                            chatController.currIndex.value]
-                                        .user!
-                                        .phoneNumber ==
-                                    sender &&
-                                signInController.user.phoneNumber ==
-                                    receiver) ||
-                            (chatController
-                                        .compatibleUserList[
-                                            chatController.currIndex.value]
-                                        .user!
-                                        .phoneNumber ==
-                                    receiver &&
-                                signInController.user.phoneNumber == sender)) {
+                        if ((signInController.user.phoneNumber == sender &&
+                                'chat_bot' == receiver) ||
+                            (signInController.user.phoneNumber == receiver &&
+                                'chat_bot' == sender)) {
                           if (signInController.user.phoneNumber == sender) {
                             return ListTile(
                               title: Column(
@@ -170,29 +111,14 @@ class _MessageScreenState extends State<MessageScreen> {
                                 textAlign: TextAlign.end,
                               ),
                             );
-                          } else if (chatController
-                                  .compatibleUserList[
-                                      chatController.currIndex.value]
-                                  .user!
-                                  .phoneNumber ==
-                              sender) {
-                            if (chatController.reportMessages
-                                    .contains(content) ==
-                                false)
-                              chatController.reportMessages.add(content);
+                          } else if ('chat_bot' == sender) {
                             return ListTile(
                               leading: Container(
                                 height: 80.h,
                                 width: 80.w,
                                 child: CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                    chatController
-                                        .compatibleUserList[
-                                            chatController.currIndex.value]
-                                        .user!
-                                        .images
-                                        .first,
-                                  ),
+                                  backgroundImage: ExactAssetImage(
+                                      'assets/images/chat_bot_avatar.jpg'),
                                 ),
                               ),
                               title: Column(
@@ -249,16 +175,15 @@ class _MessageScreenState extends State<MessageScreen> {
                             left: 20.w,
                             bottom: 40.h,
                           ),
-                          child:
-                              AddMessageField(chatController: chatController),
+                          child: AddMessageField(),
                           decoration: BoxDecoration(
-                            color: AppColors.white,
+                            color: AppColors.transparent,
                           ),
                         ),
                       ),
                       Container(
                         margin: EdgeInsets.only(
-                            left: 10.w, right: 20.w, bottom: 40.h),
+                            left: 10.w, right: 10.w, bottom: 40.h),
                         decoration: BoxDecoration(
                           gradient: AppColors.primaryColor,
                           shape: BoxShape.circle,

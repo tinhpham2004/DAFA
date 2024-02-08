@@ -31,4 +31,6 @@ abstract class AppRoutes {
   static const message = '/message';
   //view_profile
   static const view_profile = '/view_profile';
+  //chat_bot
+  static const chat_bot = '/chat_bot';
 }

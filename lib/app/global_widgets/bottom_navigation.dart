@@ -16,25 +16,23 @@ class _BottomNavigationState extends State<BottomNavigation> {
   void _onItemTapped(int index) {
     switch (index) {
       case 0:
-        {
-          Get.toNamed(AppRoutes.profile);
-          break;
-        }
+        Get.toNamed(AppRoutes.profile);
+        break;
+
       case 1:
-        {
-          Get.toNamed(AppRoutes.swipe);
-          break;
-        }
+        Get.toNamed(AppRoutes.swipe);
+        break;
+
       case 2:
-        {
-          Get.toNamed(AppRoutes.chat);
-          break;
-        }
+        Get.toNamed(AppRoutes.chat);
+        break;
+
       case 3:
-        {
-          Get.toNamed(AppRoutes.anonymous_chat);
-          break;
-        }
+        Get.toNamed(AppRoutes.anonymous_chat);
+        break;
+
+      case 4:
+        Get.toNamed(AppRoutes.chat_bot);
     }
   }
 
@@ -70,6 +68,13 @@ class _BottomNavigationState extends State<BottomNavigation> {
           BottomNavigationBarItem(
             icon: Icon(
               Icons.chat_bubble,
+              color: AppColors.white,
+            ),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.android,
               color: AppColors.white,
             ),
             label: '',
