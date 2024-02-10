@@ -39,6 +39,8 @@ class _MessageScreenState extends State<MessageScreen> {
   @override
   void initState() {
     super.initState();
+    chatController.UpdateLastestMessgage('');
+    chatController.UpdateSuggestRep('');
   }
 
   @override
@@ -180,6 +182,8 @@ class _MessageScreenState extends State<MessageScreen> {
                                     .contains(content) ==
                                 false)
                               chatController.reportMessages.add(content);
+                            if (index == 0)
+                              chatController.UpdateLastestMessgage(content);
                             return ListTile(
                               leading: Container(
                                 height: 80.h,
@@ -249,10 +253,73 @@ class _MessageScreenState extends State<MessageScreen> {
                             left: 20.w,
                             bottom: 40.h,
                           ),
-                          child:
+                          child: Column(
+                            children: [
+                              Obx(
+                                () => chatController.suggestRep.value != ''
+                                    ? Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          Container(
+                                            padding: EdgeInsets.symmetric(
+                                              vertical: 8.h,
+                                              horizontal: 8.w,
+                                            ),
+                                            margin: EdgeInsets.only(
+                                                right: 50.w, bottom: 20.h),
+                                            child: Text(
+                                              '💡'
+                                              '${chatController.suggestRep.value}',
+                                              style:
+                                                  CustomTextStyle.messageStyle(
+                                                      AppColors.white),
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color: AppColors.send,
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(20.r),
+                                                topRight: Radius.circular(30.r),
+                                                bottomLeft:
+                                                    Radius.circular(20.r),
+                                              ),
+                                            ),
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              GestureDetector(
+                                                onTap: () {
+                                                  chatController
+                                                          .messageController
+                                                          .text =
+                                                      chatController
+                                                          .suggestRep.value;
+                                                  chatController
+                                                      .UpdateSuggestRep('');
+                                                },
+                                                child: Text('Apply'),
+                                              ),
+                                              Text(' | '),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  chatController
+                                                      .UpdateSuggestRep('');
+                                                },
+                                                child: Text('Delete'),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      )
+                                    : Container(),
+                              ),
                               AddMessageField(chatController: chatController),
+                            ],
+                          ),
                           decoration: BoxDecoration(
-                            color: AppColors.white,
+                            color: AppColors.transparent,
                           ),
                         ),
                       ),
