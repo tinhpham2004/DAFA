@@ -417,33 +417,10 @@ class CardSwipable extends StatelessWidget {
                   alignment: WrapAlignment.center,
                   children: [
                     Obx(
-                      () => swipeController.swipeState.value == 'left' &&
-                              swipeController.curIndex.value == index
-                          ? Container(
-                              margin: EdgeInsets.only(right: 400.w),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(
-                                  20.r,
-                                ),
-                                border: Border.all(
-                                  color: AppColors.red,
-                                  width: 4,
-                                ),
-                              ),
-                              child: Text(
-                                'DISLIKE',
-                                style: CustomTextStyle.h1(
-                                  AppColors.red,
-                                ),
-                              ),
-                            )
-                          : Container(),
-                    ),
-                    Obx(
                       () => swipeController.swipeState.value == 'right' &&
                               swipeController.curIndex.value == index
                           ? Container(
-                              margin: EdgeInsets.only(left: 500.w),
+                              margin: EdgeInsets.only(right: 500.w),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(
                                   20.r,
@@ -457,6 +434,29 @@ class CardSwipable extends StatelessWidget {
                                 'LIKE',
                                 style: CustomTextStyle.h1(
                                   AppColors.pink,
+                                ),
+                              ),
+                            )
+                          : Container(),
+                    ),
+                    Obx(
+                      () => swipeController.swipeState.value == 'left' &&
+                              swipeController.curIndex.value == index
+                          ? Container(
+                              margin: EdgeInsets.only(left: 300.w),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(
+                                  20.r,
+                                ),
+                                border: Border.all(
+                                  color: AppColors.red,
+                                  width: 4,
+                                ),
+                              ),
+                              child: Text(
+                                'DISLIKE',
+                                style: CustomTextStyle.h1(
+                                  AppColors.red,
                                 ),
                               ),
                             )
