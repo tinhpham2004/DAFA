@@ -63,4 +63,28 @@ class OpenAIService {
     }
     return answer;
   }
+
+    Future<String> SuggestRep(String message) async {
+    String promt =
+        'Hãy giúp user tán tỉnh đối phương bằng cách trả lời tin nhắn sau, chỉ cần nội dung câu trả lời chứ không cần những phần thừa: ' +
+            message;
+    final request = ChatCompleteText(
+      model: GptTurbo0631Model(),
+      maxToken: 200,
+      messages: [
+        Messages(
+          role: Role.user,
+          content: promt,
+        ),
+      ],
+    );
+    final response = await openAI.onChatCompletion(request: request);
+    String answer = '';
+    for (var element in response!.choices) {
+      if (element.message != null) {
+        answer = element.message!.content;
+      }
+    }
+    return answer;
+  }
 }

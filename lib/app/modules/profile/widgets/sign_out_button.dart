@@ -1,4 +1,5 @@
 import 'package:dafa/app/core/values/app_colors.dart';
+import 'package:dafa/app/modules/chat/chat_controller.dart';
 import 'package:dafa/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -41,6 +42,7 @@ class SignOutButton extends StatelessWidget {
                         await SharedPreferences.getInstance();
                     pref.remove("phoneNumber");
                     Get.back();
+                    Get.deleteAll();
                     Get.offAllNamed(AppRoutes.auth);
                   },
                   child: Text('Yes'),
