@@ -30,7 +30,6 @@ class _SwipeScreenState extends State<SwipeScreen> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-
   }
 
   @override
@@ -47,6 +46,7 @@ class _SwipeScreenState extends State<SwipeScreen> with WidgetsBindingObserver {
         signInController.user.isOnline = true;
         databaseService.UpdateUserData(signInController.user);
         break;
+
       case AppLifecycleState.inactive:
       case AppLifecycleState.paused:
       case AppLifecycleState.detached:
