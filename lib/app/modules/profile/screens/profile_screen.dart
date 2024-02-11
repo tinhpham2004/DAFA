@@ -17,18 +17,43 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: must_be_immutable
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
   LocationService locationService = LocationService();
+
   final SignInController signInController = Get.find<SignInController>();
+
   final ProfileController profileController = Get.find<ProfileController>();
+
+  void TryLoadImg(int id) {
+    try {
+      for (int index = id;
+          index < signInController.user.images.length;
+          index++) {
+        profileController.UpdateImgUrl(
+            index, signInController.user.images[index]);
+      }
+      profileController.UpdateHeight(signInController.user.height);
+      profileController.UpdateHobby(signInController.user.hobby);
+    } catch (error) {
+      if (id < 5) TryLoadImg(id + 1);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    TryLoadImg(0);
+  }
 
   @override
   Widget build(BuildContext context) {
-    for (int index = 0; index < signInController.user.images.length; index++) {
-      profileController.UpdateImgUrl(
-          index, signInController.user.images[index]);
-    }
     return SafeArea(
       child: PopScope(
         canPop: false,
@@ -269,5 +294,3 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 }
-
-
