@@ -18,6 +18,7 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('report');
   final SignInController signInController = Get.find<SignInController>();
 
+
   Future InsertUserData(AppUser user) async {
     await usersCollection.doc(user.phoneNumber).set({
       'userId': user.userId,
@@ -79,7 +80,9 @@ class DatabaseService {
 
   Future UpdateUserData(AppUser user) async {
     return await usersCollection
-        .doc(signInController.phoneNumberController.text)
+        .doc(signInController.phoneNumberController.text != ''
+            ? signInController.phoneNumberController.text
+            : signInController.user.phoneNumber)
         .update({
       'userId': user.userId,
       'phoneNumber': user.phoneNumber,
