@@ -1,15 +1,20 @@
 import 'package:dafa/app/core/values/app_colors.dart';
 import 'package:dafa/app/modules/chat/chat_controller.dart';
+import 'package:dafa/app/modules/sign_in/sign_in_controller.dart';
 import 'package:dafa/app/routes/app_routes.dart';
+import 'package:dafa/app/services/database_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SignOutButton extends StatelessWidget {
-  const SignOutButton({
+  SignOutButton({
     super.key,
   });
+
+  final signInController = Get.find<SignInController>();
+  final databaseService = DatabaseService();
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +43,8 @@ class SignOutButton extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () async {
+                    signInController.user.isOnline = false;
+                    databaseService.UpdateUserData(signInController.user);
                     SharedPreferences pref =
                         await SharedPreferences.getInstance();
                     pref.remove("phoneNumber");
