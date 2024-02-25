@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dafa/app/core/values/app_colors.dart';
+import 'package:dafa/app/core/values/app_consts.dart';
 import 'package:dafa/app/core/values/app_text_style.dart';
 import 'package:dafa/app/models/app_user.dart';
 import 'package:dafa/app/models/match_user.dart';
@@ -17,6 +18,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
+import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 
 // ignore: must_be_immutable
 class FinishButton extends StatelessWidget {
@@ -150,6 +153,13 @@ class FinishButton extends StatelessWidget {
               print("Error: " + error.toString());
             }
             Get.back();
+            ZegoUIKitPrebuiltCallInvitationService().init(
+              appID: AppConsts.appId /*input your AppID*/,
+              appSign: AppConsts.appSign /*input your AppSign*/,
+              userID: signInController.user.phoneNumber,
+              userName: signInController.user.name,
+              plugins: [ZegoUIKitSignalingPlugin()],
+            );
             Get.toNamed(AppRoutes.swipe);
           }
         },

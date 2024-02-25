@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 
 class SignOutButton extends StatelessWidget {
   SignOutButton({
@@ -50,6 +51,7 @@ class SignOutButton extends StatelessWidget {
                     pref.remove("phoneNumber");
                     Get.back();
                     Get.deleteAll();
+                    ZegoUIKitPrebuiltCallInvitationService().uninit();
                     Get.offAllNamed(AppRoutes.auth);
                   },
                   child: Text('Yes'),
