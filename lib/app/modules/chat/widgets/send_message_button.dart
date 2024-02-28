@@ -3,6 +3,7 @@ import 'package:dafa/app/models/message.dart';
 import 'package:dafa/app/modules/chat/chat_controller.dart';
 import 'package:dafa/app/modules/sign_in/sign_in_controller.dart';
 import 'package:dafa/app/services/database_service.dart';
+import 'package:dafa/app/services/firebase_messaging_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -30,6 +31,13 @@ class SendMessageButton extends StatelessWidget {
           content: chatController.messageController.text,
           time: DateTime.now(),
         );
+        final firebaseMessagingService = FirebaseMessagingService();
+        firebaseMessagingService.SendNotification(
+            signInController.user.name,
+            chatController.messageController.text,
+            signInController.user.phoneNumber,
+            chatController.compatibleUserList[chatController.currIndex.value]
+                .user!.token);
         if (message.content != '') {
           databaseService.SendMessage(message);
           chatController.messageController.text = '';
