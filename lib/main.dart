@@ -8,7 +8,9 @@ import 'package:dafa/app/routes/app_routes.dart';
 import 'package:dafa/app/services/api_service.dart';
 import 'package:dafa/app/services/database_service.dart';
 import 'package:dafa/app/services/firebase_listener_service.dart';
+import 'package:dafa/app/services/firebase_messaging_service.dart';
 import 'package:dafa/app/services/location_service.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -20,6 +22,7 @@ import 'app.dart';
 import 'firebase_options.dart';
 
 String initialRoute = AppRoutes.auth;
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
 Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -35,7 +38,11 @@ Future<void> main() async {
     DatabaseService databaseService = DatabaseService();
     LocationService locationService = LocationService();
     FirebaseListenerService firebaseListenerService = FirebaseListenerService();
+    FirebaseMessagingService firebaseMessagingService =
+        FirebaseMessagingService();
     final bool isFirstTimeUpdate = await databaseService.FirstTimeUpdate();
+    await firebaseMessagingService.InitNotifications();
+    firebaseMessagingService.FirebaseNotification();
     if (isFirstTimeUpdate) {
       initialRoute = AppRoutes.complete_name;
     } else {
@@ -64,5 +71,6 @@ Future<void> main() async {
   }
   final apiService = APIService();
   AppConsts.openAI_API_Key = await apiService.FetchApi();
-  runApp(const MyApp());
+
+  runApp(MyApp(navigatorKey: navigatorKey));
 }

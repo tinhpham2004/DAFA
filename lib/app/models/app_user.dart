@@ -20,4 +20,5 @@ class AppUser {
   AppUser({
     required this.phoneNumber,
   });
+  String token = '';
 }

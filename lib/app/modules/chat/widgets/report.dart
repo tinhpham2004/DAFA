@@ -101,5 +101,3 @@ class Report extends StatelessWidget {
     );
   }
 }
-
-

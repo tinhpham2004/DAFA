@@ -6,7 +6,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+
+  MyApp({
+    required this.navigatorKey,
+    Key? key,
+  }) : super(key: key);
+
+  final GlobalKey navigatorKey;
 
   @override
   State<MyApp> createState() => _MyAppState();

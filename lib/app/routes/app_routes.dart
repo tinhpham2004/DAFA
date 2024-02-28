@@ -23,6 +23,8 @@ abstract class AppRoutes {
   static const profile = '/profile';
   //chat
   static const chat = '/chat';
+  //call
+  static const call = '/call';
   //anonym_chat
   static const anonymous_chat = '/anonymous_chat';
   //anonymous_messgae
