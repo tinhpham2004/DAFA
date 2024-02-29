@@ -12,10 +12,9 @@ import 'package:get/get.dart';
 class Report extends StatelessWidget {
   Report({
     super.key,
-    required this.chatController,
   });
 
-  final ChatController chatController;
+  final ChatController chatController = Get.find<ChatController>();
   final OpenAIService openAIService = OpenAIService();
   final DatabaseService databaseService = DatabaseService();
 
@@ -96,7 +95,7 @@ class Report extends StatelessWidget {
       icon: Icon(
         Icons.warning_rounded,
         color: AppColors.red,
-        size: 80.sp,
+        size: 70.sp,
       ),
     );
   }
