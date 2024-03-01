@@ -5,6 +5,7 @@ import 'package:dafa/app/core/values/app_text_style.dart';
 import 'package:dafa/app/models/match_user.dart';
 import 'package:dafa/app/modules/sign_in/sign_in_controller.dart';
 import 'package:dafa/app/routes/app_routes.dart';
+import 'package:dafa/app/services/agora_notification_service.dart';
 import 'package:dafa/app/services/api_service.dart';
 import 'package:dafa/app/services/database_service.dart';
 import 'package:dafa/app/services/firebase_listener_service.dart';
@@ -43,6 +44,7 @@ Future<void> main() async {
     final bool isFirstTimeUpdate = await databaseService.FirstTimeUpdate();
     await firebaseMessagingService.InitNotifications();
     firebaseMessagingService.FirebaseNotification();
+    AgoraNotificationService.startListeningNotificationEvents();
     if (isFirstTimeUpdate) {
       initialRoute = AppRoutes.complete_name;
     } else {
