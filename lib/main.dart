@@ -24,7 +24,7 @@ import 'firebase_options.dart';
 String initialRoute = AppRoutes.auth;
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
 Future<void> main() async {
-  //WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     name: 'dafa',
     options: DefaultFirebaseOptions.currentPlatform,

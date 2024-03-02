@@ -7,6 +7,7 @@ import 'package:dafa/app/modules/chat/widgets/add_message_field.dart';
 import 'package:dafa/app/modules/chat/widgets/call_button.dart';
 import 'package:dafa/app/modules/chat/widgets/report.dart';
 import 'package:dafa/app/modules/chat/widgets/send_message_button.dart';
+import 'package:dafa/app/modules/chat/widgets/video_call_button.dart';
 import 'package:dafa/app/modules/sign_in/sign_in_controller.dart';
 import 'package:dafa/app/routes/app_routes.dart';
 import 'package:dafa/app/services/database_service.dart';
@@ -120,7 +121,12 @@ class _MessageScreenState extends State<MessageScreen> {
                       : 'offline',
                 ),
               ),
-              trailing: Report(chatController: chatController),
+              trailing: Wrap(
+                children: [
+                  VideoCallButton(),
+                  Report(chatController: chatController),
+                ],
+              ),
             ),
           ),
           body: Stack(
