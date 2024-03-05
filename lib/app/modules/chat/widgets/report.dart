@@ -96,10 +96,8 @@ class Report extends StatelessWidget {
       icon: Icon(
         Icons.warning_rounded,
         color: AppColors.red,
-        size: 80.sp,
+        size: 70.sp,
       ),
     );
   }
 }
-
-

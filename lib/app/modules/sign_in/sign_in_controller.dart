@@ -22,6 +22,7 @@ class SignInController extends GetxController {
   RxMap<String, bool> listUsersSearchingState = RxMap<String, bool>();
   Map<String, String> listUsersGender = Map();
   Map<String, List<String>> graphMatchUser = Map();
+  String notifySenderId = '';
 
   void UpdateSignInState(String data) => signInState.value = data;
   void UpdateUser(AppUser data) => user = data;

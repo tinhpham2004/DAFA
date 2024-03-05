@@ -66,4 +66,12 @@ class CustomTextStyle extends TextStyle {
       color: color,
     );
   }
+
+  static TextStyle chatUserNameStyle(Color color) {
+    return TextStyle(
+      fontSize: 40.sp,
+      fontWeight: FontWeight.w600,
+      color: color,
+    );
+  }
 }
