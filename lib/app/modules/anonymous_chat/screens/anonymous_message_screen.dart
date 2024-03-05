@@ -136,6 +136,11 @@ class _AnonymouseMessageScreenState extends State<AnonymouseMessageScreen> {
     );
   }
 
+  String TimeFormat(String time) {
+    if (time.length < 2) time = '0' + time;
+    return time;
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -280,9 +285,9 @@ class _AnonymouseMessageScreenState extends State<AnonymouseMessageScreen> {
                                 ],
                               ),
                               subtitle: Text(
-                                date.hour.toString() +
+                                TimeFormat(date.hour.toString()) +
                                     ':' +
-                                    date.minute.toString(),
+                                    TimeFormat(date.minute.toString()),
                                 textAlign: TextAlign.end,
                               ),
                             );
@@ -332,9 +337,9 @@ class _AnonymouseMessageScreenState extends State<AnonymouseMessageScreen> {
                                 ],
                               ),
                               subtitle: Text(
-                                date.hour.toString() +
+                                TimeFormat(date.hour.toString()) +
                                     ':' +
-                                    date.minute.toString(),
+                                    TimeFormat(date.minute.toString()),
                                 textAlign: TextAlign.start,
                               ),
                             );

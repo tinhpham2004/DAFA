@@ -37,6 +37,7 @@ class DatabaseService {
       'isSearching': user.isSearching,
       'lastActive': user.lastActive,
       'isBanned': user.isBanned,
+      'token': user.token,
     });
     await matchedListCollection.doc(user.phoneNumber).set(
       {
@@ -98,6 +99,7 @@ class DatabaseService {
       'isOnline': user.isOnline,
       'isSearching': user.isSearching,
       'lastActive': user.lastActive,
+      'token': user.token,
     });
   }
 
@@ -160,6 +162,7 @@ class DatabaseService {
         user.lastActive =
             ((value.data() as dynamic)['lastActive'] as Timestamp).toDate();
         user.isBanned = ((value.data() as dynamic)['isBanned'] as dynamic);
+        user.token = ((value.data() as dynamic)['token'] as dynamic);
       },
     );
     return user;
@@ -205,6 +208,7 @@ class DatabaseService {
             user.lastActive =
                 ((value.data() as dynamic)['lastActive'] as Timestamp).toDate();
             user.isBanned = ((value.data() as dynamic)['isBanned'] as dynamic);
+            user.token = ((value.data() as dynamic)['token'] as dynamic);
 
             signInController.listUsersGender[user.phoneNumber] = user.gender;
 
@@ -376,11 +380,19 @@ class DatabaseService {
   }
 
   Future<void> SendMessage(Message message) async {
-    await messagesCollection.doc().set({
+    await messagesCollection.doc(message.id).set({
+      'id': message.id,
       'sender': message.sender,
       'receiver': message.receiver,
       'content': message.content,
       'time': message.time,
+      'category': message.category,
+    });
+  }
+
+    Future<void> UpdateCallMessage(String callId, String state) async {
+    await messagesCollection.doc(callId).update({
+      'content': state,
     });
   }
 

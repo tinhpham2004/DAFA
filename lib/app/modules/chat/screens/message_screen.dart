@@ -6,10 +6,12 @@ import 'package:dafa/app/modules/chat/chat_controller.dart';
 import 'package:dafa/app/modules/chat/widgets/add_message_field.dart';
 import 'package:dafa/app/modules/chat/widgets/report.dart';
 import 'package:dafa/app/modules/chat/widgets/send_message_button.dart';
+import 'package:dafa/app/modules/chat/widgets/call_button.dart';
 import 'package:dafa/app/modules/sign_in/sign_in_controller.dart';
 import 'package:dafa/app/routes/app_routes.dart';
 import 'package:dafa/app/services/database_service.dart';
 import 'package:dafa/app/services/firebase_listener_service.dart';
+import 'package:dafa/app/services/firebase_messaging_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -29,18 +31,52 @@ class _MessageScreenState extends State<MessageScreen> {
   final FirebaseListenerService firebaseListenerService =
       FirebaseListenerService();
 
+  final firebaseMessagingService = FirebaseMessagingService();
+
   DatabaseService databaseService = DatabaseService();
 
   Stream<QuerySnapshot> messageStream = FirebaseFirestore.instance
       .collection('messages')
       .orderBy('time', descending: true)
       .snapshots();
+  void InitNotifyMessaging() {
+    if (chatController.compatibleUserList.length <
+        signInController.compatibleList.length) {
+      for (int i = 0; i < signInController.matchListForChat.length; i++) {
+        for (int j = 0; j < signInController.compatibleList.length; j++) {
+          if (signInController.matchListForChat[i].user!.phoneNumber ==
+                  signInController.compatibleList[j] &&
+              chatController.compatibleUserList
+                      .contains(signInController.matchListForChat[i]) ==
+                  false) {
+            chatController.compatibleUserList
+                .add(signInController.matchListForChat[i]);
+          }
+        }
+      }
+    }
+    if (signInController.notifySenderId != '') {
+      for (int i = 0; i < chatController.compatibleUserList.length; i++) {
+        if (chatController.compatibleUserList[i].user!.phoneNumber ==
+            signInController.notifySenderId) {
+          chatController.UpdateCurrIndex(i);
+        }
+      }
+      signInController.notifySenderId = '';
+    }
+  }
+
+  String TimeFormat(String time) {
+    if (time.length < 2) time = '0' + time;
+    return time;
+  }
 
   @override
   void initState() {
     super.initState();
     chatController.UpdateLastestMessgage('');
     chatController.UpdateSuggestRep('');
+    InitNotifyMessaging();
   }
 
   @override
@@ -75,7 +111,7 @@ class _MessageScreenState extends State<MessageScreen> {
                     .compatibleUserList[chatController.currIndex.value]
                     .user!
                     .name,
-                style: CustomTextStyle.profileHeader(AppColors.black),
+                style: CustomTextStyle.chatUserNameStyle(AppColors.black),
               ),
               subtitle: Obx(
                 () => Text(
@@ -89,7 +125,14 @@ class _MessageScreenState extends State<MessageScreen> {
                       : 'offline',
                 ),
               ),
-              trailing: Report(chatController: chatController),
+              trailing: Wrap(
+                children: [
+                  CallButton(isVideoCall: false),
+                  SizedBox(width: 20.w),
+                  CallButton(isVideoCall: true),
+                  Report(chatController: chatController),
+                ],
+              ),
             ),
           ),
           body: Stack(
@@ -121,7 +164,7 @@ class _MessageScreenState extends State<MessageScreen> {
                         DateTime date = time.toDate();
                         String sender = message['sender'];
                         String receiver = message['receiver'];
-
+                        String category = message['category'];
                         if ((chatController
                                         .compatibleUserList[
                                             chatController.currIndex.value]
@@ -156,19 +199,66 @@ class _MessageScreenState extends State<MessageScreen> {
                                         bottomLeft: Radius.circular(20.r),
                                       ),
                                     ),
-                                    child: Text(
-                                      content,
-                                      style: CustomTextStyle.messageStyle(
-                                          AppColors.white),
-                                      textAlign: TextAlign.end,
-                                    ),
+                                    child: category == 'message'
+                                        ? Text(
+                                            content,
+                                            style: CustomTextStyle.messageStyle(
+                                                AppColors.white),
+                                            textAlign: TextAlign.end,
+                                          )
+                                        : content.contains('accepted')
+                                            ? ListTile(
+                                                leading: category == 'videoCall'
+                                                    ? Icon(
+                                                        Icons.videocam,
+                                                        color: AppColors.black,
+                                                        size: 60.sp,
+                                                      )
+                                                    : Icon(
+                                                        Icons.call,
+                                                        color: AppColors.black,
+                                                        size: 60.sp,
+                                                      ),
+                                                title: Text(
+                                                  category == 'videoCall'
+                                                      ? 'Video Call'
+                                                      : 'Audio Call',
+                                                  style: CustomTextStyle
+                                                      .messageStyle(
+                                                          AppColors.black),
+                                                ),
+                                                subtitle: Text(content
+                                                    .split('accepted')[1]),
+                                              )
+                                            : ListTile(
+                                                leading: category == 'videoCall'
+                                                    ? Icon(
+                                                        Icons.videocam_off,
+                                                        color: AppColors.black,
+                                                        size: 60.sp,
+                                                      )
+                                                    : Icon(
+                                                        Icons
+                                                            .phone_missed_rounded,
+                                                        color: AppColors.black,
+                                                        size: 60.sp,
+                                                      ),
+                                                title: Text(
+                                                  category == 'videoCall'
+                                                      ? 'Missed Video Call'
+                                                      : 'Missed Audio Call',
+                                                  style: CustomTextStyle
+                                                      .messageStyle(
+                                                          AppColors.black),
+                                                ),
+                                              ),
                                   ),
                                 ],
                               ),
                               subtitle: Text(
-                                date.hour.toString() +
+                                TimeFormat(date.hour.toString()) +
                                     ':' +
-                                    date.minute.toString(),
+                                    TimeFormat(date.minute.toString()),
                                 textAlign: TextAlign.end,
                               ),
                             );
@@ -208,11 +298,59 @@ class _MessageScreenState extends State<MessageScreen> {
                                       vertical: 8.h,
                                       horizontal: 8.w,
                                     ),
-                                    child: Text(
-                                      content,
-                                      style: CustomTextStyle.messageStyle(
-                                          AppColors.black),
-                                    ),
+                                    child: category == 'message'
+                                        ? Text(
+                                            content,
+                                            style: CustomTextStyle.messageStyle(
+                                                AppColors.black),
+                                            textAlign: TextAlign.end,
+                                          )
+                                        : content.contains('accepted')
+                                            ? ListTile(
+                                                leading: category == 'videoCall'
+                                                    ? Icon(
+                                                        Icons.videocam,
+                                                        color: AppColors.black,
+                                                        size: 60.sp,
+                                                      )
+                                                    : Icon(
+                                                        Icons.call,
+                                                        color: AppColors.black,
+                                                        size: 60.sp,
+                                                      ),
+                                                title: Text(
+                                                  category == 'videoCall'
+                                                      ? 'Video Call'
+                                                      : 'Audio Call',
+                                                  style: CustomTextStyle
+                                                      .messageStyle(
+                                                          AppColors.black),
+                                                ),
+                                                subtitle: Text(content
+                                                    .split('accepted')[1]),
+                                              )
+                                            : ListTile(
+                                                leading: category == 'videoCall'
+                                                    ? Icon(
+                                                        Icons.videocam_off,
+                                                        color: AppColors.black,
+                                                        size: 60.sp,
+                                                      )
+                                                    : Icon(
+                                                        Icons
+                                                            .phone_missed_rounded,
+                                                        color: AppColors.black,
+                                                        size: 60.sp,
+                                                      ),
+                                                title: Text(
+                                                  category == 'videoCall'
+                                                      ? 'Missed Video Call'
+                                                      : 'Missed Audio Call',
+                                                  style: CustomTextStyle
+                                                      .messageStyle(
+                                                          AppColors.black),
+                                                ),
+                                              ),
                                     decoration: BoxDecoration(
                                       color: AppColors.receive,
                                       borderRadius: BorderRadius.only(
@@ -225,9 +363,9 @@ class _MessageScreenState extends State<MessageScreen> {
                                 ],
                               ),
                               subtitle: Text(
-                                date.hour.toString() +
+                                TimeFormat(date.hour.toString()) +
                                     ':' +
-                                    date.minute.toString(),
+                                    TimeFormat(date.minute.toString()),
                                 textAlign: TextAlign.start,
                               ),
                             );
