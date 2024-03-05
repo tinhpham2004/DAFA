@@ -46,7 +46,7 @@ class OpenAIService {
             message;
     final request = ChatCompleteText(
       model: GptTurbo0631Model(),
-      maxToken: 200,
+      maxToken: 500,
       messages: [
         Messages(
           role: Role.user,

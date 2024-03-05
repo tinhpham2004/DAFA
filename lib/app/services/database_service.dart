@@ -380,11 +380,19 @@ class DatabaseService {
   }
 
   Future<void> SendMessage(Message message) async {
-    await messagesCollection.doc().set({
+    await messagesCollection.doc(message.id).set({
+      'id': message.id,
       'sender': message.sender,
       'receiver': message.receiver,
       'content': message.content,
       'time': message.time,
+      'category': message.category,
+    });
+  }
+
+    Future<void> UpdateCallMessage(String callId, String state) async {
+    await messagesCollection.doc(callId).update({
+      'content': state,
     });
   }
 
