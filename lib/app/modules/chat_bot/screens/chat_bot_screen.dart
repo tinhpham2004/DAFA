@@ -19,6 +19,11 @@ class ChatBotScreen extends StatelessWidget {
       .orderBy('time', descending: true)
       .snapshots();
 
+  String TimeFormat(String time) {
+    if (time.length < 2) time = '0' + time;
+    return time;
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -69,6 +74,7 @@ class ChatBotScreen extends StatelessWidget {
                       DateTime date = time.toDate();
                       String sender = message['sender'];
                       String receiver = message['receiver'];
+                      String category = message['category'];
                       if ((signInController.user.phoneNumber == sender &&
                               'chat_bot' == receiver) ||
                           (signInController.user.phoneNumber == receiver &&
@@ -102,9 +108,9 @@ class ChatBotScreen extends StatelessWidget {
                               ],
                             ),
                             subtitle: Text(
-                              date.hour.toString() +
+                              TimeFormat(date.hour.toString()) +
                                   ':' +
-                                  date.minute.toString(),
+                                  TimeFormat(date.minute.toString()),
                               textAlign: TextAlign.end,
                             ),
                           );
@@ -144,9 +150,9 @@ class ChatBotScreen extends StatelessWidget {
                               ],
                             ),
                             subtitle: Text(
-                              date.hour.toString() +
+                              TimeFormat(date.hour.toString()) +
                                   ':' +
-                                  date.minute.toString(),
+                                  TimeFormat(date.minute.toString()),
                               textAlign: TextAlign.start,
                             ),
                           );

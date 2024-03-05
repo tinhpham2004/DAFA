@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dafa/app/core/values/app_colors.dart';
 import 'package:dafa/app/models/message.dart';
 import 'package:dafa/app/modules/chat/chat_controller.dart';
@@ -14,6 +15,8 @@ class SendMessageButton extends StatelessWidget {
   final ChatController chatController = Get.find<ChatController>();
   final SignInController signInController = Get.find<SignInController>();
   DatabaseService databaseService = DatabaseService();
+  final messagesCollection = FirebaseFirestore.instance.collection('messages');
+
   @override
   Widget build(BuildContext context) {
     return IconButton(
@@ -22,7 +25,9 @@ class SendMessageButton extends StatelessWidget {
         color: AppColors.white,
       ),
       onPressed: () {
+        String index = messagesCollection.doc().id;
         Message message = Message(
+          id: index,
           sender: signInController.user.phoneNumber,
           receiver: chatController
               .compatibleUserList[chatController.currIndex.value]
@@ -30,6 +35,7 @@ class SendMessageButton extends StatelessWidget {
               .phoneNumber,
           content: chatController.messageController.text,
           time: DateTime.now(),
+          category: 'message',
         );
         final firebaseMessagingService = FirebaseMessagingService();
         firebaseMessagingService.SendNotification(

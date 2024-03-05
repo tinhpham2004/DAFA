@@ -12,6 +12,7 @@ class ChatController extends GetxController {
   ScrollController scrollController = ScrollController();
   RxString suggestRep = ''.obs;
   String lastestMessage = '';
+  String callId = '';
 
   void UpdateCurrIndex(int data) => currIndex.value = data;
   void UpdateReportCheckbox(bool data) => reportCheckbox.value = data;
