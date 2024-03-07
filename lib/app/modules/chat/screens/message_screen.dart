@@ -39,6 +39,9 @@ class _MessageScreenState extends State<MessageScreen> {
       .collection('messages')
       .orderBy('time', descending: true)
       .snapshots();
+
+  int minIndex = 100;
+
   void InitNotifyMessaging() {
     if (chatController.compatibleUserList.length <
         signInController.compatibleList.length) {
@@ -180,6 +183,8 @@ class _MessageScreenState extends State<MessageScreen> {
                                         .phoneNumber ==
                                     receiver &&
                                 signInController.user.phoneNumber == sender)) {
+                          if (index < minIndex) minIndex = index;
+
                           if (signInController.user.phoneNumber == sender) {
                             return ListTile(
                               title: Column(
@@ -204,7 +209,7 @@ class _MessageScreenState extends State<MessageScreen> {
                                             content,
                                             style: CustomTextStyle.messageStyle(
                                                 AppColors.white),
-                                            textAlign: TextAlign.end,
+                                            textAlign: TextAlign.start,
                                           )
                                         : content.contains('accepted')
                                             ? ListTile(
@@ -272,8 +277,10 @@ class _MessageScreenState extends State<MessageScreen> {
                                     .contains(content) ==
                                 false)
                               chatController.reportMessages.add(content);
-                            if (index == 0)
+
+                            if (index == minIndex) {
                               chatController.UpdateLastestMessgage(content);
+                            }
                             return ListTile(
                               leading: Container(
                                 height: 80.h,
@@ -303,7 +310,7 @@ class _MessageScreenState extends State<MessageScreen> {
                                             content,
                                             style: CustomTextStyle.messageStyle(
                                                 AppColors.black),
-                                            textAlign: TextAlign.end,
+                                            textAlign: TextAlign.start,
                                           )
                                         : content.contains('accepted')
                                             ? ListTile(
