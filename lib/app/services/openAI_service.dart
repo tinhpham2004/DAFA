@@ -4,7 +4,7 @@ import 'package:dafa/app/core/values/app_consts.dart';
 class OpenAIService {
   final openAI = OpenAI.instance.build(
     token: AppConsts.openAI_API_Key,
-    baseOption: HttpSetup(receiveTimeout: const Duration(seconds: 5)),
+    baseOption: HttpSetup(receiveTimeout: const Duration(seconds: 10)),
     enableLog: true,
   );
 
@@ -64,7 +64,7 @@ class OpenAIService {
     return answer;
   }
 
-    Future<String> SuggestRep(String message) async {
+  Future<String> SuggestRep(String message) async {
     String promt =
         'Hãy giúp user tán tỉnh đối phương bằng cách trả lời tin nhắn sau, chỉ cần nội dung câu trả lời chứ không cần những phần thừa: ' +
             message;

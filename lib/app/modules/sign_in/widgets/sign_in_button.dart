@@ -45,44 +45,45 @@ class SignInButton extends StatelessWidget {
           );
           if (signInController.signInState.value == 'Sign in successfully.') {
             await firebaseMessagingService.InitNotifications();
-            showDialog(
-              barrierDismissible: false,
-              context: context,
-              builder: (context) {
-                return Dialog(
-                  child: Padding(
-                    padding: EdgeInsets.all(16.sp),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                            padding: EdgeInsets.only(
-                              top: 150.h,
-                              bottom: 150.h,
-                            ),
-                            child: CircularProgressIndicator()),
-                        Container(
-                          margin: EdgeInsets.only(bottom: 40.h),
-                          child: Text(
-                            'Please, wait for a moment!',
-                            style: CustomTextStyle.cardTextStyle(
-                              AppColors.black,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            );
+
             final bool isFirstTimeUpdate =
                 await databaseService.FirstTimeUpdate();
             if (isFirstTimeUpdate) {
               Get.toNamed(AppRoutes.complete_name);
             } else {
+              showDialog(
+                barrierDismissible: false,
+                context: context,
+                builder: (context) {
+                  return Dialog(
+                    child: Padding(
+                      padding: EdgeInsets.all(16.sp),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                              padding: EdgeInsets.only(
+                                top: 150.h,
+                                bottom: 150.h,
+                              ),
+                              child: CircularProgressIndicator()),
+                          Container(
+                            margin: EdgeInsets.only(bottom: 40.h),
+                            child: Text(
+                              'Please, wait for a moment!',
+                              style: CustomTextStyle.cardTextStyle(
+                                AppColors.black,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              );
               signInController.UpdateUser(await databaseService.LoadUserData());
               Position coordinate = await locationService.GetCoordinate();
               signInController.user.coordinate =
