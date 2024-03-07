@@ -71,7 +71,7 @@ class ChatScreen extends StatelessWidget {
               style: CustomTextStyle.profileHeader(AppColors.black),
             ),
           ),
-          bottomNavigationBar: BottomNavigation(onItem: 2),
+          bottomNavigationBar: BottomNavigation(onItem: 3),
           body: Container(
             margin: EdgeInsets.only(top: 40.h, left: 40.w),
             child: SingleChildScrollView(

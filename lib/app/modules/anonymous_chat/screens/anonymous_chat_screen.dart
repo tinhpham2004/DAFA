@@ -137,7 +137,7 @@ class _AnonymousChatScreenState extends State<AnonymousChatScreen> {
       child: PopScope(
         canPop: false,
         child: Scaffold(
-          bottomNavigationBar: BottomNavigation(onItem: 3),
+          bottomNavigationBar: BottomNavigation(onItem: 4),
           body: Container(
             decoration: BoxDecoration(gradient: AppColors.primaryColor),
             child: Obx(

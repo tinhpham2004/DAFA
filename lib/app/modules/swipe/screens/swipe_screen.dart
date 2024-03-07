@@ -61,7 +61,7 @@ class _SwipeScreenState extends State<SwipeScreen> with WidgetsBindingObserver {
       child: PopScope(
         canPop: false,
         child: Scaffold(
-          bottomNavigationBar: BottomNavigation(onItem: 1),
+          bottomNavigationBar: BottomNavigation(onItem: 2),
           body: Container(
             child: Stack(
               alignment: Alignment.center,
