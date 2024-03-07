@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dafa/app/core/values/app_colors.dart';
 import 'package:dafa/app/core/values/app_text_style.dart';
-import 'package:dafa/app/models/message.dart';
 import 'package:dafa/app/modules/chat/chat_controller.dart';
 import 'package:dafa/app/modules/chat/widgets/add_message_field.dart';
 import 'package:dafa/app/modules/chat/widgets/report.dart';

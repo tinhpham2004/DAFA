@@ -9,12 +9,10 @@ import 'package:dafa/app/modules/profile/widgets/hobby_field.dart';
 import 'package:dafa/app/modules/profile/widgets/save_button.dart';
 import 'package:dafa/app/modules/profile/widgets/sign_out_button.dart';
 import 'package:dafa/app/modules/sign_in/sign_in_controller.dart';
-import 'package:dafa/app/routes/app_routes.dart';
 import 'package:dafa/app/services/location_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: must_be_immutable
 class ProfileScreen extends StatefulWidget {

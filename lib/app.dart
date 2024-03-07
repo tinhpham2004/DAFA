@@ -1,5 +1,4 @@
 import 'package:dafa/app/routes/app_pages.dart';
-import 'package:dafa/app/routes/app_routes.dart';
 import 'package:dafa/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

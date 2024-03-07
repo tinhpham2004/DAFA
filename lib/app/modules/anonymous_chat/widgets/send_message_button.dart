@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dafa/app/core/values/app_colors.dart';
 import 'package:dafa/app/models/message.dart';
 import 'package:dafa/app/modules/anonymous_chat/anonymous_chat_controller.dart';
-import 'package:dafa/app/modules/chat/chat_controller.dart';
 import 'package:dafa/app/modules/sign_in/sign_in_controller.dart';
 import 'package:dafa/app/services/database_service.dart';
 import 'package:flutter/material.dart';
