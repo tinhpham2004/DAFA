@@ -4,7 +4,6 @@ import 'package:dafa/app/global_widgets/bottom_navigation.dart';
 import 'package:dafa/app/modules/chat/chat_controller.dart';
 import 'package:dafa/app/modules/sign_in/sign_in_controller.dart';
 import 'package:dafa/app/routes/app_routes.dart';
-import 'package:dafa/app/services/database_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';

@@ -1,5 +1,4 @@
 import 'package:dafa/app/core/values/app_colors.dart';
-import 'package:dafa/app/core/values/app_text_style.dart';
 import 'package:dafa/app/modules/chat/chat_controller.dart';
 import 'package:dafa/app/services/openAI_service.dart';
 import 'package:flutter/material.dart';
