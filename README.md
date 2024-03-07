@@ -33,20 +33,20 @@
   <a href="https://platform.OpenAI.com/docs/overview">
     <img
       src="https://img.shields.io/badge/OpenAI-%3E%3D3.5-green"
-      alt="Google Map Platform"
+      alt="OpenAI"
     />
   </a>
   <a href="https://www.agora.io/en/">
     <img
       src="https://img.shields.io/badge/agora-%20-orange"
-      alt="Google Map Platform"
+      alt="Agora SDK"
     />
   </a>
 </p>
 
 <p align="center">
   <a href="#introduction">Introduction</a> •
-  <a href="#get-started">Get Started</a> • <a href="#features">Usage</a> •
+  <a href="#get-started">Get Started</a> • <a href="#features">Features</a> •
   <a href="#technologies">Technologies</a> •
   <a href="#contributor">Contributors</a>
 </p>
