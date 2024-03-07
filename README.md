@@ -217,7 +217,7 @@ conversations flow smoothly.
 
 <h2 id="technologies">Technologies🤖</h2>
 
-> Flutter, Firebase, OpenAI and Agora are Google's technologies that allow us to
+> Flutter, Firebase, OpenAI and Agora are technologies that allow us to
 realize the solution by creating a high-performance mobile application. With
 these technologies, we are extremely confident in developing our ideas:
 - ![Flutter](https://img.shields.io/badge/Flutter-%2302569B.svg?style=for-the-badge&logo=Flutter&logoColor=white)
