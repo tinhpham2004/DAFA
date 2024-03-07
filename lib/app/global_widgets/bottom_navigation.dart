@@ -13,78 +13,118 @@ class BottomNavigation extends StatefulWidget {
 }
 
 class _BottomNavigationState extends State<BottomNavigation> {
+  String profile = '';
+  String cupid = '';
+  String swipe = '';
+  String messages = '';
+  String anonymousMatching = '';
+
+  @override
+  void initState() {
+    _onItemTapped(widget.onItem);
+    super.initState();
+  }
+
+  void RestLabel() {
+    setState(() {
+      profile = '';
+      cupid = '';
+      swipe = '';
+      messages = '';
+      anonymousMatching = '';
+    });
+  }
+
   void _onItemTapped(int index) {
     switch (index) {
       case 0:
+        RestLabel();
+        setState(() {
+          profile = 'Profile';
+        });
         Get.toNamed(AppRoutes.profile);
         break;
 
       case 1:
-        Get.toNamed(AppRoutes.swipe);
+        RestLabel();
+        setState(() {
+          cupid = 'Cupid';
+        });
+        Get.toNamed(AppRoutes.chat_bot);
         break;
 
       case 2:
-        Get.toNamed(AppRoutes.chat);
+        RestLabel();
+        setState(() {
+          swipe = 'Swipe';
+        });
+        Get.toNamed(AppRoutes.swipe);
         break;
 
       case 3:
-        Get.toNamed(AppRoutes.anonymous_chat);
+        RestLabel();
+        setState(() {
+          messages = 'Messages';
+        });
+        Get.toNamed(AppRoutes.chat);
         break;
 
       case 4:
-        Get.toNamed(AppRoutes.chat_bot);
+        RestLabel();
+        setState(() {
+          anonymousMatching = 'Explore';
+        });
+        Get.toNamed(AppRoutes.anonymous_chat);
+        break;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(gradient: AppColors.primaryColor),
-      child: BottomNavigationBar(
-        backgroundColor: Colors.transparent,
-        type: BottomNavigationBarType.fixed,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.person,
-              color: AppColors.white,
-            ),
-            label: '',
+    return BottomNavigationBar(
+      backgroundColor: Colors.grey[100],
+      type: BottomNavigationBarType.fixed,
+      items: <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(
+            Icons.person,
+            color: widget.onItem != 0 ? AppColors.thirdColor : AppColors.send,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.favorite,
-              color: AppColors.white,
-            ),
-            label: '',
+          label: profile,
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(
+            Icons.android,
+            color: widget.onItem != 1 ? AppColors.thirdColor : AppColors.send,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.chat,
-              color: AppColors.white,
-            ),
-            label: '',
+          label: cupid,
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(
+            Icons.favorite,
+            color: widget.onItem != 2 ? AppColors.thirdColor : AppColors.send,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.chat_bubble,
-              color: AppColors.white,
-            ),
-            label: '',
+          label: swipe,
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(
+            Icons.chat,
+            color: widget.onItem != 3 ? AppColors.thirdColor : AppColors.send,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.android,
-              color: AppColors.white,
-            ),
-            label: '',
+          label: messages,
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(
+            Icons.search,
+            color: widget.onItem != 4 ? AppColors.thirdColor : AppColors.send,
           ),
-        ],
-        currentIndex: widget.onItem,
-        selectedItemColor: AppColors.secondaryColor,
-        unselectedItemColor: AppColors.thirdColor,
-        onTap: _onItemTapped,
-      ),
+          label: anonymousMatching,
+        ),
+      ],
+      currentIndex: widget.onItem,
+      selectedItemColor: AppColors.send,
+      unselectedItemColor: AppColors.thirdColor,
+      onTap: _onItemTapped,
     );
   }
 }

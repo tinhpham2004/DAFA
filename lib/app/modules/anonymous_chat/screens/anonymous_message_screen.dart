@@ -279,7 +279,7 @@ class _AnonymouseMessageScreenState extends State<AnonymouseMessageScreen> {
                                       content,
                                       style: CustomTextStyle.messageStyle(
                                           AppColors.white),
-                                      textAlign: TextAlign.end,
+                                      textAlign: TextAlign.start,
                                     ),
                                   ),
                                 ],
@@ -324,6 +324,7 @@ class _AnonymouseMessageScreenState extends State<AnonymouseMessageScreen> {
                                       content,
                                       style: CustomTextStyle.messageStyle(
                                           AppColors.white),
+                                          textAlign: TextAlign.start,
                                     ),
                                     decoration: BoxDecoration(
                                       color: AppColors.receive,

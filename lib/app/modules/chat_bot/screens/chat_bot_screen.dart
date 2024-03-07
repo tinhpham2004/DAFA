@@ -102,7 +102,7 @@ class ChatBotScreen extends StatelessWidget {
                                     content,
                                     style: CustomTextStyle.messageStyle(
                                         AppColors.white),
-                                    textAlign: TextAlign.end,
+                                    textAlign: TextAlign.start,
                                   ),
                                 ),
                               ],
@@ -137,6 +137,7 @@ class ChatBotScreen extends StatelessWidget {
                                     content,
                                     style: CustomTextStyle.messageStyle(
                                         AppColors.black),
+                                    textAlign: TextAlign.start,
                                   ),
                                   decoration: BoxDecoration(
                                     color: AppColors.receive,
