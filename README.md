@@ -72,7 +72,7 @@ git clone https://github.com/tinhpham2004/DAFA.git
 4. Once the code is cloned, navigate into the project directory using the following command:
 
 ```
-cd school_violence
+cd dafa
 ```
 
 5. Next, you need to install any dependencies required by the project. To do this, run the following command:
