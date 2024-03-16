@@ -38,7 +38,9 @@ class CallButton extends StatelessWidget {
   }
 
   void SendCallInvitation(
-      {required String channelName, required String token, required String callId}) {
+      {required String channelName,
+      required String token,
+      required String callId}) {
     firebaseMessagingService.SendLocalCallNotification(
       title: signInController.user.name,
       body: isVideoCall == true ? 'Video call...' : 'Audio call...',
@@ -74,8 +76,13 @@ class CallButton extends StatelessWidget {
           category: isVideoCall == true ? 'videoCall' : 'audioCall',
         );
         await databaseService.SendMessage(message);
-        Get.to(CallScreen(channelName: channelName, token: token, callId: callId,));
-        SendCallInvitation(channelName: channelName, token: token, callId: callId);
+        Get.to(CallScreen(
+          channelName: channelName,
+          token: token,
+          callId: callId,
+        ));
+        SendCallInvitation(
+            channelName: channelName, token: token, callId: callId);
       },
       child: Container(
         margin: EdgeInsets.only(top: 20.h),
@@ -85,6 +92,7 @@ class CallButton extends StatelessWidget {
         child: Icon(
           isVideoCall == true ? Icons.video_call_rounded : Icons.call,
           color: AppColors.white,
+          size: 40.sp,
         ),
       ),
     );

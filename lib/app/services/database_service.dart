@@ -16,8 +16,9 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('messages');
   final CollectionReference reportCollection =
       FirebaseFirestore.instance.collection('report');
+  final CollectionReference blockCollection =
+      FirebaseFirestore.instance.collection('block');
   final SignInController signInController = Get.find<SignInController>();
-
 
   Future InsertUserData(AppUser user) async {
     await usersCollection.doc(user.phoneNumber).set({
@@ -49,6 +50,11 @@ class DatabaseService {
     await reportCollection.doc(user.phoneNumber).set(
       {
         'reporters': [],
+      },
+    );
+    await blockCollection.doc(user.phoneNumber).set(
+      {
+        'blocked': [],
       },
     );
   }
@@ -390,7 +396,7 @@ class DatabaseService {
     });
   }
 
-    Future<void> UpdateCallMessage(String callId, String state) async {
+  Future<void> UpdateCallMessage(String callId, String state) async {
     await messagesCollection.doc(callId).update({
       'content': state,
     });
@@ -455,5 +461,42 @@ class DatabaseService {
       });
     });
     return checkPhoneNumber;
+  }
+
+  Future<void> Block(String blockedUser) async {
+    await blockCollection.doc(signInController.user.phoneNumber).get().then(
+      (docs) async {
+        final blockedList =
+            (docs.data() as dynamic)['blocked'] as List<dynamic>;
+        if (blockedList.contains(blockedUser) ==
+            false) {
+          blockedList.add(blockedUser);
+
+          await blockCollection.doc(signInController.user.phoneNumber).update(
+            {
+              'blocked': blockedList,
+            },
+          );
+        }
+      },
+    );
+  }
+
+    Future<void> Unblock(String blockedUser) async {
+    await blockCollection.doc(signInController.user.phoneNumber).get().then(
+      (docs) async {
+        final blockedList =
+            (docs.data() as dynamic)['blocked'] as List<dynamic>;
+        if (blockedList.contains(blockedUser)) {
+          blockedList.remove(blockedUser);
+
+          await blockCollection.doc(signInController.user.phoneNumber).update(
+            {
+              'blocked': blockedList,
+            },
+          );
+        }
+      },
+    );
   }
 }
