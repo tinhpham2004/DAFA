@@ -131,6 +131,7 @@ class _MessageScreenState extends State<MessageScreen> {
                           true)
                       ? 'online'
                       : 'offline',
+                  style: TextStyle(fontSize: 23.sp),
                 ),
               ),
               trailing: Wrap(
