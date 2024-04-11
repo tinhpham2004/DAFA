@@ -74,7 +74,7 @@ class ChatBotScreen extends StatelessWidget {
                       DateTime date = time.toDate();
                       String sender = message['sender'];
                       String receiver = message['receiver'];
-                      String category = message['category'];
+                      //String category = message['category'];
                       if ((signInController.user.phoneNumber == sender &&
                               'chat_bot' == receiver) ||
                           (signInController.user.phoneNumber == receiver &&
