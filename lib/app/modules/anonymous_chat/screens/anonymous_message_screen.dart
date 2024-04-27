@@ -202,6 +202,8 @@ class _AnonymouseMessageScreenState extends State<AnonymouseMessageScreen> {
                     .user!
                     .name,
                 style: CustomTextStyle.profileHeader(AppColors.white),
+                softWrap: false,
+                overflow: TextOverflow.fade,
               ),
               subtitle: remainingTime.inSeconds % 60 < 10
                   ? Text(
@@ -324,7 +326,7 @@ class _AnonymouseMessageScreenState extends State<AnonymouseMessageScreen> {
                                       content,
                                       style: CustomTextStyle.messageStyle(
                                           AppColors.white),
-                                          textAlign: TextAlign.start,
+                                      textAlign: TextAlign.start,
                                     ),
                                     decoration: BoxDecoration(
                                       color: AppColors.receive,
