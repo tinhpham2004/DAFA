@@ -21,6 +21,8 @@ abstract class AppRoutes {
   static const swipe = '/swipe';
   //profile
   static const profile = '/profile';
+  //view_user_profile
+  static const view_user_profile = '/view_user_profile';
   //chat
   static const chat = '/chat';
   //anonym_chat

@@ -148,7 +148,7 @@ class _AnonymousChatScreenState extends State<AnonymousChatScreen> {
                   Text(
                     anonymousChatController.isSearching.value == false
                         ? 'Who will you match with today? Tap search to find out!'
-                        : 'Searching for your perfect match! Buckle up, we\'ll connect you in under 60 seconds. Feeling impatient? Tap the X to cancel.',
+                        : 'Searching for your perfect match! Buckle up, we\'ll connect you in under ${remainingTime.inSeconds} seconds. Feeling impatient? Tap the X to cancel.',
                     textAlign: TextAlign.center,
                     style: CustomTextStyle.cardTextStyle(AppColors.white),
                   ),
