@@ -9,6 +9,25 @@
       "client_info": {
         "mobilesdk_app_id": "1:425747143474:android:19468153dfd38f2fcb152b",
         "android_client_info": {
+          "package_name": "com.example.dafa"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVdCb6E_diHVhzBl5fDeNFG73o5g5t5Mw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:425747143474:android:28d0cb89b44e1b8acb152b",
+        "android_client_info": {
           "package_name": "com.myapp.dafa"
         }
       },
