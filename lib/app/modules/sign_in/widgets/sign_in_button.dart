@@ -92,7 +92,7 @@ class SignInButton extends StatelessWidget {
               signInController.user.lastActive = DateTime.now();
               signInController.user.token =
                   await firebaseMessagingService.GetToken();
-              await await databaseService.UpdateUserData(signInController.user);
+              await databaseService.UpdateUserData(signInController.user);
               await databaseService.LoadMatchedList();
               signInController.matchList =
                   await databaseService.LoadMatchList(signInController.user);
