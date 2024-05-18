@@ -223,7 +223,10 @@ class _MessageScreenState extends State<MessageScreen> {
                                       horizontal: 8.w,
                                     ),
                                     decoration: BoxDecoration(
-                                      color: AppColors.send,
+                                      color:
+                                          (category.contains("Call") == false)
+                                              ? AppColors.send
+                                              : AppColors.receive,
                                       borderRadius: BorderRadius.only(
                                         topLeft: Radius.circular(20.r),
                                         topRight: Radius.circular(30.r),
@@ -239,23 +242,32 @@ class _MessageScreenState extends State<MessageScreen> {
                                           )
                                         : content.contains('accepted')
                                             ? ListTile(
-                                                leading: category == 'videoCall'
-                                                    ? Icon(
-                                                        Icons.videocam,
-                                                        color: AppColors.black,
-                                                        size: 60.sp,
-                                                      )
-                                                    : Icon(
-                                                        Icons.call,
-                                                        color: AppColors.black,
-                                                        size: 60.sp,
-                                                      ),
+                                                leading: Container(
+                                                  padding: EdgeInsets.all(8.sp),
+                                                  decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: AppColors.thirdColor,
+                                                  ),
+                                                  child: category == 'videoCall'
+                                                      ? Icon(
+                                                          Icons.videocam,
+                                                          color:
+                                                              AppColors.white,
+                                                          size: 50.sp,
+                                                        )
+                                                      : Icon(
+                                                          Icons.call,
+                                                          color:
+                                                              AppColors.white,
+                                                          size: 50.sp,
+                                                        ),
+                                                ),
                                                 title: Text(
                                                   category == 'videoCall'
                                                       ? 'Video Call'
                                                       : 'Audio Call',
                                                   style: CustomTextStyle
-                                                      .messageStyle(
+                                                      .messageCallStyle(
                                                           AppColors.black),
                                                 ),
                                                 subtitle: Text(content
@@ -263,23 +275,45 @@ class _MessageScreenState extends State<MessageScreen> {
                                               )
                                             : ListTile(
                                                 leading: category == 'videoCall'
-                                                    ? Icon(
-                                                        Icons.videocam_off,
-                                                        color: AppColors.black,
-                                                        size: 60.sp,
+                                                    ? Container(
+                                                        padding: EdgeInsets.all(
+                                                            8.sp),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          shape:
+                                                              BoxShape.circle,
+                                                          color: AppColors.red,
+                                                        ),
+                                                        child: Icon(
+                                                          Icons.videocam_off,
+                                                          color:
+                                                              AppColors.white,
+                                                          size: 50.sp,
+                                                        ),
                                                       )
-                                                    : Icon(
-                                                        Icons
-                                                            .phone_missed_rounded,
-                                                        color: AppColors.black,
-                                                        size: 60.sp,
+                                                    : Container(
+                                                        padding: EdgeInsets.all(
+                                                            8.sp),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          shape:
+                                                              BoxShape.circle,
+                                                          color: AppColors.red,
+                                                        ),
+                                                        child: Icon(
+                                                          Icons
+                                                              .phone_missed_rounded,
+                                                          color:
+                                                              AppColors.white,
+                                                          size: 50.sp,
+                                                        ),
                                                       ),
                                                 title: Text(
                                                   category == 'videoCall'
                                                       ? 'Missed Video Call'
                                                       : 'Missed Audio Call',
                                                   style: CustomTextStyle
-                                                      .messageStyle(
+                                                      .messageCallStyle(
                                                           AppColors.black),
                                                 ),
                                               ),
@@ -340,47 +374,65 @@ class _MessageScreenState extends State<MessageScreen> {
                                           )
                                         : content.contains('accepted')
                                             ? ListTile(
-                                                leading: category == 'videoCall'
-                                                    ? Icon(
-                                                        Icons.videocam,
-                                                        color: AppColors.black,
-                                                        size: 60.sp,
-                                                      )
-                                                    : Icon(
-                                                        Icons.call,
-                                                        color: AppColors.black,
-                                                        size: 60.sp,
-                                                      ),
+                                                leading: Container(
+                                                  padding: EdgeInsets.all(8.sp),
+                                                  decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: AppColors.thirdColor,
+                                                  ),
+                                                  child: category == 'videoCall'
+                                                      ? Icon(
+                                                          Icons.videocam,
+                                                          color:
+                                                              AppColors.white,
+                                                          size: 50.sp,
+                                                        )
+                                                      : Icon(
+                                                          Icons.call,
+                                                          color:
+                                                              AppColors.white,
+                                                          size: 50.sp,
+                                                        ),
+                                                ),
                                                 title: Text(
                                                   category == 'videoCall'
                                                       ? 'Video Call'
                                                       : 'Audio Call',
                                                   style: CustomTextStyle
-                                                      .messageStyle(
+                                                      .messageCallStyle(
                                                           AppColors.black),
                                                 ),
                                                 subtitle: Text(content
                                                     .split('accepted')[1]),
                                               )
                                             : ListTile(
-                                                leading: category == 'videoCall'
-                                                    ? Icon(
-                                                        Icons.videocam_off,
-                                                        color: AppColors.black,
-                                                        size: 60.sp,
-                                                      )
-                                                    : Icon(
-                                                        Icons
-                                                            .phone_missed_rounded,
-                                                        color: AppColors.black,
-                                                        size: 60.sp,
-                                                      ),
+                                                leading: Container(
+                                                  padding: EdgeInsets.all(8.sp),
+                                                  decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: AppColors.red,
+                                                  ),
+                                                  child: category == 'videoCall'
+                                                      ? Icon(
+                                                          Icons.videocam_off,
+                                                          color:
+                                                              AppColors.white,
+                                                          size: 50.sp,
+                                                        )
+                                                      : Icon(
+                                                          Icons
+                                                              .phone_missed_rounded,
+                                                          color:
+                                                              AppColors.white,
+                                                          size: 50.sp,
+                                                        ),
+                                                ),
                                                 title: Text(
                                                   category == 'videoCall'
                                                       ? 'Missed Video Call'
                                                       : 'Missed Audio Call',
                                                   style: CustomTextStyle
-                                                      .messageStyle(
+                                                      .messageCallStyle(
                                                           AppColors.black),
                                                 ),
                                               ),
