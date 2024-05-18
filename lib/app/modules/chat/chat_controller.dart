@@ -15,6 +15,7 @@ class ChatController extends GetxController {
   String callId = '';
   RxBool isBlock = false.obs;
   RxBool block = false.obs;
+  RxBool isFocus = false.obs;
 
   void UpdateCurrIndex(int data) => currIndex.value = data;
   void UpdateReportCheckbox(bool data) => reportCheckbox.value = data;
