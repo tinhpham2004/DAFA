@@ -59,6 +59,14 @@ class CustomTextStyle extends TextStyle {
     );
   }
 
+  static TextStyle messageCallStyle(Color color) {
+    return TextStyle(
+      fontSize: 30.sp,
+      fontWeight: FontWeight.w400,
+      color: color,
+    );
+  }
+
   static TextStyle communityRulesHeader(Color color) {
     return TextStyle(
       fontSize: 30.sp,
