@@ -37,14 +37,15 @@ class SendMessageButton extends StatelessWidget {
           time: DateTime.now(),
           category: 'message',
         );
-        final firebaseMessagingService = FirebaseMessagingService();
-        firebaseMessagingService.SendNotification(
-            signInController.user.name,
-            chatController.messageController.text,
-            signInController.user.phoneNumber,
-            chatController.compatibleUserList[chatController.currIndex.value]
-                .user!.token);
+
         if (message.content != '') {
+          final firebaseMessagingService = FirebaseMessagingService();
+          firebaseMessagingService.SendNotification(
+              signInController.user.name,
+              chatController.messageController.text,
+              signInController.user.phoneNumber,
+              chatController.compatibleUserList[chatController.currIndex.value]
+                  .user!.token);
           databaseService.SendMessage(message);
           chatController.messageController.text = '';
         }
