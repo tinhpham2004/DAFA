@@ -35,4 +35,6 @@ abstract class AppRoutes {
   static const view_profile = '/view_profile';
   //chat_bot
   static const chat_bot = '/chat_bot';
+  //search
+  static const search = '/search';
 }
