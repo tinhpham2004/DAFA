@@ -17,6 +17,8 @@ import 'package:dafa/app/modules/complete_profile/screens/upload_images_screen.d
 import 'package:dafa/app/modules/profile/screens/profile_screen.dart';
 import 'package:dafa/app/modules/profile/profile_binding.dart';
 import 'package:dafa/app/modules/profile/widgets/view_user_profile.dart';
+import 'package:dafa/app/modules/search/screens/search_screen.dart';
+import 'package:dafa/app/modules/search/search_binding.dart';
 import 'package:dafa/app/modules/sign_in/screens/sign_in_screen.dart';
 import 'package:dafa/app/modules/sign_in/sign_in_binding.dart';
 import 'package:dafa/app/modules/sign_up/screens/otp_screen.dart';
@@ -119,6 +121,11 @@ abstract class AppPages {
       name: AppRoutes.chat_bot,
       page: () => ChatBotScreen(),
       binding: ChatBotBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.search,
+      page: () => SearchScreen(),
+      binding: SearchBinding(),
     ),
   ];
 }
