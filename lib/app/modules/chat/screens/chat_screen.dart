@@ -65,9 +65,18 @@ class ChatScreen extends StatelessWidget {
         child: Scaffold(
           appBar: AppBar(
             leading: Container(),
-            title: Text(
-              'Messages',
-              style: CustomTextStyle.profileHeader(AppColors.black),
+            titleSpacing: 0.w,
+            title: ListTile(
+              title: Text(
+                'Messages',
+                style: CustomTextStyle.profileHeader(AppColors.black),
+              ),
+              trailing: GestureDetector(
+                onTap: () {
+                  Get.toNamed(AppRoutes.chat_bot);
+                },
+                child: Icon(Icons.android),
+              ),
             ),
           ),
           bottomNavigationBar: BottomNavigation(onItem: 3),
