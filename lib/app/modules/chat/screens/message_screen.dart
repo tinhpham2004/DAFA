@@ -11,6 +11,7 @@ import 'package:dafa/app/modules/chat/widgets/send_message_button.dart';
 import 'package:dafa/app/modules/chat/widgets/call_button.dart';
 import 'package:dafa/app/modules/chat/widgets/take_photo_button.dart';
 import 'package:dafa/app/modules/chat/widgets/unblock_button.dart';
+import 'package:dafa/app/modules/chat/widgets/video_player_widget.dart';
 import 'package:dafa/app/modules/sign_in/sign_in_controller.dart';
 import 'package:dafa/app/routes/app_routes.dart';
 import 'package:dafa/app/services/database_service.dart';
@@ -197,9 +198,6 @@ class _MessageScreenState extends State<MessageScreen> {
                         String sender = message['sender'];
                         String receiver = message['receiver'];
                         String category = message['category'];
-                        // if (category == "image") {
-                        //   print(message["id"]);
-                        // }
                         if ((chatController
                                         .compatibleUserList[
                                             chatController.currIndex.value]
@@ -231,7 +229,8 @@ class _MessageScreenState extends State<MessageScreen> {
                                     decoration: BoxDecoration(
                                       color: category.contains("Call")
                                           ? AppColors.receive
-                                          : category == "image"
+                                          : category == "image" ||
+                                                  category == "video"
                                               ? AppColors.transparent
                                               : AppColors.send,
                                       borderRadius: BorderRadius.only(
@@ -247,20 +246,25 @@ class _MessageScreenState extends State<MessageScreen> {
                                                 AppColors.white),
                                             textAlign: TextAlign.start,
                                           )
-                                        : category == "image"
-                                            ? CachedNetworkImage(
-                                                imageUrl: content,
-                                                imageBuilder:
-                                                    (context, imageProvider) {
-                                                  return Image(
-                                                    image: imageProvider,
-                                                    fit: BoxFit.cover,
-                                                  );
-                                                },
-                                                placeholder: (context, url) {
-                                                  return CircularProgressIndicator();
-                                                },
-                                              )
+                                        : category == "image" ||
+                                                category == "video"
+                                            ? category == "image"
+                                                ? CachedNetworkImage(
+                                                    imageUrl: content,
+                                                    imageBuilder: (context,
+                                                        imageProvider) {
+                                                      return Image(
+                                                        image: imageProvider,
+                                                        fit: BoxFit.cover,
+                                                      );
+                                                    },
+                                                    placeholder:
+                                                        (context, url) {
+                                                      return CircularProgressIndicator();
+                                                    },
+                                                  )
+                                                : VideoPlayerWidget(
+                                                    url: content)
                                             : content.contains('accepted')
                                                 ? ListTile(
                                                     leading: Container(
@@ -390,7 +394,7 @@ class _MessageScreenState extends State<MessageScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Container(
-                                    margin: EdgeInsets.only(right: 150.w),
+                                    margin: EdgeInsets.only(right: 140.w),
                                     padding: EdgeInsets.symmetric(
                                       vertical: 8.h,
                                       horizontal: 8.w,
@@ -402,20 +406,25 @@ class _MessageScreenState extends State<MessageScreen> {
                                                 AppColors.black),
                                             textAlign: TextAlign.start,
                                           )
-                                        : category == "image"
-                                            ? CachedNetworkImage(
-                                                imageUrl: content,
-                                                imageBuilder:
-                                                    (context, imageProvider) {
-                                                  return Image(
-                                                    image: imageProvider,
-                                                    fit: BoxFit.cover,
-                                                  );
-                                                },
-                                                placeholder: (context, url) {
-                                                  return CircularProgressIndicator();
-                                                },
-                                              )
+                                        : category == "image" ||
+                                                category == "video"
+                                            ? category == "image"
+                                                ? CachedNetworkImage(
+                                                    imageUrl: content,
+                                                    imageBuilder: (context,
+                                                        imageProvider) {
+                                                      return Image(
+                                                        image: imageProvider,
+                                                        fit: BoxFit.cover,
+                                                      );
+                                                    },
+                                                    placeholder:
+                                                        (context, url) {
+                                                      return CircularProgressIndicator();
+                                                    },
+                                                  )
+                                                : VideoPlayerWidget(
+                                                    url: content)
                                             : content.contains('accepted')
                                                 ? ListTile(
                                                     leading: Container(
@@ -487,7 +496,8 @@ class _MessageScreenState extends State<MessageScreen> {
                                                     ),
                                                   ),
                                     decoration: BoxDecoration(
-                                      color: category == "image"
+                                      color: category == "image" ||
+                                              category == "video"
                                           ? AppColors.transparent
                                           : AppColors.receive,
                                       borderRadius: BorderRadius.only(

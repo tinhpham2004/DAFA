@@ -48,12 +48,6 @@ class _SearchScreenState extends State<SearchScreen> {
     ''
   ];
 
-  List<String> _selectedDistance = List.generate(100, (index) {
-        int value = index;
-        return value.toString();
-      }) +
-      [''];
-
   final age = List.generate(82, (index) {
     int value = 18 + index;
     return value.toString();
@@ -67,11 +61,6 @@ class _SearchScreenState extends State<SearchScreen> {
   final hobby = ['Gym', 'Yoga', 'Shopping', 'Video games', 'Chat', 'Coding']
       .map((item) => MultiSelectItem<String>(item, item))
       .toList();
-
-  final distance = List.generate(100, (index) {
-    int value = index;
-    return value.toString();
-  }).map((item) => MultiSelectItem<String>(item, item + "km away")).toList();
 
   List<MatchUser> searchResult = [];
 
@@ -123,19 +112,11 @@ class _SearchScreenState extends State<SearchScreen> {
         final userAge = (DateTime.now().year -
                 int.parse(element.user!.dateOfBirth.substring(6)))
             .toString();
-        final _distance = element.distance.round();
-        int maxDistance = 0;
-        _selectedDistance.forEach((distance) {
-          if (distance != '') {
-            maxDistance = max(maxDistance, int.parse(distance));
-          }
-        });
         int _index = _getMatchListIndex(element.user!.phoneNumber);
         if (element.user!.name.contains(searchTextController.value.text) &&
             _selectedAge.contains(userAge) &&
             _selectedHeight.contains(element.user!.height) &&
             _selectedHobby.contains(element.user!.hobby) &&
-            _distance <= maxDistance &&
             _index >= swipeController.curIndex.value) {
           setState(() {
             searchResult.add(element);
@@ -274,38 +255,6 @@ class _SearchScreenState extends State<SearchScreen> {
                                 'Coding',
                                 '',
                               ];
-                            }
-                            _filter();
-                          },
-                        ),
-                      ),
-                      ///////////////////////
-                      //////////////////////
-                      Container(
-                        margin: EdgeInsets.only(top: 30.h),
-                        child: MultiSelectDialogField(
-                          items: distance,
-                          title: Text("Distance"),
-                          selectedColor: Colors.blue,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(40)),
-                            border: Border.all(),
-                          ),
-                          buttonIcon: Icon(
-                            Icons.location_on_outlined,
-                          ),
-                          buttonText: Text(
-                            "Distance",
-                            style: CustomTextStyle.h3(AppColors.black),
-                          ),
-                          onConfirm: (results) {
-                            _selectedDistance = results;
-                            if (results.isEmpty) {
-                              _selectedDistance = List.generate(100, (index) {
-                                    int value = index;
-                                    return value.toString();
-                                  }) +
-                                  [''];
                             }
                             _filter();
                           },
