@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:chewie/chewie.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dafa/app/core/values/app_colors.dart';
 import 'package:dafa/app/core/values/app_text_style.dart';
@@ -12,6 +11,7 @@ import 'package:dafa/app/modules/chat/widgets/send_message_button.dart';
 import 'package:dafa/app/modules/chat/widgets/call_button.dart';
 import 'package:dafa/app/modules/chat/widgets/take_photo_button.dart';
 import 'package:dafa/app/modules/chat/widgets/unblock_button.dart';
+import 'package:dafa/app/modules/chat/widgets/video_player_widget.dart';
 import 'package:dafa/app/modules/sign_in/sign_in_controller.dart';
 import 'package:dafa/app/routes/app_routes.dart';
 import 'package:dafa/app/services/database_service.dart';
@@ -20,7 +20,6 @@ import 'package:dafa/app/services/firebase_messaging_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:video_player/video_player.dart';
 
 class MessageScreen extends StatefulWidget {
   MessageScreen({super.key});
@@ -698,57 +697,5 @@ class _MessageScreenState extends State<MessageScreen> {
         ),
       ),
     );
-  }
-}
-
-class VideoPlayerWidget extends StatefulWidget {
-  final String url;
-
-  VideoPlayerWidget({required this.url});
-
-  @override
-  _VideoPlayerWidgetState createState() => _VideoPlayerWidgetState();
-}
-
-class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
-  late VideoPlayerController _videoPlayerController;
-  ChewieController? _chewieController;
-
-  @override
-  void initState() {
-    super.initState();
-    _videoPlayerController = VideoPlayerController.networkUrl(
-      Uri.parse(
-        widget.url,
-      ),
-    )..initialize().then((_) {
-        setState(() {
-          _chewieController = ChewieController(
-            videoPlayerController: _videoPlayerController,
-            aspectRatio: _videoPlayerController.value.aspectRatio,
-            autoPlay: false,
-            looping: false,
-          );
-        });
-      });
-  }
-
-  @override
-  void dispose() {
-    _videoPlayerController.dispose();
-    _chewieController?.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return _chewieController != null &&
-            _chewieController!.videoPlayerController.value.isInitialized
-        ? SizedBox(
-            height: 400.h, // Set a specific height
-            width: double.infinity, // Make it as wide as the parent allows
-            child: Chewie(controller: _chewieController!),
-          )
-        : Center(child: CircularProgressIndicator());
   }
 }
