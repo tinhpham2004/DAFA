@@ -24,7 +24,7 @@ class PickPhotoButton extends StatelessWidget {
   DatabaseService databaseService = DatabaseService();
   final messagesCollection = FirebaseFirestore.instance.collection('messages');
 
-  void SendMessage(String imgURL) {
+  void SendMessage(String imgURL, String type) {
     String index = messagesCollection.doc().id;
     Message message = Message(
       id: index,
@@ -33,17 +33,36 @@ class PickPhotoButton extends StatelessWidget {
           .compatibleUserList[chatController.currIndex.value].user!.phoneNumber,
       content: imgURL,
       time: DateTime.now(),
-      category: 'image',
+      category: type,
     );
 
     final firebaseMessagingService = FirebaseMessagingService();
     firebaseMessagingService.SendNotification(
         signInController.user.name,
-        "[Hình ảnh]",
+        type == 'image' ? "[Hình ảnh]" : "[Video]",
         signInController.user.phoneNumber,
         chatController
             .compatibleUserList[chatController.currIndex.value].user!.token);
     databaseService.SendMessage(message);
+  }
+
+  String getType(String name) {
+    String type = '';
+    for (int i = name.length - 1; i >= 0; i--) {
+      if (name[i] == '.') {
+        type = name.substring(i + 1, name.length);
+        break;
+      }
+    }
+
+    if (type == 'jpg' ||
+        type == 'jpeg' ||
+        type == 'gif' ||
+        type == 'png' ||
+        type == 'svg')
+      return 'image';
+    else
+      return 'video';
   }
 
   @override
@@ -56,9 +75,9 @@ class PickPhotoButton extends StatelessWidget {
       ),
       child: IconButton(
         onPressed: () async {
-          final file =
-              await ImagePicker().pickImage(source: ImageSource.gallery);
+          final file = await ImagePicker().pickMedia();
           if (file == null) return;
+          final type = getType(file.name);
           // final croppedImg = await ImageCropper().cropImage(
           //   sourcePath: file.path,
           //   aspectRatio: CropAspectRatio(ratioX: 3, ratioY: 4),
@@ -72,9 +91,11 @@ class PickPhotoButton extends StatelessWidget {
               .child('${signInController.phoneNumberController.text}');
           Reference referenceImage = referenceFolderImage.child(fileName);
           await referenceImage.putFile(
-              File(file.path), SettableMetadata(contentType: 'image/jpeg'));
+              File(file.path),
+              SettableMetadata(
+                  contentType: type == 'image' ? 'image/jpeg' : 'video/mp4'));
           final downloadURL = await referenceImage.getDownloadURL();
-          SendMessage(downloadURL);
+          SendMessage(downloadURL, type);
         },
         icon: Icon(
           Icons.image,
