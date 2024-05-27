@@ -468,8 +468,7 @@ class DatabaseService {
       (docs) async {
         final blockedList =
             (docs.data() as dynamic)['blocked'] as List<dynamic>;
-        if (blockedList.contains(blockedUser) ==
-            false) {
+        if (blockedList.contains(blockedUser) == false) {
           blockedList.add(blockedUser);
 
           await blockCollection.doc(signInController.user.phoneNumber).update(
@@ -482,7 +481,7 @@ class DatabaseService {
     );
   }
 
-    Future<void> Unblock(String blockedUser) async {
+  Future<void> Unblock(String blockedUser) async {
     await blockCollection.doc(signInController.user.phoneNumber).get().then(
       (docs) async {
         final blockedList =
