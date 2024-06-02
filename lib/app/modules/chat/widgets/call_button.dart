@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:permission_handler/permission_handler.dart';
 
 class CallButton extends StatelessWidget {
   CallButton({
@@ -59,6 +60,7 @@ class CallButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
+        await [Permission.microphone, Permission.camera].request();
         String channelName = isVideoCall == true
             ? 'videoCall${signInController.user.phoneNumber}${chatController.compatibleUserList[chatController.currIndex.value].user!.phoneNumber}'
             : 'audioCall${signInController.user.phoneNumber}${chatController.compatibleUserList[chatController.currIndex.value].user!.phoneNumber}';
