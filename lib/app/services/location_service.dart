@@ -23,7 +23,7 @@ class LocationService {
       return Future.error(
           'Location permissions are permanently denied, we cannot request permissions.');
     }
-    return await Geolocator.getCurrentPosition();
+    return await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
   }
 
   Future<String> GetAddress() async {
@@ -47,7 +47,7 @@ class LocationService {
       return Future.error(
           'Location permissions are permanently denied, we cannot request permissions.');
     }
-    Position curPosition = await Geolocator.getCurrentPosition();
+    Position curPosition = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
     List<Placemark> placemarks = await placemarkFromCoordinates(
         curPosition.latitude, curPosition.longitude);
     String address = '';
