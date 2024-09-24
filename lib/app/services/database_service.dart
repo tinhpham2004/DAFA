@@ -20,6 +20,18 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('block');
   final SignInController signInController = Get.find<SignInController>();
 
+  Future<void> updateExistingUsers() async {
+    QuerySnapshot snapshot = await usersCollection.get();
+
+    for (var doc in snapshot.docs) {
+      await usersCollection.doc(doc.id).update({
+        'isVerified': false,
+        'encryptedIdNumber': '',
+        'matchingPeopleNumber': 0,
+      });
+    }
+  }
+
   Future InsertUserData(AppUser user) async {
     await usersCollection.doc(user.phoneNumber).set({
       'userId': user.userId,
@@ -39,12 +51,16 @@ class DatabaseService {
       'lastActive': user.lastActive,
       'isBanned': user.isBanned,
       'token': user.token,
+      'isVerified': user.isVerified,
+      'encryptedIdNumber': user.encryptedIdNumber,
+      'matchingPeopleNumber': user.matchingPeopleNumber,
     });
     await matchedListCollection.doc(user.phoneNumber).set(
       {
         'like': [],
         'dislike': [],
         'compatible': [],
+        'getToKnow': Map<String, int>(),
       },
     );
     await reportCollection.doc(user.phoneNumber).set(
@@ -59,7 +75,6 @@ class DatabaseService {
     );
   }
 
-  // ignore: non_constant_identifier_names
   Future Authenticate(String phoneNumber, String password) async {
     DocumentReference documentReference = usersCollection.doc(phoneNumber);
     await documentReference.get().then(
@@ -106,6 +121,9 @@ class DatabaseService {
       'isSearching': user.isSearching,
       'lastActive': user.lastActive,
       'token': user.token,
+      'isVerified': user.isVerified,
+      'encryptedIdNumber': user.encryptedIdNumber,
+      'matchingPeopleNumber': user.matchingPeopleNumber,
     });
   }
 
@@ -169,6 +187,11 @@ class DatabaseService {
             ((value.data() as dynamic)['lastActive'] as Timestamp).toDate();
         user.isBanned = ((value.data() as dynamic)['isBanned'] as dynamic);
         user.token = ((value.data() as dynamic)['token'] as dynamic);
+        user.isVerified = ((value.data() as dynamic)['isVerified'] as dynamic);
+        user.encryptedIdNumber =
+            ((value.data() as dynamic)['encryptedIdNumber'] as dynamic);
+        user.matchingPeopleNumber =
+            ((value.data() as dynamic)['matchingPeopleNumber'] as dynamic);
       },
     );
     return user;
@@ -215,6 +238,12 @@ class DatabaseService {
                 ((value.data() as dynamic)['lastActive'] as Timestamp).toDate();
             user.isBanned = ((value.data() as dynamic)['isBanned'] as dynamic);
             user.token = ((value.data() as dynamic)['token'] as dynamic);
+            user.isVerified =
+                ((value.data() as dynamic)['isVerified'] as dynamic);
+            user.encryptedIdNumber =
+                ((value.data() as dynamic)['encryptedIdNumber'] as dynamic);
+            user.matchingPeopleNumber =
+                ((value.data() as dynamic)['matchingPeopleNumber'] as dynamic);
 
             signInController.listUsersGender[user.phoneNumber] = user.gender;
 
@@ -321,6 +350,7 @@ class DatabaseService {
         'like': signInController.likeList,
         'dislike': signInController.dislikeList,
         'compatible': signInController.compatibleList,
+        'getToKnow': signInController.getToKnowList,
       },
     );
   }
@@ -336,6 +366,8 @@ class DatabaseService {
             (docs.data() as dynamic)['dislike'] as List<dynamic>;
         final compatibleList =
             (docs.data() as dynamic)['compatible'] as List<dynamic>;
+        final getToKnowList =
+            Map<String, int>.from((docs.data() as dynamic)['getToKnow']);
         likeList.forEach(
           (element) {
             signInController.likeList.add(element);
@@ -351,6 +383,7 @@ class DatabaseService {
             signInController.compatibleList.add(element);
           },
         );
+        signInController.getToKnowList = getToKnowList;
       },
     );
   }
@@ -498,4 +531,23 @@ class DatabaseService {
       },
     );
   }
+
+  Future<void> updateGetToKnow({
+    required String documentId,
+    required String key,
+    required int value,
+  }) async {
+    await matchedListCollection
+        .doc(documentId)
+        .update({'getToKnow.$key': value});
+  }
+
+Future<void> removeGetToKnow({
+  required String documentId,
+  required String key,
+}) async {
+  await matchedListCollection
+      .doc(documentId)
+      .update({'getToKnow.$key': FieldValue.delete()});
+}
 }

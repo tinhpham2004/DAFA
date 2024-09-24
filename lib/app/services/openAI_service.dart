@@ -33,6 +33,7 @@ class OpenAIService {
         answer = element.message!.content;
       }
     }
+
     if (answer == 'True') {
       return true;
     } else {
