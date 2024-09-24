@@ -146,13 +146,13 @@ class _SearchScreenState extends State<SearchScreen> {
                           EdgeInsets.only(top: 0, bottom: 10.sp, left: 25.sp),
                       hintText: 'Search',
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.r),
+                        borderRadius: BorderRadius.circular(60.r),
                       ),
                       suffix: GestureDetector(
                         onTap: () {
                           _filter();
                         },
-                        child: Icon(
+                        child: const Icon(
                           Icons.search,
                         ),
                       ),
@@ -167,13 +167,14 @@ class _SearchScreenState extends State<SearchScreen> {
                         margin: EdgeInsets.only(top: 30.h),
                         child: MultiSelectDialogField(
                           items: age,
-                          title: Text("Age"),
+                          title: const Text("Age"),
                           selectedColor: Colors.blue,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(40)),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(40)),
                             border: Border.all(),
                           ),
-                          buttonIcon: Icon(
+                          buttonIcon: const Icon(
                             Icons.onetwothree,
                           ),
                           buttonText: Text(
@@ -198,13 +199,14 @@ class _SearchScreenState extends State<SearchScreen> {
                         margin: EdgeInsets.only(top: 30.h),
                         child: MultiSelectDialogField(
                           items: height,
-                          title: Text("Height"),
+                          title: const Text("Height"),
                           selectedColor: Colors.blue,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(40)),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(40)),
                             border: Border.all(),
                           ),
-                          buttonIcon: Icon(
+                          buttonIcon: const Icon(
                             Icons.straighten_rounded,
                           ),
                           buttonText: Text(
@@ -230,13 +232,14 @@ class _SearchScreenState extends State<SearchScreen> {
                         margin: EdgeInsets.only(top: 30.h),
                         child: MultiSelectDialogField(
                           items: hobby,
-                          title: Text("Hobby"),
+                          title: const Text("Hobby"),
                           selectedColor: Colors.blue,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(40)),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(40)),
                             border: Border.all(),
                           ),
-                          buttonIcon: Icon(
+                          buttonIcon: const Icon(
                             Icons.favorite_outline_sharp,
                           ),
                           buttonText: Text(
@@ -265,7 +268,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       searchResult.isNotEmpty
                           ? ListView.builder(
                               shrinkWrap: true,
-                              physics: ScrollPhysics(),
+                              physics: const ScrollPhysics(),
                               itemCount: searchResult.length,
                               itemBuilder: (context, index) {
                                 return GestureDetector(
@@ -293,7 +296,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                                           .images
                                                           .first),
                                                 )
-                                              : SizedBox(),
+                                              : const SizedBox(),
                                         ),
                                         Obx(() => Container(
                                               decoration: BoxDecoration(
@@ -317,13 +320,12 @@ class _SearchScreenState extends State<SearchScreen> {
                                       searchResult[index].user!.name,
                                     ),
                                     subtitle: Text(
-                                      'Last active • ' +
-                                          LastActiveTime(
-                                            DateTime.now().difference(
-                                                searchResult[index]
-                                                    .user!
-                                                    .lastActive),
-                                          ),
+                                      'Last active • ${LastActiveTime(
+                                        DateTime.now().difference(
+                                            searchResult[index]
+                                                .user!
+                                                .lastActive),
+                                      )}',
                                     ),
                                     trailing: Wrap(
                                       children: [

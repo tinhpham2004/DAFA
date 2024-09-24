@@ -114,7 +114,7 @@ abstract class AppPages {
     ),
     GetPage(
       name: AppRoutes.anonymous_message,
-      page: () => AnonymouseMessageScreen(),
+      page: () => const AnonymousMessageScreen(),
       binding: AnonymousChatBinding(),
     ),
     GetPage(
