@@ -17,15 +17,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-class AnonymouseMessageScreen extends StatefulWidget {
-  const AnonymouseMessageScreen({super.key});
+class AnonymousMessageScreen extends StatefulWidget {
+  const AnonymousMessageScreen({super.key});
 
   @override
-  State<AnonymouseMessageScreen> createState() =>
-      _AnonymouseMessageScreenState();
+  State<AnonymousMessageScreen> createState() =>
+      _AnonymousMessageScreenState();
 }
 
-class _AnonymouseMessageScreenState extends State<AnonymouseMessageScreen> {
+class _AnonymousMessageScreenState extends State<AnonymousMessageScreen> {
   final AnonymousChatController anonymousChatController =
       Get.find<AnonymousChatController>();
 
