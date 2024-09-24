@@ -31,7 +31,7 @@ Future<void> main() async {
     final signInController = Get.put(SignInController());
     signInController.phoneNumberController.text = phoneNumber;
     DatabaseService databaseService = DatabaseService();
-    LocationService locationService = LocationService();
+    // LocationService locationService = LocationService();
     FirebaseListenerService firebaseListenerService = FirebaseListenerService();
     FirebaseMessagingService firebaseMessagingService =
         FirebaseMessagingService();
@@ -42,10 +42,10 @@ Future<void> main() async {
       initialRoute = AppRoutes.complete_name;
     } else {
       signInController.UpdateUser(await databaseService.LoadUserData());
-      Position coordinate = await locationService.GetCoordinate();
-      signInController.user.coordinate =
-          GeoPoint(coordinate.latitude, coordinate.longitude);
-      signInController.user.address = await locationService.GetAddress();
+      // Position coordinate = await locationService.GetCoordinate();
+      // signInController.user.coordinate =
+      //     GeoPoint(coordinate.latitude, coordinate.longitude);
+      // signInController.user.address = await locationService.GetAddress();
       signInController.user.isOnline = true;
       signInController.user.lastActive = DateTime.now();
       await databaseService.UpdateUserData(signInController.user);
@@ -68,4 +68,5 @@ Future<void> main() async {
   AppConsts.openAI_API_Key = await apiService.FetchApi();
 
   runApp(MyApp(navigatorKey: navigatorKey));
+  // runApp(MaterialApp(home: AddFields()));
 }
