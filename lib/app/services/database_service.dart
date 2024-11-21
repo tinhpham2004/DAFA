@@ -27,7 +27,6 @@ class DatabaseService {
       await usersCollection.doc(doc.id).update({
         'isVerified': false,
         'encryptedIdNumber': '',
-        'matchingPeopleNumber': 0,
       });
     }
   }
@@ -53,7 +52,6 @@ class DatabaseService {
       'token': user.token,
       'isVerified': user.isVerified,
       'encryptedIdNumber': user.encryptedIdNumber,
-      'matchingPeopleNumber': user.matchingPeopleNumber,
     });
     await matchedListCollection.doc(user.phoneNumber).set(
       {
@@ -123,7 +121,6 @@ class DatabaseService {
       'token': user.token,
       'isVerified': user.isVerified,
       'encryptedIdNumber': user.encryptedIdNumber,
-      'matchingPeopleNumber': user.matchingPeopleNumber,
     });
   }
 
@@ -190,8 +187,6 @@ class DatabaseService {
         user.isVerified = ((value.data() as dynamic)['isVerified'] as dynamic);
         user.encryptedIdNumber =
             ((value.data() as dynamic)['encryptedIdNumber'] as dynamic);
-        user.matchingPeopleNumber =
-            ((value.data() as dynamic)['matchingPeopleNumber'] as dynamic);
       },
     );
     return user;
@@ -242,8 +237,6 @@ class DatabaseService {
                 ((value.data() as dynamic)['isVerified'] as dynamic);
             user.encryptedIdNumber =
                 ((value.data() as dynamic)['encryptedIdNumber'] as dynamic);
-            user.matchingPeopleNumber =
-                ((value.data() as dynamic)['matchingPeopleNumber'] as dynamic);
 
             signInController.listUsersGender[user.phoneNumber] = user.gender;
 
@@ -383,6 +376,7 @@ class DatabaseService {
             signInController.compatibleList.add(element);
           },
         );
+
         signInController.getToKnowList = getToKnowList;
       },
     );
@@ -542,12 +536,19 @@ class DatabaseService {
         .update({'getToKnow.$key': value});
   }
 
-Future<void> removeGetToKnow({
-  required String documentId,
-  required String key,
-}) async {
-  await matchedListCollection
-      .doc(documentId)
-      .update({'getToKnow.$key': FieldValue.delete()});
-}
+  Future<void> removeGetToKnow({
+    required String documentId,
+    required String key,
+  }) async {
+    await matchedListCollection
+        .doc(documentId)
+        .update({'getToKnow.$key': FieldValue.delete()});
+  }
+
+  Future<void> VerifyUser(String encryptedIdNumber) async {
+    await usersCollection.doc(signInController.user.phoneNumber).update({
+      'isVerified': true,
+      'encryptedIdNumber': encryptedIdNumber,
+    });
+  }
 }
