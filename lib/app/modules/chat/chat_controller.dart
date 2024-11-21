@@ -1,5 +1,6 @@
 import 'package:dafa/app/models/match_user.dart';
 import 'package:dafa/app/models/message.dart';
+import 'package:dafa/app/modules/chat/enum/relationship_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -13,6 +14,10 @@ class ChatController extends GetxController {
   RxString suggestRep = ''.obs;
   String lastestMessage = '';
   String callId = '';
+  RxBool isBlock = false.obs;
+  RxBool block = false.obs;
+  RxBool isFocus = false.obs;
+  RelationshipEnum currentRelationshipEnum = RelationshipEnum.empty;
 
   void UpdateCurrIndex(int data) => currIndex.value = data;
   void UpdateReportCheckbox(bool data) => reportCheckbox.value = data;

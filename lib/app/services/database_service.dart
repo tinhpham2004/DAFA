@@ -16,8 +16,20 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('messages');
   final CollectionReference reportCollection =
       FirebaseFirestore.instance.collection('report');
+  final CollectionReference blockCollection =
+      FirebaseFirestore.instance.collection('block');
   final SignInController signInController = Get.find<SignInController>();
 
+  Future<void> updateExistingUsers() async {
+    QuerySnapshot snapshot = await usersCollection.get();
+
+    for (var doc in snapshot.docs) {
+      await usersCollection.doc(doc.id).update({
+        'isVerified': false,
+        'encryptedIdNumber': '',
+      });
+    }
+  }
 
   Future InsertUserData(AppUser user) async {
     await usersCollection.doc(user.phoneNumber).set({
@@ -38,12 +50,15 @@ class DatabaseService {
       'lastActive': user.lastActive,
       'isBanned': user.isBanned,
       'token': user.token,
+      'isVerified': user.isVerified,
+      'encryptedIdNumber': user.encryptedIdNumber,
     });
     await matchedListCollection.doc(user.phoneNumber).set(
       {
         'like': [],
         'dislike': [],
         'compatible': [],
+        'getToKnow': Map<String, int>(),
       },
     );
     await reportCollection.doc(user.phoneNumber).set(
@@ -51,9 +66,13 @@ class DatabaseService {
         'reporters': [],
       },
     );
+    await blockCollection.doc(user.phoneNumber).set(
+      {
+        'blocked': [],
+      },
+    );
   }
 
-  // ignore: non_constant_identifier_names
   Future Authenticate(String phoneNumber, String password) async {
     DocumentReference documentReference = usersCollection.doc(phoneNumber);
     await documentReference.get().then(
@@ -100,6 +119,8 @@ class DatabaseService {
       'isSearching': user.isSearching,
       'lastActive': user.lastActive,
       'token': user.token,
+      'isVerified': user.isVerified,
+      'encryptedIdNumber': user.encryptedIdNumber,
     });
   }
 
@@ -163,6 +184,9 @@ class DatabaseService {
             ((value.data() as dynamic)['lastActive'] as Timestamp).toDate();
         user.isBanned = ((value.data() as dynamic)['isBanned'] as dynamic);
         user.token = ((value.data() as dynamic)['token'] as dynamic);
+        user.isVerified = ((value.data() as dynamic)['isVerified'] as dynamic);
+        user.encryptedIdNumber =
+            ((value.data() as dynamic)['encryptedIdNumber'] as dynamic);
       },
     );
     return user;
@@ -209,6 +233,10 @@ class DatabaseService {
                 ((value.data() as dynamic)['lastActive'] as Timestamp).toDate();
             user.isBanned = ((value.data() as dynamic)['isBanned'] as dynamic);
             user.token = ((value.data() as dynamic)['token'] as dynamic);
+            user.isVerified =
+                ((value.data() as dynamic)['isVerified'] as dynamic);
+            user.encryptedIdNumber =
+                ((value.data() as dynamic)['encryptedIdNumber'] as dynamic);
 
             signInController.listUsersGender[user.phoneNumber] = user.gender;
 
@@ -315,6 +343,7 @@ class DatabaseService {
         'like': signInController.likeList,
         'dislike': signInController.dislikeList,
         'compatible': signInController.compatibleList,
+        'getToKnow': signInController.getToKnowList,
       },
     );
   }
@@ -330,6 +359,8 @@ class DatabaseService {
             (docs.data() as dynamic)['dislike'] as List<dynamic>;
         final compatibleList =
             (docs.data() as dynamic)['compatible'] as List<dynamic>;
+        final getToKnowList =
+            Map<String, int>.from((docs.data() as dynamic)['getToKnow']);
         likeList.forEach(
           (element) {
             signInController.likeList.add(element);
@@ -345,6 +376,8 @@ class DatabaseService {
             signInController.compatibleList.add(element);
           },
         );
+
+        signInController.getToKnowList = getToKnowList;
       },
     );
   }
@@ -390,7 +423,7 @@ class DatabaseService {
     });
   }
 
-    Future<void> UpdateCallMessage(String callId, String state) async {
+  Future<void> UpdateCallMessage(String callId, String state) async {
     await messagesCollection.doc(callId).update({
       'content': state,
     });
@@ -455,5 +488,67 @@ class DatabaseService {
       });
     });
     return checkPhoneNumber;
+  }
+
+  Future<void> Block(String blockedUser) async {
+    await blockCollection.doc(signInController.user.phoneNumber).get().then(
+      (docs) async {
+        final blockedList =
+            (docs.data() as dynamic)['blocked'] as List<dynamic>;
+        if (blockedList.contains(blockedUser) == false) {
+          blockedList.add(blockedUser);
+
+          await blockCollection.doc(signInController.user.phoneNumber).update(
+            {
+              'blocked': blockedList,
+            },
+          );
+        }
+      },
+    );
+  }
+
+  Future<void> Unblock(String blockedUser) async {
+    await blockCollection.doc(signInController.user.phoneNumber).get().then(
+      (docs) async {
+        final blockedList =
+            (docs.data() as dynamic)['blocked'] as List<dynamic>;
+        if (blockedList.contains(blockedUser)) {
+          blockedList.remove(blockedUser);
+
+          await blockCollection.doc(signInController.user.phoneNumber).update(
+            {
+              'blocked': blockedList,
+            },
+          );
+        }
+      },
+    );
+  }
+
+  Future<void> updateGetToKnow({
+    required String documentId,
+    required String key,
+    required int value,
+  }) async {
+    await matchedListCollection
+        .doc(documentId)
+        .update({'getToKnow.$key': value});
+  }
+
+  Future<void> removeGetToKnow({
+    required String documentId,
+    required String key,
+  }) async {
+    await matchedListCollection
+        .doc(documentId)
+        .update({'getToKnow.$key': FieldValue.delete()});
+  }
+
+  Future<void> VerifyUser(String encryptedIdNumber) async {
+    await usersCollection.doc(signInController.user.phoneNumber).update({
+      'isVerified': true,
+      'encryptedIdNumber': encryptedIdNumber,
+    });
   }
 }

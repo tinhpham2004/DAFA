@@ -17,6 +17,7 @@ class SignInController extends GetxController {
   List<String> likeList = [];
   List<String> dislikeList = [];
   List<String> compatibleList = [];
+  Map<String, int>? getToKnowList;
   List<MatchUser> matchListForChat = [];
   RxMap<String, bool> listUsersOnlineState = RxMap<String, bool>();
   RxMap<String, bool> listUsersSearchingState = RxMap<String, bool>();

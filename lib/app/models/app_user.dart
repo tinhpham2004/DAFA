@@ -17,8 +17,11 @@ class AppUser {
   bool isSearching = false;
   bool isBanned = false;
   DateTime lastActive = DateTime.now();
+  String token = '';
+  bool isVerified = false;
+  String encryptedIdNumber = '';
+  //
   AppUser({
     required this.phoneNumber,
   });
-  String token = '';
 }

@@ -1,3 +1,4 @@
+import 'package:dafa/app/global_widgets/id_recognition_screen.dart';
 import 'package:dafa/app/modules/anonymous_chat/anonymous_chat_binding.dart';
 import 'package:dafa/app/modules/anonymous_chat/screens/anonymous_chat_screen.dart';
 import 'package:dafa/app/modules/anonymous_chat/screens/anonymous_message_screen.dart';
@@ -16,6 +17,9 @@ import 'package:dafa/app/modules/complete_profile/screens/name_screen.dart';
 import 'package:dafa/app/modules/complete_profile/screens/upload_images_screen.dart';
 import 'package:dafa/app/modules/profile/screens/profile_screen.dart';
 import 'package:dafa/app/modules/profile/profile_binding.dart';
+import 'package:dafa/app/modules/profile/widgets/view_user_profile.dart';
+import 'package:dafa/app/modules/search/screens/search_screen.dart';
+import 'package:dafa/app/modules/search/search_binding.dart';
 import 'package:dafa/app/modules/sign_in/screens/sign_in_screen.dart';
 import 'package:dafa/app/modules/sign_in/sign_in_binding.dart';
 import 'package:dafa/app/modules/sign_up/screens/otp_screen.dart';
@@ -85,6 +89,11 @@ abstract class AppPages {
       binding: ProfileBinding(),
     ),
     GetPage(
+      name: AppRoutes.view_user_profile,
+      page: () => ViewUserProfile(),
+      binding: ProfileBinding(),
+    ),
+    GetPage(
       name: AppRoutes.chat,
       page: () => ChatScreen(),
       binding: ChatBinding(),
@@ -106,13 +115,23 @@ abstract class AppPages {
     ),
     GetPage(
       name: AppRoutes.anonymous_message,
-      page: () => AnonymouseMessageScreen(),
+      page: () => const AnonymousMessageScreen(),
       binding: AnonymousChatBinding(),
     ),
     GetPage(
       name: AppRoutes.chat_bot,
       page: () => ChatBotScreen(),
       binding: ChatBotBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.search,
+      page: () => SearchScreen(),
+      binding: SearchBinding(),
+    ),
+        GetPage(
+      name: AppRoutes.id_recognition,
+      page: () => IdRecognitionScreen(),
+      binding: SignInBinding(),
     ),
   ];
 }

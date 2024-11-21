@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:permission_handler/permission_handler.dart';
 
 class CallButton extends StatelessWidget {
   CallButton({
@@ -38,7 +39,9 @@ class CallButton extends StatelessWidget {
   }
 
   void SendCallInvitation(
-      {required String channelName, required String token, required String callId}) {
+      {required String channelName,
+      required String token,
+      required String callId}) {
     firebaseMessagingService.SendLocalCallNotification(
       title: signInController.user.name,
       body: isVideoCall == true ? 'Video call...' : 'Audio call...',
@@ -57,6 +60,7 @@ class CallButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
+        await [Permission.microphone, Permission.camera].request();
         String channelName = isVideoCall == true
             ? 'videoCall${signInController.user.phoneNumber}${chatController.compatibleUserList[chatController.currIndex.value].user!.phoneNumber}'
             : 'audioCall${signInController.user.phoneNumber}${chatController.compatibleUserList[chatController.currIndex.value].user!.phoneNumber}';
@@ -74,8 +78,13 @@ class CallButton extends StatelessWidget {
           category: isVideoCall == true ? 'videoCall' : 'audioCall',
         );
         await databaseService.SendMessage(message);
-        Get.to(CallScreen(channelName: channelName, token: token, callId: callId,));
-        SendCallInvitation(channelName: channelName, token: token, callId: callId);
+        Get.to(CallScreen(
+          channelName: channelName,
+          token: token,
+          callId: callId,
+        ));
+        SendCallInvitation(
+            channelName: channelName, token: token, callId: callId);
       },
       child: Container(
         margin: EdgeInsets.only(top: 20.h),
@@ -85,6 +94,7 @@ class CallButton extends StatelessWidget {
         child: Icon(
           isVideoCall == true ? Icons.video_call_rounded : Icons.call,
           color: AppColors.white,
+          size: 40.sp,
         ),
       ),
     );

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:dafa/app/core/values/app_consts.dart';
 import 'package:dafa/app/modules/chat/screens/call_screen.dart';
@@ -67,7 +68,11 @@ class FirebaseMessagingService {
     );
     firebaseMessaging.getInitialMessage().then(HandleMessage);
     FirebaseMessaging.onMessageOpenedApp.listen(HandleMessage);
-    FirebaseMessaging.onBackgroundMessage(HandleBackgroundMessage);
+    try {
+      FirebaseMessaging.onBackgroundMessage(HandleBackgroundMessage);
+    } catch (e) {
+      log(e.toString());
+    }
   }
 
   Future<void> InitNotifications() async {

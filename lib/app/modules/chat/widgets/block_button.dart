@@ -1,47 +1,42 @@
 import 'package:dafa/app/core/values/app_colors.dart';
 import 'package:dafa/app/core/values/app_text_style.dart';
-import 'package:dafa/app/modules/sign_in/sign_in_controller.dart';
-import 'package:dafa/app/routes/app_routes.dart';
+import 'package:dafa/app/modules/chat/chat_controller.dart';
 import 'package:dafa/app/services/database_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class SignOutButton extends StatelessWidget {
-  SignOutButton({
+class BlockButton extends StatelessWidget {
+  const BlockButton({
     super.key,
+    required this.databaseService,
+    required this.chatController,
   });
 
-  final signInController = Get.find<SignInController>();
-  final databaseService = DatabaseService();
+  final DatabaseService databaseService;
+  final ChatController chatController;
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      icon: Icon(
-        Icons.exit_to_app_rounded,
-        color: AppColors.black,
-        size: 60.sp,
-      ),
-      onPressed: () {
+    return GestureDetector(
+      onTap: () async {
         showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
               title: Text(
-                'Sign out',
+                'Block',
                 style: CustomTextStyle.chatUserNameStyle(AppColors.black),
               ),
               content: Text(
-                'Time to head out? We\'ll miss you! Sign out to return anytime.',
+                'Are you sure you want to block ${chatController.compatibleUserList[chatController.currIndex.value].user!.name}',
                 style: CustomTextStyle.h3(AppColors.black),
               ),
               actions: <Widget>[
                 TextButton(
                   onPressed: () {
                     // Action when 'No' is pressed
-                    Get.back();
+                    Navigator.pop(context);
                   },
                   child: Container(
                     width: 150.w,
@@ -62,36 +57,44 @@ class SignOutButton extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () async {
-                    signInController.user.isOnline = false;
-                    databaseService.UpdateUserData(signInController.user);
-                    SharedPreferences pref =
-                        await SharedPreferences.getInstance();
-                    pref.remove("phoneNumber");
-                    Get.back();
-                    Get.deleteAll();
-                    Get.offAllNamed(AppRoutes.auth);
+                    await databaseService.Block(chatController
+                        .compatibleUserList[chatController.currIndex.value]
+                        .user!
+                        .phoneNumber);
+                    Navigator.pop(context);
                   },
                   child: Container(
-                      width: 150.w,
-                      height: 70.h,
-                      decoration: BoxDecoration(
-                          color: AppColors.red,
-                          borderRadius: BorderRadius.circular(30.sp)),
-                      child: Text(
-                        'Yes',
-                        style: TextStyle(
-                          color: AppColors.white,
-                          fontSize: 32.sp,
-                          fontWeight: FontWeight.w600,
-                        ),
-                        textAlign: TextAlign.center,
-                      )),
+                    width: 150.w,
+                    height: 70.h,
+                    decoration: BoxDecoration(
+                        color: AppColors.red,
+                        borderRadius: BorderRadius.circular(30.sp)),
+                    child: Text(
+                      'Yes',
+                      style: TextStyle(
+                        color: AppColors.white,
+                        fontSize: 32.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
                 ),
               ],
             );
           },
         );
       },
+      child: Container(
+          margin: EdgeInsets.only(top: 20.h, left: 20.w),
+          padding: EdgeInsets.all(8.sp),
+          decoration:
+              BoxDecoration(color: AppColors.red, shape: BoxShape.circle),
+          child: Icon(
+            Icons.block,
+            color: AppColors.white,
+            size: 40.sp,
+          )),
     );
   }
 }

@@ -21,6 +21,8 @@ abstract class AppRoutes {
   static const swipe = '/swipe';
   //profile
   static const profile = '/profile';
+  //view_user_profile
+  static const view_user_profile = '/view_user_profile';
   //chat
   static const chat = '/chat';
   //anonym_chat
@@ -33,4 +35,8 @@ abstract class AppRoutes {
   static const view_profile = '/view_profile';
   //chat_bot
   static const chat_bot = '/chat_bot';
+  //search
+  static const search = '/search';
+  //id_recognition
+  static const id_recognition = '/id_recognition';
 }

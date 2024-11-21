@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dafa/app/modules/chat/chat_controller.dart';
 import 'package:dafa/app/modules/sign_in/sign_in_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -29,7 +30,6 @@ class FirebaseListenerService extends ChangeNotifier {
   }
 
   void LoadCompatibleList() {
-    bool check = false;
     matchedListCollection
         .doc(signInController.user.phoneNumber)
         .snapshots(includeMetadataChanges: true)
@@ -148,5 +148,45 @@ class FirebaseListenerService extends ChangeNotifier {
       });
       notifyListeners();
     });
+  }
+
+  void UpdateIsBlock(String otherUserPhoneNumber) {
+    final CollectionReference blockCollection =
+        FirebaseFirestore.instance.collection('block');
+    final ChatController chatController = Get.find<ChatController>();
+    blockCollection
+        .doc(otherUserPhoneNumber)
+        .snapshots(includeMetadataChanges: true)
+        .listen(
+      (value) {
+        final blockedList =
+            (value.data() as dynamic)['blocked'] as List<dynamic>;
+        if (blockedList.contains(signInController.user.phoneNumber))
+          chatController.isBlock.value = true;
+        else
+          chatController.isBlock.value = false;
+        notifyListeners();
+      },
+    );
+  }
+
+    void UpdateBlock(String otherUserPhoneNumber) {
+    final CollectionReference blockCollection =
+        FirebaseFirestore.instance.collection('block');
+    final ChatController chatController = Get.find<ChatController>();
+    blockCollection
+        .doc(signInController.user.phoneNumber)
+        .snapshots(includeMetadataChanges: true)
+        .listen(
+      (value) {
+        final blockedList =
+            (value.data() as dynamic)['blocked'] as List<dynamic>;
+        if (blockedList.contains(otherUserPhoneNumber))
+          chatController.block.value = true;
+        else
+          chatController.block.value = false;
+        notifyListeners();
+      },
+    );
   }
 }

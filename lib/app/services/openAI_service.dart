@@ -3,7 +3,7 @@ import 'package:dafa/app/core/values/app_consts.dart';
 
 class OpenAIService {
   final openAI = OpenAI.instance.build(
-    token: AppConsts.openAI_API_Key,
+    token: AppConsts.FPT_AI_API_KEY,
     baseOption: HttpSetup(receiveTimeout: const Duration(seconds: 10)),
     enableLog: true,
   );
@@ -33,6 +33,7 @@ class OpenAIService {
         answer = element.message!.content;
       }
     }
+
     if (answer == 'True') {
       return true;
     } else {

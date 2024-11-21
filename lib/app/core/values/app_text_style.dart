@@ -59,6 +59,14 @@ class CustomTextStyle extends TextStyle {
     );
   }
 
+  static TextStyle messageCallStyle(Color color) {
+    return TextStyle(
+      fontSize: 30.sp,
+      fontWeight: FontWeight.w400,
+      color: color,
+    );
+  }
+
   static TextStyle communityRulesHeader(Color color) {
     return TextStyle(
       fontSize: 30.sp,
@@ -69,7 +77,7 @@ class CustomTextStyle extends TextStyle {
 
   static TextStyle chatUserNameStyle(Color color) {
     return TextStyle(
-      fontSize: 40.sp,
+      fontSize: 30.sp,
       fontWeight: FontWeight.w600,
       color: color,
     );

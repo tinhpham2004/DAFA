@@ -1,17 +1,26 @@
+import 'dart:developer';
+
 import 'package:dafa/app/core/values/app_colors.dart';
 import 'package:dafa/app/core/values/app_text_style.dart';
 import 'package:dafa/app/global_widgets/bottom_navigation.dart';
 import 'package:dafa/app/modules/chat/chat_controller.dart';
+import 'package:dafa/app/modules/chat/enum/relationship_enum.dart';
 import 'package:dafa/app/modules/sign_in/sign_in_controller.dart';
 import 'package:dafa/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-class ChatScreen extends StatelessWidget {
+class ChatScreen extends StatefulWidget {
   ChatScreen({super.key});
 
+  @override
+  State<ChatScreen> createState() => _ChatScreenState();
+}
+
+class _ChatScreenState extends State<ChatScreen> {
   final SignInController signInController = Get.find<SignInController>();
+
   final ChatController chatController = Get.find<ChatController>();
 
   String LastActiveTime(Duration diff) {
@@ -42,6 +51,39 @@ class ChatScreen extends StatelessWidget {
     return 'just a moment';
   }
 
+  void onChangeData() {
+    setState(() {});
+  }
+
+  RelationshipEnum getCurrentRelationship(String userId) {
+    if (signInController.getToKnowList != null &&
+        signInController.getToKnowList!.containsKey(userId)) {
+      final currentRelationshipState =
+          RelationshipEnum.fromInt(signInController.getToKnowList![userId]);
+      return currentRelationshipState;
+    }
+    return RelationshipEnum.empty;
+  }
+
+  String? getRelationshipState(String userId, String userName) {
+    if (signInController.getToKnowList != null &&
+        signInController.getToKnowList!.containsKey(userId)) {
+      final currentRelationshipState =
+          RelationshipEnum.fromInt(signInController.getToKnowList![userId]);
+      return currentRelationshipState.getRelationshipState(userName);
+    }
+  }
+
+  Icon? getRelationshipIcon(String userId) {
+    if (signInController.getToKnowList != null &&
+        signInController.getToKnowList!.containsKey(userId)) {
+      final currentRelationshipState =
+          RelationshipEnum.fromInt(signInController.getToKnowList![userId]);
+      return currentRelationshipState.getRelationshipIcon();
+    }
+    return RelationshipEnum.empty.getRelationshipIcon();
+  }
+
   @override
   Widget build(BuildContext context) {
     if (chatController.compatibleUserList.length <
@@ -65,9 +107,18 @@ class ChatScreen extends StatelessWidget {
         child: Scaffold(
           appBar: AppBar(
             leading: Container(),
-            title: Text(
-              'Messages',
-              style: CustomTextStyle.profileHeader(AppColors.black),
+            titleSpacing: 0.w,
+            title: ListTile(
+              title: Text(
+                'Messages',
+                style: CustomTextStyle.profileHeader(AppColors.black),
+              ),
+              trailing: GestureDetector(
+                onTap: () {
+                  Get.toNamed(AppRoutes.chat_bot);
+                },
+                child: Icon(Icons.android),
+              ),
             ),
           ),
           bottomNavigationBar: BottomNavigation(onItem: 3),
@@ -82,9 +133,26 @@ class ChatScreen extends StatelessWidget {
                     itemCount: chatController.compatibleUserList.length,
                     itemBuilder: (context, index) {
                       return GestureDetector(
-                        onTap: () {
-                          chatController.UpdateCurrIndex(index);
-                          Get.toNamed(AppRoutes.message);
+                        onTap: () async {
+                          chatController.currentRelationshipEnum =
+                              getCurrentRelationship(chatController
+                                  .compatibleUserList[index].user!.phoneNumber);
+                          if (chatController.currentRelationshipEnum ==
+                              RelationshipEnum.gettingToKnow) {
+                            chatController.UpdateCurrIndex(index);
+                            Get.toNamed(AppRoutes.message);
+                            return;
+                          }
+
+                          chatController.currentRelationshipEnum.onClick(
+                            context: context,
+                            userName: chatController
+                                .compatibleUserList[index].user!.name,
+                            currentUserId: signInController.user.phoneNumber,
+                            otherUserId: chatController
+                                .compatibleUserList[index].user!.phoneNumber,
+                            onChangeData: onChangeData,
+                          );
                         },
                         child: ListTile(
                           leading: Stack(
@@ -123,13 +191,43 @@ class ChatScreen extends StatelessWidget {
                             chatController.compatibleUserList[index].user!.name,
                           ),
                           subtitle: Text(
-                            'Last active • ' +
-                                LastActiveTime(
-                                  DateTime.now().difference(chatController
-                                      .compatibleUserList[index]
-                                      .user!
-                                      .lastActive),
-                                ),
+                            'Last active • ${LastActiveTime(
+                              DateTime.now().difference(chatController
+                                  .compatibleUserList[index].user!.lastActive),
+                            )}',
+                          ),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  chatController.currentRelationshipEnum =
+                                      getCurrentRelationship(chatController
+                                          .compatibleUserList[index]
+                                          .user!
+                                          .phoneNumber);
+
+                                  chatController.currentRelationshipEnum
+                                      .onClick(
+                                    context: context,
+                                    userName: chatController
+                                        .compatibleUserList[index].user!.name,
+                                    currentUserId:
+                                        signInController.user.phoneNumber,
+                                    otherUserId: chatController
+                                        .compatibleUserList[index]
+                                        .user!
+                                        .phoneNumber,
+                                    onChangeData: onChangeData,
+                                  );
+                                },
+                                child: getRelationshipIcon(chatController
+                                        .compatibleUserList[index]
+                                        .user!
+                                        .phoneNumber) ??
+                                    Container(),
+                              ),
+                            ],
                           ),
                         ),
                       );

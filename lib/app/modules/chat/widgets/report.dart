@@ -51,6 +51,7 @@ class Report extends StatelessWidget {
                           'Thank you for your timely report and for helping to build a healthy dating app. We will review ${chatController.compatibleUserList[chatController.currIndex.value].user!.name}\'s recent messages. If we find that ${chatController.compatibleUserList[chatController.currIndex.value].user!.gender == 'Woman' ? 'her' : 'his'} account violates our community rules, we will take appropriate action. You should read the community rules carefully before taking the action of reporting.'),
                       Container(
                         margin: EdgeInsets.only(top: 40.h),
+                        padding: EdgeInsets.all(16.sp),
                         decoration: BoxDecoration(
                           border: Border.all(color: AppColors.thirdColor),
                           borderRadius: BorderRadius.circular(20.r),
@@ -96,7 +97,7 @@ class Report extends StatelessWidget {
       icon: Icon(
         Icons.warning_rounded,
         color: AppColors.red,
-        size: 70.sp,
+        size: 60.sp,
       ),
     );
   }

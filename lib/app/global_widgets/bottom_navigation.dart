@@ -14,7 +14,7 @@ class BottomNavigation extends StatefulWidget {
 
 class _BottomNavigationState extends State<BottomNavigation> {
   String profile = '';
-  String cupid = '';
+  String search = '';
   String swipe = '';
   String messages = '';
   String anonymousMatching = '';
@@ -28,7 +28,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
   void RestLabel() {
     setState(() {
       profile = '';
-      cupid = '';
+      search = '';
       swipe = '';
       messages = '';
       anonymousMatching = '';
@@ -48,9 +48,9 @@ class _BottomNavigationState extends State<BottomNavigation> {
       case 1:
         RestLabel();
         setState(() {
-          cupid = 'Cupid';
+          search = 'Search';
         });
-        Get.toNamed(AppRoutes.chat_bot);
+        Get.toNamed(AppRoutes.search);
         break;
 
       case 2:
@@ -94,10 +94,10 @@ class _BottomNavigationState extends State<BottomNavigation> {
         ),
         BottomNavigationBarItem(
           icon: Icon(
-            Icons.android,
+            Icons.search,
             color: widget.onItem != 1 ? AppColors.thirdColor : AppColors.send,
           ),
-          label: cupid,
+          label: search,
         ),
         BottomNavigationBarItem(
           icon: Icon(
@@ -115,7 +115,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
         ),
         BottomNavigationBarItem(
           icon: Icon(
-            Icons.search,
+            Icons.person_search_rounded,
             color: widget.onItem != 4 ? AppColors.thirdColor : AppColors.send,
           ),
           label: anonymousMatching,
