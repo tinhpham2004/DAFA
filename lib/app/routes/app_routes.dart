@@ -37,4 +37,6 @@ abstract class AppRoutes {
   static const chat_bot = '/chat_bot';
   //search
   static const search = '/search';
+  //id_recognition
+  static const id_recognition = '/id_recognition';
 }
