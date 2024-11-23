@@ -63,9 +63,15 @@ Future<void> main() async {
       );
       initialRoute = AppRoutes.swipe;
     }
+
+    if (signInController.user.isVerified == false) {
+      initialRoute = AppRoutes.id_recognition;
+    }
   }
   final apiService = APIService();
-  AppConsts.openAI_API_Key = await apiService.FetchApi();
+  AppConsts.OPENAI_API_KEY = await apiService.FetchOpenAIApiKey();
+  AppConsts.FPT_AI_API_KEY = await apiService.FetchFPTAIApiKey();
+  AppConsts.ENCRYPT_KEY = await apiService.FetchEncryptKey();
 
   runApp(MyApp(navigatorKey: navigatorKey));
   // runApp(MaterialApp(home: AddFields()));

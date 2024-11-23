@@ -18,10 +18,8 @@ class AppUser {
   bool isBanned = false;
   DateTime lastActive = DateTime.now();
   String token = '';
-  // I want to add these 3 fields in database
   bool isVerified = false;
   String encryptedIdNumber = '';
-  int matchingPeopleNumber = 0;
   //
   AppUser({
     required this.phoneNumber,
