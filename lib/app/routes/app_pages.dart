@@ -1,3 +1,4 @@
+import 'package:dafa/app/global_widgets/id_recognition_screen.dart';
 import 'package:dafa/app/modules/anonymous_chat/anonymous_chat_binding.dart';
 import 'package:dafa/app/modules/anonymous_chat/screens/anonymous_chat_screen.dart';
 import 'package:dafa/app/modules/anonymous_chat/screens/anonymous_message_screen.dart';
@@ -126,6 +127,11 @@ abstract class AppPages {
       name: AppRoutes.search,
       page: () => SearchScreen(),
       binding: SearchBinding(),
+    ),
+        GetPage(
+      name: AppRoutes.id_recognition,
+      page: () => IdRecognitionScreen(),
+      binding: SignInBinding(),
     ),
   ];
 }
