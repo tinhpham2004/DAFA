@@ -40,8 +40,8 @@ class _CallScreenState extends State<CallScreen> {
   bool? isRemoteVideoMute;
   Timer? waitingTimer;
   Duration remainingWaitingTime = Duration(seconds: 300);
-  Timer? countingTimer;
   Duration currentTime = Duration(seconds: 0);
+  Timer? countingTimer;
   String callingTime = '00 : 00 : 00';
 
   @override

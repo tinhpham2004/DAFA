@@ -20,10 +20,10 @@ class OpenAIService {
       model: GptTurbo0631Model(),
       maxToken: 200,
       messages: [
-        Messages(
-          role: Role.user,
-          content: promt,
-        ),
+        {
+          'role': Role.user,
+          'content': promt,
+        },
       ],
     );
     final response = await openAI.onChatCompletion(request: request);
@@ -49,10 +49,10 @@ class OpenAIService {
       model: GptTurbo0631Model(),
       maxToken: 500,
       messages: [
-        Messages(
-          role: Role.user,
-          content: promt,
-        ),
+        {
+          'role': Role.user,
+          'content': promt,
+        },
       ],
     );
     final response = await openAI.onChatCompletion(request: request);
@@ -73,10 +73,10 @@ class OpenAIService {
       model: GptTurbo0631Model(),
       maxToken: 200,
       messages: [
-        Messages(
-          role: Role.user,
-          content: promt,
-        ),
+        {
+          'role': Role.user,
+          'content': promt,
+        },
       ],
     );
     final response = await openAI.onChatCompletion(request: request);

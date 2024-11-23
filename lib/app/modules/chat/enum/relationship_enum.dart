@@ -72,7 +72,7 @@ enum RelationshipEnum {
         final signInController = Get.find<SignInController>();
         int count = 0;
         signInController.getToKnowList?.forEach((key, value) {
-          if (value >= 1 && value <= 3) {
+          if (value == 1 || value == 3) {
             count++;
             log(key);
           }
@@ -319,7 +319,7 @@ enum RelationshipEnum {
         final signInController = Get.find<SignInController>();
         int count = 0;
         signInController.getToKnowList?.forEach((key, value) {
-          if (value >= 1 && value <= 3) {
+          if (value == 1 || value == 3) {
             count++;
           }
         });
