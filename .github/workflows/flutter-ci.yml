@@ -15,8 +15,8 @@ jobs:
 
       - name: Set up Flutter
         run: |
-          curl -LO https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.24.5-stable.tar.xz
-          tar -xf flutter_linux_3.24.5-stable.tar.xz
+          curl -LO https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.22.3-stable.tar.xz
+          tar -xf flutter_linux_3.22.3-stable.tar.xz
           echo "$(pwd)/flutter/bin" >> $GITHUB_PATH
 
       - name: Install Dependencies
