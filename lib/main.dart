@@ -36,7 +36,7 @@ Future<void> main() async {
     FirebaseMessagingService firebaseMessagingService =
         FirebaseMessagingService();
     final bool isFirstTimeUpdate = await databaseService.FirstTimeUpdate();
-    await firebaseMessagingService.InitNotifications();
+    // await firebaseMessagingService.InitNotifications();
     firebaseMessagingService.FirebaseNotification();
     if (isFirstTimeUpdate) {
       initialRoute = AppRoutes.complete_name;
@@ -52,6 +52,7 @@ Future<void> main() async {
       await databaseService.LoadMatchedList();
       signInController.matchList =
           await databaseService.LoadMatchList(signInController.user);
+      await databaseService.loadUserLikeList();
       firebaseListenerService.LoadAllUsersOnlineState();
       firebaseListenerService.LoadAllUsersSearchingState();
       firebaseListenerService.LoadGraphMatchList();
@@ -63,6 +64,8 @@ Future<void> main() async {
       );
       initialRoute = AppRoutes.swipe;
     }
+
+    await firebaseMessagingService.InitNotifications();
 
     if (signInController.user.isVerified == false) {
       initialRoute = AppRoutes.id_recognition;

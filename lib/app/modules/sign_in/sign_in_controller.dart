@@ -13,8 +13,9 @@ class SignInController extends GetxController {
     phoneNumber: '',
   );
   RxBool obscure = true.obs;
-  List<MatchUser> matchList = [];
+  List<MatchUser> matchList = []; // list user ready to match
   List<String> likeList = [];
+  List<MatchUser> userLikeList = [];
   List<String> dislikeList = [];
   List<String> compatibleList = [];
   Map<String, int>? getToKnowList;

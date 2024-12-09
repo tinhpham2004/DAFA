@@ -26,6 +26,7 @@ class _IdRecognitionScreenState extends State<IdRecognitionScreen> {
   File? _frontImage;
   File? _backImage;
   final ImagePicker _picker = ImagePicker();
+  bool _isVerifying = false;
 
   Future<void> _pickImage(bool isFront) async {
     final pickedFile = await _picker.pickImage(
@@ -146,8 +147,8 @@ class _IdRecognitionScreenState extends State<IdRecognitionScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title:
-            const Text('ID Card Verification', style: TextStyle(color: Colors.black)),
+        title: const Text('ID Card Verification',
+            style: TextStyle(color: Colors.black)),
         centerTitle: true,
       ),
       body: Padding(
@@ -268,60 +269,112 @@ class _IdRecognitionScreenState extends State<IdRecognitionScreen> {
                 Expanded(
                   child: GestureDetector(
                     onTap: () async {
-                      if (_frontImage != null && _backImage != null && isTermAccepted) {
-                        final idCardApiService = IDRecognitionService();
-                        final response = await idCardApiService
-                            .recognizeIDCard(_frontImage!.path);
-                        if (response != null) {
-                          final dob = DateFormat('dd/MM/yyyy')
-                              .tryParse(response.data.first.dob);
-                          if (dob != null && dob.year >= 18) {
-                            final encryptService = EncryptService();
-                            final databaseService = DatabaseService();
-                            final encryptedIdNumber =
-                                encryptService.encrypt(response.data.first.id);
-                            await databaseService.VerifyUser(encryptedIdNumber);
-                            await showDialog(
-                              context: context,
-                              builder: (context) {
-                                return Dialog(
-                                  child: Padding(
-                                    padding: EdgeInsets.all(16.sp),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                          height: 300.h,
-                                          child: Icon(
-                                            Icons.check,
-                                            size: 100.sp,
-                                            color: AppColors.white,
-                                          ),
-                                          decoration: const BoxDecoration(
-                                            color: AppColors.active,
-                                            shape: BoxShape.circle,
-                                          ),
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.only(bottom: 40.h),
-                                          child: Text(
-                                            'Verify Successfully!',
-                                            style:
-                                                CustomTextStyle.cardTextStyle(
-                                              AppColors.black,
+                      setState(() {
+                        _isVerifying = true;
+                      });
+                      try {
+                        // await Future.delayed(const Duration(seconds: 4));
+                        if (_frontImage != null &&
+                            _backImage != null &&
+                            isTermAccepted) {
+                          final idCardApiService = IDRecognitionService();
+                          final response = await idCardApiService
+                              .recognizeIDCard(_frontImage!.path);
+                          if (response != null) {
+                            final dob = DateFormat('dd/MM/yyyy')
+                                .tryParse(response.data.first.dob);
+                            if (dob != null && dob.year >= 18) {
+                              final encryptService = EncryptService();
+                              final databaseService = DatabaseService();
+                              final encryptedIdNumber = encryptService
+                                  .encrypt(response.data.first.id);
+                              await databaseService.VerifyUser(
+                                  encryptedIdNumber);
+                              await showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return Dialog(
+                                    child: Padding(
+                                      padding: EdgeInsets.all(16.sp),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            height: 300.h,
+                                            child: Icon(
+                                              Icons.check,
+                                              size: 100.sp,
+                                              color: AppColors.white,
                                             ),
-                                            textAlign: TextAlign.center,
+                                            decoration: const BoxDecoration(
+                                              color: AppColors.active,
+                                              shape: BoxShape.circle,
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                          Container(
+                                            margin:
+                                                EdgeInsets.only(bottom: 40.h),
+                                            child: Text(
+                                              'Verify Successfully!',
+                                              style:
+                                                  CustomTextStyle.cardTextStyle(
+                                                AppColors.black,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                );
-                              },
-                            );
-                            Get.toNamed(AppRoutes.swipe);
+                                  );
+                                },
+                              );
+                              Get.toNamed(AppRoutes.swipe);
+                            } else {
+                              await showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return Dialog(
+                                    child: Padding(
+                                      padding: EdgeInsets.all(16.sp),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            height: 300.h,
+                                            child: Icon(
+                                              Icons.close,
+                                              size: 100.sp,
+                                              color: AppColors.white,
+                                            ),
+                                            decoration: const BoxDecoration(
+                                              color: AppColors.red,
+                                              shape: BoxShape.circle,
+                                            ),
+                                          ),
+                                          Container(
+                                            margin:
+                                                EdgeInsets.only(bottom: 40.h),
+                                            child: Text(
+                                              'Age must be greater than 18',
+                                              style:
+                                                  CustomTextStyle.cardTextStyle(
+                                                AppColors.black,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            }
                           } else {
                             await showDialog(
                               context: context,
@@ -349,7 +402,7 @@ class _IdRecognitionScreenState extends State<IdRecognitionScreen> {
                                         Container(
                                           margin: EdgeInsets.only(bottom: 40.h),
                                           child: Text(
-                                            'Age must be greater than 18',
+                                            'ID Card not recognized',
                                             style:
                                                 CustomTextStyle.cardTextStyle(
                                               AppColors.black,
@@ -364,61 +417,31 @@ class _IdRecognitionScreenState extends State<IdRecognitionScreen> {
                               },
                             );
                           }
-                        } else {
-                          await showDialog(
-                            context: context,
-                            builder: (context) {
-                              return Dialog(
-                                child: Padding(
-                                  padding: EdgeInsets.all(16.sp),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        height: 300.h,
-                                        child: Icon(
-                                          Icons.close,
-                                          size: 100.sp,
-                                          color: AppColors.white,
-                                        ),
-                                        decoration: const BoxDecoration(
-                                          color: AppColors.red,
-                                          shape: BoxShape.circle,
-                                        ),
-                                      ),
-                                      Container(
-                                        margin: EdgeInsets.only(bottom: 40.h),
-                                        child: Text(
-                                          'ID Card not recognized',
-                                          style: CustomTextStyle.cardTextStyle(
-                                            AppColors.black,
-                                          ),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                          );
                         }
+                      } catch (e) {
+                        print(e);
+                      } finally {
+                        setState(() {
+                          _isVerifying = false;
+                        });
                       }
                     },
                     child: Container(
                       constraints: BoxConstraints.tight(const Size(330, 50)),
                       decoration: BoxDecoration(
-                          gradient: AppColors.primaryColor,
-                          borderRadius: BorderRadius.circular(60.r)),
-                      child: const Center(
-                        child: Text(
-                          'CONFIRM',
-                          style: TextStyle(
-                            color: AppColors.white,
-                            fontSize: 15,
-                          ),
-                        ),
+                        gradient: AppColors.primaryColor,
+                        borderRadius: BorderRadius.circular(60.r),
+                      ),
+                      child: Center(
+                        child: _isVerifying
+                            ? CircularProgressIndicator(color: AppColors.white)
+                            : Text(
+                                'CONFIRM',
+                                style: TextStyle(
+                                  color: AppColors.white,
+                                  fontSize: 15,
+                                ),
+                              ),
                       ),
                     ),
                   ),

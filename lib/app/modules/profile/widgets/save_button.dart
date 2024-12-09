@@ -92,6 +92,7 @@ class SaveButton extends StatelessWidget {
             signInController.user.bio = profileController.bio.text;
             signInController.user.height = profileController.height.value;
             signInController.user.hobby = profileController.hobby.value;
+            signInController.user.job = profileController.job.value;
             signInController.user.images = images;
             await databaseService.UpdateUserData(signInController.user);
             profileController.UpdateErrorImages(false);

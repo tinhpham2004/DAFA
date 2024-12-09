@@ -139,6 +139,7 @@ class FinishButton extends StatelessWidget {
             await databaseService.LoadMatchedList();
             signInController.matchList =
                 await databaseService.LoadMatchList(signInController.user);
+            await databaseService.loadUserLikeList();
             firebaseListenerService.LoadAllUsersOnlineState();
             firebaseListenerService.LoadAllUsersSearchingState();
             firebaseListenerService.LoadGraphMatchList();

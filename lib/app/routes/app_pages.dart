@@ -128,7 +128,7 @@ abstract class AppPages {
       page: () => SearchScreen(),
       binding: SearchBinding(),
     ),
-        GetPage(
+    GetPage(
       name: AppRoutes.id_recognition,
       page: () => IdRecognitionScreen(),
       binding: SignInBinding(),
