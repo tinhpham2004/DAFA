@@ -6,6 +6,7 @@ import 'package:dafa/app/modules/profile/widgets/add_image.dart';
 import 'package:dafa/app/modules/profile/widgets/bio_field.dart';
 import 'package:dafa/app/modules/profile/widgets/height_field.dart';
 import 'package:dafa/app/modules/profile/widgets/hobby_field.dart';
+import 'package:dafa/app/modules/profile/widgets/job_field.dart';
 import 'package:dafa/app/modules/profile/widgets/save_button.dart';
 import 'package:dafa/app/modules/profile/widgets/sign_out_button.dart';
 import 'package:dafa/app/modules/profile/widgets/view_profile_button.dart';
@@ -39,7 +40,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             index, signInController.user.images[index]);
       }
       profileController.UpdateHeight(signInController.user.height);
-      profileController.UpdateHobby(signInController.user.hobby);
+      profileController.UpdateHobbies(signInController.user.hobby.split(', '));
+      profileController.UpdateJob(signInController.user.job);
     } catch (error) {
       if (id < 5) TryLoadImg(id + 1);
     }
@@ -257,7 +259,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
 
-                  //
+                  // Hobby
                   Container(
                     margin: EdgeInsets.only(top: 40.h, right: 20.w),
                     decoration: BoxDecoration(
@@ -273,6 +275,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           profileController: profileController),
                     ),
                   ),
+
+                  //  Job
+                  Container(
+                    margin: EdgeInsets.only(top: 40.h, right: 20.w),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20.r),
+                      border: Border.all(
+                        width: 1.0,
+                      ),
+                    ),
+                    child: Container(
+                      margin: EdgeInsets.only(left: 20.w),
+                      child: JobField(
+                          signInController: signInController,
+                          profileController: profileController),
+                    ),
+                  ),
+
+                  //
                   Obx(
                     () => profileController.errorImages.value == true
                         ? Container(

@@ -45,6 +45,7 @@ class DatabaseService {
       'coordinate': user.coordinate,
       'address': user.address,
       'hobby': user.hobby,
+      'job': user.job,
       'isOnline': user.isOnline,
       'isSearching': user.isSearching,
       'lastActive': user.lastActive,
@@ -115,6 +116,7 @@ class DatabaseService {
       'coordinate': user.coordinate,
       'address': user.address,
       'hobby': user.hobby,
+      'job': user.job,
       'isOnline': user.isOnline,
       'isSearching': user.isSearching,
       'lastActive': user.lastActive,
@@ -177,6 +179,7 @@ class DatabaseService {
         user.height =
             ((value.data() as dynamic)['height'] as dynamic).toString();
         user.hobby = ((value.data() as dynamic)['hobby'] as dynamic).toString();
+        user.job = ((value.data() as dynamic)['job'] as dynamic).toString();
         user.isOnline = ((value.data() as dynamic)['isOnline'] as dynamic);
         user.isSearching =
             ((value.data() as dynamic)['isSearching'] as dynamic);
@@ -226,6 +229,7 @@ class DatabaseService {
                 ((value.data() as dynamic)['height'] as dynamic).toString();
             user.hobby =
                 ((value.data() as dynamic)['hobby'] as dynamic).toString();
+            user.job = ((value.data() as dynamic)['job'] as dynamic).toString();
             user.isOnline = ((value.data() as dynamic)['isOnline'] as dynamic);
             user.isSearching =
                 ((value.data() as dynamic)['isSearching'] as dynamic);
@@ -549,6 +553,60 @@ class DatabaseService {
     await usersCollection.doc(signInController.user.phoneNumber).update({
       'isVerified': true,
       'encryptedIdNumber': encryptedIdNumber,
+    });
+  }
+
+  Future<void> loadUserLikeList() async {
+    await usersCollection.get().then((otherUsersQuerysnapshot) {
+      List<DocumentSnapshot> otherUsers = otherUsersQuerysnapshot.docs;
+      otherUsers.forEach((value) {
+        String phoneNumber =
+            ((value.data() as dynamic)['phoneNumber'] as dynamic).toString();
+        AppUser user = AppUser(phoneNumber: phoneNumber);
+        final images = (value.data() as dynamic)['images'] as List<dynamic>;
+        images.forEach((element) {
+          user.images.add(element.toString());
+        });
+        user.userId =
+            ((value.data() as dynamic)['userId'] as dynamic).toString();
+        user.name = ((value.data() as dynamic)['name'] as dynamic).toString();
+        user.gender =
+            ((value.data() as dynamic)['gender'] as dynamic).toString();
+        user.dateOfBirth =
+            ((value.data() as dynamic)['dateOfBirth'] as dynamic).toString();
+        user.bio = ((value.data() as dynamic)['bio'] as dynamic).toString();
+        user.address =
+            ((value.data() as dynamic)['address'] as dynamic).toString();
+        user.coordinate = ((value.data() as dynamic)['coordinate'] as dynamic);
+        user.height =
+            ((value.data() as dynamic)['height'] as dynamic).toString();
+        user.hobby = ((value.data() as dynamic)['hobby'] as dynamic).toString();
+        user.job = ((value.data() as dynamic)['job'] as dynamic).toString();
+        user.isOnline = ((value.data() as dynamic)['isOnline'] as dynamic);
+        user.isSearching =
+            ((value.data() as dynamic)['isSearching'] as dynamic);
+        user.lastActive =
+            ((value.data() as dynamic)['lastActive'] as Timestamp).toDate();
+        user.isBanned = ((value.data() as dynamic)['isBanned'] as dynamic);
+        user.token = ((value.data() as dynamic)['token'] as dynamic);
+        user.isVerified = ((value.data() as dynamic)['isVerified'] as dynamic);
+        user.encryptedIdNumber =
+            ((value.data() as dynamic)['encryptedIdNumber'] as dynamic);
+        double distance = calculateDistance(
+          signInController.user.coordinate.latitude,
+          signInController.user.coordinate.longitude,
+          user.coordinate.latitude,
+          user.coordinate.longitude,
+        );
+        if (signInController.likeList.contains(user.phoneNumber)) {
+          signInController.userLikeList.add(
+            MatchUser(
+              user: user,
+              distance: distance,
+            ),
+          );
+        }
+      });
     });
   }
 }

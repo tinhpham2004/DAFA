@@ -1,17 +1,23 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:math' as math;
 
 import 'package:dafa/app/core/values/app_consts.dart';
+import 'package:dafa/app/models/match_user.dart';
 import 'package:dafa/app/modules/chat/screens/call_screen.dart';
 import 'package:dafa/app/modules/sign_in/sign_in_controller.dart';
 import 'package:dafa/app/modules/swipe/swipe_controller.dart';
 import 'package:dafa/app/routes/app_routes.dart';
 import 'package:dafa/app/services/database_service.dart';
+import 'package:encrypt/encrypt.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:googleapis_auth/auth_io.dart';
 import 'package:http/http.dart' as http;
 
 class FirebaseMessagingService {
@@ -78,34 +84,126 @@ class FirebaseMessagingService {
   Future<void> InitNotifications() async {
     await firebaseMessaging.requestPermission();
     InitPushNotifications();
+    await suggestFriend();
+  }
+
+  Future<void> suggestFriend() async {
+    final deviceToken = await GetToken();
+    final matchUser = findBestMatch(
+      signInController.userLikeList,
+      signInController.matchList,
+    );
+    await SendNotification(
+      '🌟 Meet ${matchUser.user?.name}! Your Perfect Match Awaits! 🌟',
+      'We think ${matchUser.user?.name} could be the one for you! They align perfectly with your interests and values. Tap to view their profile and start something amazing today! 💕',
+      signInController.user.phoneNumber,
+      deviceToken,
+      matchUser: matchUser,
+    );
   }
 
   Future<void> SendNotification(
-      String title, String body, String senderId, String receiverToken) async {
+      String title, String body, String senderId, String receiverToken,
+      {MatchUser? matchUser}) async {
     try {
-      await http.post(
-        Uri.parse('https://fcm.googleapis.com/fcm/send'),
+      final response = await http.post(
+        Uri.parse(
+            'https://fcm.googleapis.com/v1/projects/${AppConsts.PROJECT_ID}/messages:send'),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          'Authorization': 'key=${AppConsts.FCM_Key}',
+          'Authorization': 'Bearer ${await _getAccessToken()}',
         },
         body: jsonEncode(<String, dynamic>{
-          "to": receiverToken,
-          'priority': 'high',
-          'notification': <String, dynamic>{
-            'body': body,
-            'title': title,
+          'message': {
+            'token': receiverToken,
+            'notification': {
+              'title': title,
+              'body': body,
+            },
+            'data': matchUser != null
+                ? matchUser.toJson()
+                : {
+                    'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+                    'status': 'done',
+                    'senderId': senderId,
+                    'category': 'message',
+                  },
+            'android': {
+              'priority': 'high',
+            },
           },
-          'data': <String, String>{
-            'click_action': 'FLUTTER_NOTIFICATION_CLICK',
-            'status': 'done',
-            'senderId': senderId,
-            'category': 'message',
-          }
+        }),
+      );
+      debugPrint(response.body);
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
+  Future<void> SendLocalCallNotification({
+    required String title,
+    required String body,
+    required String receiverToken,
+    required String callId,
+    required String channel,
+    required String caller,
+    required String callee,
+    required String token,
+  }) async {
+    try {
+      await http.post(
+        Uri.parse(
+            'https://fcm.googleapis.com/v1/projects/${AppConsts.PROJECT_ID}/messages:send'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${await _getAccessToken()}',
+        },
+        body: jsonEncode(<String, dynamic>{
+          'message': {
+            'token': receiverToken,
+            'notification': {
+              'title': title,
+              'body': body,
+            },
+            'data': {
+              'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+              'status': 'done',
+              'category':
+                  channel.contains('videoCall') ? 'videoCall' : 'audioCall',
+              'call_id': callId,
+              'channel': channel,
+              'caller': caller,
+              'callee': callee,
+              'token': token,
+            },
+            'android': {
+              'priority': 'high',
+            },
+          },
         }),
       );
     } catch (e) {
       debugPrint(e.toString());
+    }
+  }
+
+  Future<String> _getAccessToken() async {
+    try {
+      final serviceAccountJson =
+          await rootBundle.loadString('assets/service_account.json');
+      final credentials =
+          ServiceAccountCredentials.fromJson(serviceAccountJson);
+
+      final scopes = ['https://www.googleapis.com/auth/firebase.messaging'];
+      final client = await clientViaServiceAccount(credentials, scopes);
+
+      final accessToken = await client.credentials.accessToken;
+      client.close();
+
+      return accessToken.data;
+    } catch (e) {
+      debugPrint('Error getting access token: $e');
+      rethrow;
     }
   }
 
@@ -180,47 +278,47 @@ class FirebaseMessagingService {
     });
   }
 
-  Future<void> SendLocalCallNotification({
-    required String title,
-    required String body,
-    required String receiverToken,
-    required String callId,
-    required String channel,
-    required String caller,
-    required String callee,
-    required String token,
-  }) async {
-    try {
-      await http.post(
-        Uri.parse('https://fcm.googleapis.com/fcm/send'),
-        headers: <String, String>{
-          'Content-Type': 'application/json',
-          'Authorization': 'key=${AppConsts.FCM_Key}',
-        },
-        body: jsonEncode(<String, dynamic>{
-          "to": receiverToken,
-          'priority': 'high',
-          'notification': <String, dynamic>{
-            'body': body,
-            'title': title,
-          },
-          'data': <String, String>{
-            'click_action': 'FLUTTER_NOTIFICATION_CLICK',
-            'status': 'done',
-            'category':
-                channel.contains('videoCall') ? 'videoCall' : 'audioCall',
-            'call_id': callId,
-            'channel': channel,
-            'caller': caller,
-            'callee': callee,
-            'token': token,
-          }
-        }),
-      );
-    } catch (e) {
-      debugPrint(e.toString());
-    }
-  }
+  // Future<void> SendLocalCallNotification({
+  //   required String title,
+  //   required String body,
+  //   required String receiverToken,
+  //   required String callId,
+  //   required String channel,
+  //   required String caller,
+  //   required String callee,
+  //   required String token,
+  // }) async {
+  //   try {
+  //     await http.post(
+  //       Uri.parse('https://fcm.googleapis.com/fcm/send'),
+  //       headers: <String, String>{
+  //         'Content-Type': 'application/json',
+  //         'Authorization': 'key=${AppConsts.FCM_Key}',
+  //       },
+  //       body: jsonEncode(<String, dynamic>{
+  //         "to": receiverToken,
+  //         'priority': 'high',
+  //         'notification': <String, dynamic>{
+  //           'body': body,
+  //           'title': title,
+  //         },
+  //         'data': <String, String>{
+  //           'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+  //           'status': 'done',
+  //           'category':
+  //               channel.contains('videoCall') ? 'videoCall' : 'audioCall',
+  //           'call_id': callId,
+  //           'channel': channel,
+  //           'caller': caller,
+  //           'callee': callee,
+  //           'token': token,
+  //         }
+  //       }),
+  //     );
+  //   } catch (e) {
+  //     debugPrint(e.toString());
+  //   }
+  // }
 
   Future<void> ShowLocalCallNotification(RemoteMessage message) async {
     final styleInformation = BigTextStyleInformation(
@@ -255,5 +353,83 @@ class FirebaseMessagingService {
         data.map((key, value) => MapEntry(key.toString(), value.toString()));
     result = jsonEncode(stringMap);
     return result;
+  }
+
+  MatchUser findBestMatch(
+      List<MatchUser> historyUsers, List<MatchUser> currentUsers) {
+    double maxScore = double.negativeInfinity;
+    MatchUser? bestMatch;
+
+    for (final currentUser in currentUsers) {
+      if (currentUser.user == null) continue;
+      double score = calculateTotalScore(currentUser, historyUsers);
+      if (score > maxScore) {
+        maxScore = score;
+        bestMatch = currentUser;
+      }
+    }
+    return bestMatch!;
+  }
+
+  double calculateTotalScore(
+      MatchUser currentUser, List<MatchUser> historyUsers) {
+    // Tính điểm categorical
+    double hobbyScore = calculateTfIdf(currentUser.user?.hobby ?? '',
+        historyUsers.map((e) => e.user?.hobby ?? '').toList());
+    double jobScore = calculateTfIdf(currentUser.user?.job ?? '',
+        historyUsers.map((e) => e.user?.job ?? '').toList());
+
+    // Tính điểm numerical
+    final userHeight =
+        double.tryParse(currentUser.user?.height.replaceAll('cm', '') ?? '') ??
+            0;
+    final meanDistance =
+        caculateMean(historyUsers.map((e) => e.distance).toList());
+    final meanAge = caculateMean(
+      historyUsers.map((e) => (e.user?.age ?? 0).toDouble()).toList(),
+    );
+    final meanHeight = caculateMean(
+      historyUsers
+          .map((e) =>
+              double.tryParse(e.user?.height.replaceAll('cm', '') ?? '') ?? 0)
+          .toList(),
+    );
+    final stdDevDistance =
+        caculateStdDev(historyUsers.map((e) => e.distance).toList());
+    final stdDevAge = caculateStdDev(
+        historyUsers.map((e) => (e.user?.age ?? 0).toDouble()).toList());
+    final stdDevHeight = caculateStdDev(historyUsers
+        .map((e) =>
+            double.tryParse(e.user?.height.replaceAll('cm', '') ?? '') ?? 0)
+        .toList());
+    double distanceScore =
+        calculateScore(currentUser.distance, meanDistance, stdDevDistance);
+    double ageScore = calculateScore((currentUser.user?.age ?? 0).toDouble(), meanAge, stdDevAge);
+    double heightScore = calculateScore(userHeight, meanHeight, stdDevHeight);
+
+    return hobbyScore + jobScore + distanceScore + ageScore + heightScore;
+  }
+
+  double calculateTfIdf(String term, List<String> allTerms) {
+    int termFrequency = allTerms.where((t) => t == term).length;
+    int documentCount = allTerms.toSet().length;
+    return (termFrequency / allTerms.length) *
+        math.log(allTerms.length / documentCount);
+  }
+
+  double calculateScore(double x, double mean, double stdDev) {
+    return math.exp(-(math.pow((x - mean), 2) / (2 * math.pow(stdDev, 2))));
+  }
+
+  double caculateMean(List<double> values) {
+    return values.reduce((a, b) => a + b) / values.length;
+  }
+
+  double caculateStdDev(List<double> values) {
+    double mean = caculateMean(values);
+    double variance =
+        values.map((e) => math.pow(e - mean, 2)).reduce((a, b) => a + b) /
+            values.length;
+    return math.sqrt(variance);
   }
 }
