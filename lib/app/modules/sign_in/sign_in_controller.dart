@@ -14,6 +14,7 @@ class SignInController extends GetxController {
   );
   RxBool obscure = true.obs;
   List<MatchUser> matchList = []; // list user ready to match
+  List<MatchUser> suggestFriendList = []; // list user ready to match
   List<String> likeList = [];
   List<MatchUser> userLikeList = [];
   List<String> dislikeList = [];

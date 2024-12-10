@@ -42,8 +42,6 @@ class SignInButton extends StatelessWidget {
             signInController.passwordController.text,
           );
           if (signInController.signInState.value == 'Sign in successfully.') {
-            await firebaseMessagingService.InitNotifications();
-
             final bool isFirstTimeUpdate =
                 await databaseService.FirstTimeUpdate();
             if (isFirstTimeUpdate) {
@@ -100,6 +98,8 @@ class SignInButton extends StatelessWidget {
               firebaseListenerService.LoadAllUsersOnlineState();
               firebaseListenerService.LoadAllUsersSearchingState();
               firebaseListenerService.LoadGraphMatchList();
+              await firebaseMessagingService.InitNotifications();
+
               signInController.matchList.add(
                 MatchUser(
                   user: null,

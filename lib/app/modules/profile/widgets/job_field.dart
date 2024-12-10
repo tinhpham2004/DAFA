@@ -5,7 +5,7 @@ import 'package:dafa/app/modules/sign_in/sign_in_controller.dart';
 import 'package:flutter/material.dart';
 
 class JobField extends StatelessWidget {
-  const JobField({
+  JobField({
     super.key,
     required this.signInController,
     required this.profileController,
@@ -14,10 +14,33 @@ class JobField extends StatelessWidget {
   final SignInController signInController;
   final ProfileController profileController;
 
+  final items = [
+    'Software Engineer',
+    'Graphic Designer',
+    'Marketing Specialist',
+    'Teacher',
+    'Nurse',
+    'Sales Manager',
+    'Data Analyst',
+    'Chef',
+    'Architect',
+    'Lawyer',
+    'Product Manager',
+    'Accountant',
+    'Photographer',
+    'Social Media Manager',
+    'Entrepreneur',
+    'Mechanical Engineer',
+    'Writer',
+    'Doctor',
+    'UX/UI Designer',
+    'Real Estate Agent'
+  ];
+
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField(
-      value: signInController.user.job != ''
+      value: items.contains(signInController.user.job)
           ? signInController.user.job
           : null,
       decoration: InputDecoration(
@@ -26,28 +49,7 @@ class JobField extends StatelessWidget {
         labelStyle: CustomTextStyle.h3(AppColors.thirdColor),
       ),
       isExpanded: true,
-      items: [
-        'Software Engineer',
-        'Graphic Designer',
-        'Marketing Specialist',
-        'Teacher',
-        'Nurse',
-        'Sales Manager',
-        'Data Analyst',
-        'Chef',
-        'Architect',
-        'Lawyer',
-        'Product Manager',
-        'Accountant',
-        'Photographer',
-        'Social Media Manager',
-        'Entrepreneur',
-        'Mechanical Engineer',
-        'Writer',
-        'Doctor',
-        'UX/UI Designer',
-        'Real Estate Agent'
-      ].map(
+      items: items.map(
         (e) {
           return DropdownMenuItem(
             child: Text(

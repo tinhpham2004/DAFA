@@ -77,7 +77,7 @@ enum RelationshipEnum {
             log(key);
           }
         });
-        if (signInController.getToKnowList != null && count >= 3) {
+        if (signInController.getToKnowList != null && count >= 1) {
           showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -88,7 +88,7 @@ enum RelationshipEnum {
                 //   textAlign: TextAlign.center,
                 // ),
                 content: const Text(
-                  'You’ve connected with 3 people. Please get to know them before exploring more matches!',
+                  'You’ve connected with 1 person. Please get to know them before exploring more matches!',
                   textAlign: TextAlign.center,
                 ),
                 actions: [
@@ -159,7 +159,7 @@ enum RelationshipEnum {
                 //   textAlign: TextAlign.center,
                 // ),
                 content: Text(
-                  'Please be informed that DAFA currently limits the number of people you can get to know at the same time to 3. To connect with someone new, you must first send an invitation expressing your interest. Once both you and the other person accept the invitation, you will be able to communicate and get to know each other.\nDo you want to send an invitation?',
+                  'Please be informed that DAFA currently limits the number of people you can get to know at the same time to 1. To connect with someone new, you must first send an invitation expressing your interest. Once both you and the other person accept the invitation, you will be able to communicate and get to know each other.\nDo you want to send an invitation?',
                   style: CustomTextStyle.h3(AppColors.black),
                   textAlign: TextAlign.center,
                 ),
@@ -323,7 +323,7 @@ enum RelationshipEnum {
             count++;
           }
         });
-        if (signInController.getToKnowList != null && count >= 3) {
+        if (signInController.getToKnowList != null && count >= 1) {
           showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -334,7 +334,7 @@ enum RelationshipEnum {
                 //   textAlign: TextAlign.center,
                 // ),
                 content: const Text(
-                  'You’ve connected with 3 people. Please get to know them before exploring more matches!',
+                  'You’ve connected with 1 person. Please get to know them before exploring more matches!',
                   textAlign: TextAlign.center,
                 ),
                 actions: [

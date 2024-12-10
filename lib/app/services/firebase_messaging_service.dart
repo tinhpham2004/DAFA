@@ -84,7 +84,11 @@ class FirebaseMessagingService {
   Future<void> InitNotifications() async {
     await firebaseMessaging.requestPermission();
     InitPushNotifications();
-    await suggestFriend();
+    try {
+      await suggestFriend();
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
   Future<void> suggestFriend() async {
@@ -92,6 +96,14 @@ class FirebaseMessagingService {
     final matchUser = findBestMatch(
       signInController.userLikeList,
       signInController.matchList,
+    );
+    if (matchUser == null) return;
+    signInController.suggestFriendList.add(matchUser);
+    signInController.suggestFriendList.add(
+      MatchUser(
+        user: null,
+        distance: 0,
+      ),
     );
     await SendNotification(
       '🌟 Meet ${matchUser.user?.name}! Your Perfect Match Awaits! 🌟',
@@ -220,7 +232,7 @@ class FirebaseMessagingService {
           final data = jsonDecode(response.payload!);
           final category = data['category'];
           final callId = data['call_id'];
-          if (category != 'message') {
+          if (category != 'message' && category != null) {
             if (response.actionId == 'accept') {
               String channelName = data['channel'];
               String token = data['token'];
@@ -234,6 +246,9 @@ class FirebaseMessagingService {
             } else if (response.actionId == 'reject') {
               databaseService.UpdateCallMessage(callId, 'rejected');
             }
+          }
+          if (category == null) {
+            Get.toNamed(AppRoutes.suggest_friend);
           }
         } catch (ex) {
           print(ex.toString());
@@ -328,16 +343,16 @@ class FirebaseMessagingService {
       htmlFormatTitle: true,
     );
     final androidDetails = AndroidNotificationDetails(
-        'com.example.dafa', 'mychannelid',
-        importance: Importance.max,
-        styleInformation: styleInformation,
-        priority: Priority.max,
-        actions: [
-          AndroidNotificationAction('accept', 'Accept',
-              showsUserInterface: true),
-          AndroidNotificationAction('reject', 'Reject',
-              showsUserInterface: true),
-        ]);
+      'com.example.dafa',
+      'mychannelid',
+      importance: Importance.max,
+      styleInformation: styleInformation,
+      priority: Priority.max,
+      // actions: [
+      //   AndroidNotificationAction('accept', 'Accept', showsUserInterface: true),
+      //   AndroidNotificationAction('reject', 'Reject', showsUserInterface: true),
+      // ],
+    );
 
     final notificationDetails = NotificationDetails(
       android: androidDetails,
@@ -355,29 +370,41 @@ class FirebaseMessagingService {
     return result;
   }
 
-  MatchUser findBestMatch(
+  MatchUser? findBestMatch(
       List<MatchUser> historyUsers, List<MatchUser> currentUsers) {
+    // for (var user in historyUsers) {
+    //   debugPrint('Tên: ${user.user?.name}');
+    //   debugPrint('Sở thích: ${user.user?.hobby}');
+    //   debugPrint('Chiều cao: ${user.user?.height}');
+    //   debugPrint('Tuổi: ${user.user?.age}');
+    //   debugPrint('Công việc: ${user.user?.job}');
+    //   debugPrint('Khoảng cách: ${user.distance}');
+    //   debugPrint('---------------------------------');
+    // }
     double maxScore = double.negativeInfinity;
     MatchUser? bestMatch;
 
     for (final currentUser in currentUsers) {
       if (currentUser.user == null) continue;
+      // debugPrint('Tên: ${currentUser.user?.name}');
       double score = calculateTotalScore(currentUser, historyUsers);
+      // debugPrint('---------------------------------');
       if (score > maxScore) {
         maxScore = score;
         bestMatch = currentUser;
       }
     }
-    return bestMatch!;
+    return bestMatch;
   }
 
   double calculateTotalScore(
       MatchUser currentUser, List<MatchUser> historyUsers) {
     // Tính điểm categorical
-    double hobbyScore = calculateTfIdf(currentUser.user?.hobby ?? '',
-        historyUsers.map((e) => e.user?.hobby ?? '').toList());
-    double jobScore = calculateTfIdf(currentUser.user?.job ?? '',
-        historyUsers.map((e) => e.user?.job ?? '').toList());
+    double hobbyScore = calculateTfIdf(
+        currentUser.user?.hobby.split(', ') ?? [],
+        historyUsers.map((e) => e.user?.hobby.split(', ') ?? []).toList());
+    double jobScore = calculateTfIdf([currentUser.user?.job ?? ''],
+        historyUsers.map((e) => [e.user?.job ?? '']).toList());
 
     // Tính điểm numerical
     final userHeight =
@@ -404,17 +431,42 @@ class FirebaseMessagingService {
         .toList());
     double distanceScore =
         calculateScore(currentUser.distance, meanDistance, stdDevDistance);
-    double ageScore = calculateScore((currentUser.user?.age ?? 0).toDouble(), meanAge, stdDevAge);
+    double ageScore = calculateScore(
+        (currentUser.user?.age ?? 0).toDouble(), meanAge, stdDevAge);
     double heightScore = calculateScore(userHeight, meanHeight, stdDevHeight);
+
+    // debugPrint('Sở thích: $hobbyScore');
+    // debugPrint('Chiều cao: $heightScore');
+    // debugPrint('Tuổi: $ageScore');
+    // debugPrint('Khoảng cách: $distanceScore');
+    // debugPrint('Công việc: $jobScore');
+    // debugPrint('Tổng: ${hobbyScore + jobScore + distanceScore + ageScore + heightScore}');
 
     return hobbyScore + jobScore + distanceScore + ageScore + heightScore;
   }
 
-  double calculateTfIdf(String term, List<String> allTerms) {
-    int termFrequency = allTerms.where((t) => t == term).length;
-    int documentCount = allTerms.toSet().length;
-    return (termFrequency / allTerms.length) *
-        math.log(allTerms.length / documentCount);
+  double calculateTfIdf(List<String> terms, List<List<String>> allTerms) {
+    double totalScore = 0;
+    int totalDocuments = allTerms.length;
+
+    // Flatten the list of all terms for frequency counting
+    List<String> flattenedTerms = allTerms.expand((list) => list).toList();
+
+    for (String term in terms) {
+      int termFrequency = flattenedTerms.where((t) => t == term).length;
+      int documentContainingTerm =
+          allTerms.where((userTerms) => userTerms.contains(term)).length;
+
+      // Calculate TF and IDF
+      double tf = termFrequency / flattenedTerms.length;
+      double idf = math.log(totalDocuments /
+          (documentContainingTerm == 0 ? 1 : documentContainingTerm));
+
+      // Aggregate scores
+      totalScore += tf * idf;
+    }
+
+    return totalScore;
   }
 
   double calculateScore(double x, double mean, double stdDev) {

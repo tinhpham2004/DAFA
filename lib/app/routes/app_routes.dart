@@ -39,4 +39,6 @@ abstract class AppRoutes {
   static const search = '/search';
   //id_recognition
   static const id_recognition = '/id_recognition';
+    //suggest_friend
+  static const suggest_friend = '/suggest_friend';
 }

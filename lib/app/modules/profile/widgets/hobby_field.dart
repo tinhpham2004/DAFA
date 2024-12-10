@@ -47,7 +47,7 @@ class _HobbyFieldState extends State<HobbyField> {
   @override
   void initState() {
     super.initState();
-    selectedHobbies = widget.signInController.user.hobby.split(', ');
+    selectedHobbies = widget.signInController.user.hobby == '' ? [] : widget.signInController.user.hobby.split(', ');
   }
 
   void _showHobbySelectionDialog() {

@@ -26,6 +26,8 @@ import 'package:dafa/app/modules/sign_up/screens/otp_screen.dart';
 import 'package:dafa/app/modules/sign_up/screens/password.dart';
 import 'package:dafa/app/modules/sign_up/screens/sign_up_screen.dart';
 import 'package:dafa/app/modules/sign_up/sign_up_binding.dart';
+import 'package:dafa/app/modules/suggest_friend/screens/suggest_friend_screen.dart';
+import 'package:dafa/app/modules/suggest_friend/suggest_friend_binding.dart';
 import 'package:dafa/app/modules/swipe/screens/swipe_screen.dart';
 import 'package:dafa/app/modules/swipe/swipe_binding.dart';
 import 'package:dafa/app/routes/app_routes.dart';
@@ -132,6 +134,11 @@ abstract class AppPages {
       name: AppRoutes.id_recognition,
       page: () => IdRecognitionScreen(),
       binding: SignInBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.suggest_friend,
+      page: () => SuggestFriendScreen(),
+      binding: SuggestFriendBinding(),
     ),
   ];
 }
